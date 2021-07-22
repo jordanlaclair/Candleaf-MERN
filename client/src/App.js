@@ -1,26 +1,37 @@
 import "./App.css";
-import Form from "./components/Form.js";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Login from "./components/Login.js";
+import Home from "./components/Home.js";
+import Checkout from "./components/Checkout.js";
+import Header from "./components/Header.js";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	BrowserRouter,
+} from "react-router-dom";
+
 import * as action from "./store/actions/index.js";
 
 function App() {
 	const dispatch = useDispatch();
-	const post = useSelector((state) => state.posts);
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-	};
-	useEffect(() => {
-		console.log(post);
-	}, [post]);
 	useEffect(() => {
 		dispatch(action.getPosts());
 	}, [dispatch]);
 
 	return (
 		<div className="App">
-			<Form />
+			<Router>
+				<Switch>
+					<Route exact path="/login" component={Login} />
+					<Route exact path="/">
+						<Header />
+						<Home />
+					</Route>
+					<Route exact path="/checkout" component={Checkout} />
+				</Switch>
+			</Router>
 		</div>
 	);
 }

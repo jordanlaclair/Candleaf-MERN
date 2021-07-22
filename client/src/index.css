@@ -8,6 +8,7 @@ body {
 	min-height: 100%;
 	min-height: -webkit-fill-available;
 	--slack-color: #3f0f40;
+	background-color: whitesmoke;
 
 	margin: 0;
 	font-family: "Poppins", sans-serif;
