@@ -2,6 +2,8 @@ import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import { ReactComponent as Logo } from "../images/leaf.svg";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import PermIdentityIcon from "@material-ui/icons/PermIdentity";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 const Header = () => {
 	return (
 		<HeaderWrapper>
@@ -28,7 +30,10 @@ const Header = () => {
 				</Contact>
 			</HeaderMiddle>
 
-			<HeaderRight></HeaderRight>
+			<HeaderRight>
+				<PermIdentityIcon />
+				<ShoppingCartOutlinedIcon />
+			</HeaderRight>
 		</HeaderWrapper>
 	);
 };
@@ -59,7 +64,7 @@ const slideDown = keyframes`
 `;
 
 const HeaderWrapper = styled.div`
-	position: absolute;
+	position: fixed;
 	top: 0px;
 	left: 0px;
 	width: 100%;
@@ -68,6 +73,7 @@ const HeaderWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	padding: 15px 0;
+	z-index: 999;
 `;
 
 const HeaderLeft = styled.div`
@@ -183,4 +189,13 @@ const HeaderRight = styled.div`
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+
+	.MuiSvgIcon-root {
+		transition: all 0.3s ease-in-out;
+		cursor: pointer;
+		transform: scale(1.2);
+		:hover {
+			transform: scale(1.4);
+		}
+	}
 `;
