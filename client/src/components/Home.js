@@ -1,7 +1,24 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import BackgroundSrcImage from "../images/homebackground.jpg";
+import { ReactComponent as Leaf } from "../images/leaf2.svg";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import StorefrontIcon from "@material-ui/icons/Storefront";
+import Products from "./Products.js";
+
 const Home = () => {
+	const useStyles = makeStyles((theme) => ({
+		button: {
+			marginTop: theme.spacing(6),
+			backgroundColor: "#49A010",
+			textTransform: "inherit",
+			fontFamily: "inherit",
+		},
+	}));
+
+	const classes = useStyles();
+
 	return (
 		<HomeWrapper>
 			<BackgroundWrapper>
@@ -9,9 +26,24 @@ const Home = () => {
 					<BackgroundImage src={BackgroundSrcImage} />
 				</BackgroundImageWrapper>
 				<ForeGroundWrapper>
-					<h2>sdkflj</h2>
+					<LeafWrapper>
+						<Leaf />
+					</LeafWrapper>
+					<h1>The nature candle.</h1>
+					<h4>
+						Green-friendly, hand crafted natural soy wax made to spice up the
+						best moments.
+					</h4>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<StorefrontIcon />}
+					>
+						<h4>Browse the Collection</h4>
+					</Button>
 				</ForeGroundWrapper>
 			</BackgroundWrapper>
+			<Products />
 		</HomeWrapper>
 	);
 };
@@ -21,9 +53,10 @@ export default Home;
 const HomeWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: center;
 	width: 100%;
+	margin-top: 200px;
 	height: 100vh;
 	background-color: whitesmoke;
 `;
@@ -41,6 +74,7 @@ const BackgroundImageWrapper = styled.div`
 const ForeGroundWrapper = styled.div`
 	position: absolute;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	top: 50%;
@@ -50,4 +84,15 @@ const ForeGroundWrapper = styled.div`
 	backdrop-filter: blur(10px);
 	width: 800px;
 	height: 400px;
+	> h1 {
+		font-size: 2.5rem;
+	}
+`;
+const LeafWrapper = styled.div`
+	width: 40px;
+	height: auto;
+	> svg {
+		max-width: 100%;
+		height: auto;
+	}
 `;

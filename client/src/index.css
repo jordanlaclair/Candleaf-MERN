@@ -9,7 +9,7 @@ body {
 	min-height: -webkit-fill-available;
 	--slack-color: #3f0f40;
 	background-color: whitesmoke;
-
+	scroll-behavior: smooth;
 	margin: 0;
 	font-family: "Poppins", sans-serif;
 	-webkit-font-smoothing: antialiased;
