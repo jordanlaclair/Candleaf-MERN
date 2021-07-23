@@ -20,7 +20,7 @@ export default Product;
 const ProductWrapper = styled.div``;
 
 const ProductTop = styled.div`
-	height: 80%;
+	height: auto;
 `;
 
 const ProductBottom = styled.div`
@@ -28,5 +28,5 @@ const ProductBottom = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 20%;
+	height: auto;
 `;

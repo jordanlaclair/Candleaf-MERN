@@ -32,7 +32,8 @@ const ProductsWrapper = styled.div`
 `;
 
 const TableWrapper = styled.div`
+	width: 100%;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
 	grid-gap: 2rem;
 `;
