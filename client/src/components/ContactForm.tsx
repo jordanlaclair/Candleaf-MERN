@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import * as action from "../store/actions/index";
 import styled, { css } from "styled-components";
-
+import { bindActionCreators } from "redux";
+import * as action from "../store/actions/index";
 function ContactForm() {
 	interface IpostData {
 		creator: string;

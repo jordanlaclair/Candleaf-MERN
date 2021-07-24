@@ -18,7 +18,7 @@ interface PostsSchema {
 }
 
 type PostsArray = Array<PostsSchema>;
-let initialState: PostsArray;
+let initialState: PostsArray = [];
 
 const reducer = (posts: PostsArray = initialState, action: PostActions) => {
 	switch (action.type) {
