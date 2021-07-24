@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as action from "../store/actions/index";
 import styled, { css } from "styled-components";
-import { ChangeEvent } from "react";
 
 function ContactForm() {
 	interface IpostData {
