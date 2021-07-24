@@ -1,10 +1,10 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Login from "./components/Login.js";
-import Home from "./components/Home.js";
-import Checkout from "./components/Checkout.js";
-import Header from "./components/Header.js";
+import Login from "./components/Login";
+import Home from "./components/Home";
+import Checkout from "./components/Checkout";
+import Header from "./components/Header";
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -12,7 +12,7 @@ import {
 	BrowserRouter,
 } from "react-router-dom";
 
-import * as action from "./store/actions/index.js";
+import * as action from "./store/actions/index";
 
 function App() {
 	const dispatch = useDispatch();

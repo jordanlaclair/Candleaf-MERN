@@ -5,7 +5,7 @@ import { ReactComponent as Leaf } from "../images/leaf2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import StorefrontIcon from "@material-ui/icons/Storefront";
-import Products from "./Products.js";
+import Products from "./Products";
 
 const Home = () => {
 	const useStyles = makeStyles((theme) => ({

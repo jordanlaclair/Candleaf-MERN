@@ -4,4 +4,4 @@ export {
 	updatePost,
 	likePost,
 	getPosts,
-} from "./postsActionCreator.js";
+} from "./postsActionCreator";
