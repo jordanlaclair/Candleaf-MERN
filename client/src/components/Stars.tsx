@@ -23,4 +23,7 @@ export default Stars;
 
 const StarsWrapper = styled.div`
 	white-space: nowrap;
+	.MuiSvgIcon-root {
+		color: #49a010;
+	}
 `;

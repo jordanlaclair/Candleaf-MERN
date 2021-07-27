@@ -16,6 +16,12 @@ const Reviews = () => {
 					picture={ProfilePicture}
 					description="I love it! No more Air fresheners!"
 				/>
+				<Review
+					rating={4}
+					name="Luisa"
+					picture={ProfilePicture}
+					description="I love it! No more Air fresheners!"
+				/>
 			</GridWrapper>
 		</ReviewsWrapper>
 	);

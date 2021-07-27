@@ -4,18 +4,15 @@ import Product from "./Product";
 const Products = () => {
 	return (
 		<ProductsWrapper>
-			<h1>Products</h1>
-			<h2>Order it for you or for a loved one!</h2>
+			<Header>
+				<h1>Products</h1>
+				<h2>Order it for you or for a loved one!</h2>
+			</Header>
 			<TableWrapper>
-				<Product />
-				<Product />
-				<Product />
-
-				<Product />
-				<Product />
-				<Product />
-				<Product />
-				<Product />
+				<Product name="Sweet Strawberry" price={4.99} />
+				<Product name="Sweet Strawberry" price={4.99} />
+				<Product name="Sweet Strawberry" price={4.99} />
+				<Product name="Sweet Strawberry" price={4.99} />
 			</TableWrapper>
 		</ProductsWrapper>
 	);
@@ -39,9 +36,12 @@ const ProductsWrapper = styled.div`
 `;
 
 const TableWrapper = styled.div`
-	width: 80%;
+	width: 70%;
 	display: grid;
-
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 2rem;
+`;
+
+const Header = styled.div`
+	margin-bottom: 3rem;
 `;

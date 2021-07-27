@@ -102,7 +102,7 @@ const Discovery = styled.div`
 	cursor: pointer;
 	text-align: center;
 	position: relative;
-	transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease;
 
 	:hover {
 		transform: scale(1.1);
@@ -112,7 +112,7 @@ const Discovery = styled.div`
 	}
 
 	.MuiSvgIcon-root {
-		transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease;
 	}
 
 	:hover::after {
@@ -133,7 +133,7 @@ const Discovery = styled.div`
 const Contact = styled.div`
 	position: relative;
 	cursor: pointer;
-	transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease;
 
 	:hover {
 		transform: scale(1.1);
@@ -155,7 +155,7 @@ const Contact = styled.div`
 const About = styled.div`
 	position: relative;
 	cursor: pointer;
-	transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease;
 
 	:hover {
 		transform: scale(1.1);
@@ -191,7 +191,7 @@ const HeaderRight = styled.div`
 	align-items: center;
 
 	.MuiSvgIcon-root {
-		transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease;
 		cursor: pointer;
 		transform: scale(1.2);
 		:hover {

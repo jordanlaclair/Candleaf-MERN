@@ -28,7 +28,7 @@ export default Review;
 const ReviewWrapper = styled.div`
 	background: whitesmoke;
 	border-radius: 5px;
-	box-shadow: 0px 2px 15px 5px gray;
+	box-shadow: 0px 2px 15px 2px gray;
 	display: flex;
 	padding: 40px;
 	flex-direction: column;

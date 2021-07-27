@@ -9,6 +9,7 @@ import Products from "./Products";
 import devices from "../styles/devices";
 import LearnMore from "./LearnMore";
 import Reviews from "./Reviews";
+import Footer from "./Footer";
 
 const Home = () => {
 	const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,7 @@ const Home = () => {
 			<Products />
 			<LearnMore />
 			<Reviews />
+			<Footer />
 		</HomeWrapper>
 	);
 };
