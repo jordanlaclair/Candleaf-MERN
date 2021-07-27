@@ -1,8 +1,9 @@
 import { Button, makeStyles } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as CandleGroup } from "../images/candleGroup.svg";
+import CandleGroup from "../images/CandleGroup.jpg";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
+import LearnMoreDetail from "./LearnMoreDetail";
 const LearnMore = () => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -22,22 +23,34 @@ const LearnMore = () => {
 					<h4>Made for your home and for your wellness</h4>
 				</Header>
 				<Body>
-					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus
-					ratione dolore esse labore velit ex facilis in obcaecati, dignissimos
-					neque recusandae tempore? Sit quaerat quis id cupiditate deleniti
-					voluptate fuga.
+					<LearnMoreDetail
+						title="Eco-sustainable"
+						description="All recyclable materials, 0% CO2 emissions"
+					/>
+					<LearnMoreDetail
+						title="Long burning"
+						description="Handcrafted to last long"
+					/>
+					<LearnMoreDetail
+						title="Handmade"
+						description="All candles are carefully crafted with love"
+					/>
+					<LearnMoreDetail
+						title="Hyphoallergenic"
+						description="100% natural, human-friendly ingredients"
+					/>
 				</Body>
 				<Button
 					variant="contained"
 					className={classes.button}
 					startIcon={<EmojiPeopleIcon />}
 				>
-					<h4>Browse the Collection</h4>
+					<h4>Learn More</h4>
 				</Button>
 			</LearnMoreLeft>
 			<LearnMoreRight>
 				<ImageWrapper>
-					<CandleGroup />
+					<img src={CandleGroup} alt="candles" />
 				</ImageWrapper>
 			</LearnMoreRight>
 		</LearnMoreWrapper>
@@ -51,7 +64,7 @@ const LearnMoreWrapper = styled.div`
 	width: 100%;
 	justify-content: space-evenly;
 	align-items: center;
-	background: #f7f8fa;
+	background: #fefefe;
 `;
 
 const LearnMoreLeft = styled.div`
@@ -78,14 +91,15 @@ const Header = styled.div`
 `;
 const Body = styled.div`
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
+	flex-direction: column;
 	align-items: flex-start;
 	text-align: start;
 `;
 
 const ImageWrapper = styled.div`
 	width: 800px;
-	> svg {
+	> img {
 		height: auto;
 		max-width: 100%;
 	}

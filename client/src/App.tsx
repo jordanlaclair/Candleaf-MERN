@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { State } from "./store/reducers/index";
 import * as action from "./store/actions/index";
-import { bindActionCreators } from "redux";
 
 function App() {
 	const posts = useSelector((state: State) => state.posts);

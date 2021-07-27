@@ -1,0 +1,42 @@
+import React from "react";
+import styled from "styled-components";
+import ProfilePicture from "../images/profilePicture.png";
+import Review from "./Review";
+const Reviews = () => {
+	return (
+		<ReviewsWrapper>
+			<Header>
+				<h1>Reviews</h1>
+				<h4>Some quotes from our happy customers</h4>
+			</Header>
+			<GridWrapper>
+				<Review
+					rating={4}
+					name="Luisa"
+					picture={ProfilePicture}
+					description="I love it! No more Air fresheners!"
+				/>
+			</GridWrapper>
+		</ReviewsWrapper>
+	);
+};
+
+export default Reviews;
+
+const ReviewsWrapper = styled.div`
+	width: 100%;
+	background: #eff8f3;
+	padding: 2rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
+const Header = styled.div`
+	margin: 3rem 0;
+`;
+const GridWrapper = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-gap: 2rem;
+`;

@@ -8,6 +8,7 @@ import StorefrontIcon from "@material-ui/icons/Storefront";
 import Products from "./Products";
 import devices from "../styles/devices";
 import LearnMore from "./LearnMore";
+import Reviews from "./Reviews";
 
 const Home = () => {
 	const useStyles = makeStyles((theme) => ({
@@ -47,6 +48,7 @@ const Home = () => {
 			</BackgroundWrapper>
 			<Products />
 			<LearnMore />
+			<Reviews />
 		</HomeWrapper>
 	);
 };
@@ -60,13 +62,13 @@ const HomeWrapper = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 100vh;
-	position: relative;
+
 	background-color: whitesmoke;
+	margin-top: 35%;
 `;
 const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
-	margin-top: 800px;
 `;
 const BackgroundImage = styled.img`
 	height: auto;
