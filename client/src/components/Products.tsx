@@ -10,6 +10,11 @@ const Products = () => {
 				<Product />
 				<Product />
 				<Product />
+				<Product />
+				<Product />
+				<Product />
+				<Product />
+				<Product />
 			</TableWrapper>
 		</ProductsWrapper>
 	);
@@ -25,6 +30,7 @@ const ProductsWrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
 
 	> h2 {
 		color: gray;
@@ -32,8 +38,9 @@ const ProductsWrapper = styled.div`
 `;
 
 const TableWrapper = styled.div`
-	width: 100%;
+	width: 80%;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	grid-gap: 2rem;
 `;

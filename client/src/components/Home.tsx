@@ -1,11 +1,13 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
-import BackgroundSrcImage from "../images/homebackground.jpg";
+import BackgroundSrcImage from "../images/homebackground1.jpg";
 import { ReactComponent as Leaf } from "../images/leaf2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import StorefrontIcon from "@material-ui/icons/Storefront";
 import Products from "./Products";
+import devices from "../styles/devices";
+import LearnMore from "./LearnMore";
 
 const Home = () => {
 	const useStyles = makeStyles((theme) => ({
@@ -44,6 +46,7 @@ const Home = () => {
 				</ForeGroundWrapper>
 			</BackgroundWrapper>
 			<Products />
+			<LearnMore />
 		</HomeWrapper>
 	);
 };
@@ -56,13 +59,14 @@ const HomeWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100%;
-	margin-top: 200px;
 	height: 100vh;
+	position: relative;
 	background-color: whitesmoke;
 `;
 const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
+	margin-top: 800px;
 `;
 const BackgroundImage = styled.img`
 	height: auto;
@@ -80,17 +84,20 @@ const ForeGroundWrapper = styled.div`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	padding: 20px;
 	background-color: rgba(250, 250, 250, 50%);
 	backdrop-filter: blur(10px);
-	width: 800px;
-	height: 400px;
-	> h1 {
-		font-size: 2.5rem;
-	}
+	width: 60%;
+	height: 40%;
 `;
 const LeafWrapper = styled.div`
 	width: 40px;
 	height: auto;
+
+	@media ${devices.laptop} {
+		width: 30px;
+	}
+
 	> svg {
 		max-width: 100%;
 		height: auto;

@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { bindActionCreators } from "redux";
 import * as action from "../store/actions/index";
 function ContactForm() {
-	interface IpostData {
+	interface PostData {
 		creator: string;
 		title: string;
 		message: string;
@@ -12,7 +12,7 @@ function ContactForm() {
 		selectedFile: string;
 	}
 
-	const [postData, setPostData] = useState<IpostData>({
+	const [postData, setPostData] = useState<PostData>({
 		creator: "",
 		title: "",
 		message: "",
