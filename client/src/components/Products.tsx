@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Product from "./Product";
 const Products = () => {
 	return (
-		<ProductsWrapper>
+		<ProductsWrapper id="products">
 			<Header>
 				<h1>Products</h1>
 				<h2>Order it for you or for a loved one!</h2>
@@ -23,6 +23,7 @@ export default Products;
 const ProductsWrapper = styled.div`
 	width: 100%;
 	margin: 80px 0;
+	scroll-margin-top: 8rem;
 	background: whitesmoke;
 	display: flex;
 	flex-direction: column;

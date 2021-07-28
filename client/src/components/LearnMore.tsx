@@ -16,7 +16,7 @@ const LearnMore = () => {
 
 	const classes = useStyles();
 	return (
-		<LearnMoreWrapper>
+		<LearnMoreWrapper id="about">
 			<LearnMoreLeft>
 				<Header>
 					<h1>Clean and fragrant soy wax</h1>
@@ -65,6 +65,9 @@ const LearnMoreWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	background: #fefefe;
+	padding: 50px 0px;
+	scroll-margin-top: 3rem;
+	scroll-snap-align: center;
 `;
 
 const LearnMoreLeft = styled.div`
@@ -85,6 +88,7 @@ const Header = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
+	text-align: start;
 	> h4 {
 		color: #49a010;
 	}

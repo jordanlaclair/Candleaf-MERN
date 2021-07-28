@@ -4,7 +4,7 @@ import ProfilePicture from "../images/profilePicture.png";
 import Review from "./Review";
 const Reviews = () => {
 	return (
-		<ReviewsWrapper>
+		<ReviewsWrapper id="reviews">
 			<Header>
 				<h1>Reviews</h1>
 				<h4>Some quotes from our happy customers</h4>
@@ -34,6 +34,8 @@ const ReviewsWrapper = styled.div`
 	background: #eff8f3;
 	padding: 2rem 0;
 	display: flex;
+	scroll-snap-align: start;
+
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;

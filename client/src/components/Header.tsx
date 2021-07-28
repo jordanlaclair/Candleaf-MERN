@@ -17,16 +17,22 @@ const Header = () => {
 			<HeaderMiddle>
 				<Discovery>
 					<div>
-						<h3>Discovery</h3>
+						<a href="#products">
+							<h3>Discovery</h3>
+						</a>
 					</div>
 					<ExpandMoreIcon />
 				</Discovery>
 
 				<About>
-					<h3>About</h3>
+					<a href="#about">
+						<h3>About</h3>
+					</a>
 				</About>
 				<Contact>
-					<h3>Contact Us</h3>
+					<a href="#contact">
+						<h3>Contact Us</h3>
+					</a>
 				</Contact>
 			</HeaderMiddle>
 
@@ -103,7 +109,10 @@ const Discovery = styled.div`
 	text-align: center;
 	position: relative;
 	transition: all 0.3s ease;
-
+	div > a {
+		text-decoration: none;
+		color: inherit;
+	}
 	:hover {
 		transform: scale(1.1);
 		.MuiSvgIcon-root {
@@ -134,7 +143,10 @@ const Contact = styled.div`
 	position: relative;
 	cursor: pointer;
 	transition: all 0.3s ease;
-
+	> a {
+		text-decoration: none;
+		color: inherit;
+	}
 	:hover {
 		transform: scale(1.1);
 	}
@@ -156,6 +168,10 @@ const About = styled.div`
 	position: relative;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	> a {
+		text-decoration: none;
+		color: inherit;
+	}
 
 	:hover {
 		transform: scale(1.1);

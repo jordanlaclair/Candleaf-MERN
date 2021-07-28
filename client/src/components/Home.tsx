@@ -63,14 +63,14 @@ const HomeWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100%;
-	height: 100vh;
-
+	height: 100%;
+	scroll-snap-type: y mandatory;
 	background-color: whitesmoke;
-	margin-top: 35%;
 `;
 const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
+	scroll-snap-align: start;
 `;
 const BackgroundImage = styled.img`
 	height: auto;
