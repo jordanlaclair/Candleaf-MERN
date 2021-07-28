@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Icon } from "../images/icon.svg";
+import devices from "../styles/devices";
 const Footer = () => {
 	return (
 		<FooterWrapper>
@@ -68,6 +69,9 @@ const FooterBottom = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	margin: 35px 0px;
+	@media ${devices.tablet} {
+		flex-direction: column;
+	}
 `;
 
 const FooterLeft = styled.div`
@@ -84,7 +88,7 @@ const FooterLeft = styled.div`
 const FooterRight = styled.div`
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 `;
 
 const FooterColumn = styled.div`

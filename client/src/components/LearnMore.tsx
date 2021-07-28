@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CandleGroup from "../images/CandleGroup.jpg";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import LearnMoreDetail from "./LearnMoreDetail";
+import devices from "../styles/devices";
 const LearnMore = () => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -39,26 +40,40 @@ const LearnMore = () => {
 						title="Hyphoallergenic"
 						description="100% natural, human-friendly ingredients"
 					/>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<EmojiPeopleIcon />}
+					>
+						<h4>Learn More</h4>
+					</Button>
 				</Body>
-				<Button
-					variant="contained"
-					className={classes.button}
-					startIcon={<EmojiPeopleIcon />}
-				>
-					<h4>Learn More</h4>
-				</Button>
 			</LearnMoreLeft>
 			<LearnMoreRight>
 				<ImageWrapper>
 					<img src={CandleGroup} alt="candles" />
 				</ImageWrapper>
+				<ButtonWrapper>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<EmojiPeopleIcon />}
+					>
+						<h4>Learn More</h4>
+					</Button>
+				</ButtonWrapper>
 			</LearnMoreRight>
 		</LearnMoreWrapper>
 	);
 };
 
 export default LearnMore;
-
+const ButtonWrapper = styled.div`
+	display: none;
+	@media ${devices.laptop} {
+		display: block;
+	}
+`;
 const LearnMoreWrapper = styled.div`
 	display: flex;
 	width: 100%;
@@ -68,6 +83,9 @@ const LearnMoreWrapper = styled.div`
 	padding: 50px 0px;
 	scroll-margin-top: 3rem;
 	scroll-snap-align: center;
+	@media ${devices.laptop} {
+		flex-direction: column;
+	}
 `;
 
 const LearnMoreLeft = styled.div`
@@ -79,6 +97,8 @@ const LearnMoreLeft = styled.div`
 	padding: 0 60px;
 `;
 const LearnMoreRight = styled.div`
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 `;
@@ -99,10 +119,16 @@ const Body = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	text-align: start;
+
+	> button {
+		@media ${devices.laptop} {
+			display: none;
+		}
+	}
 `;
 
 const ImageWrapper = styled.div`
-	width: 800px;
+	width: 100%;
 	> img {
 		height: auto;
 		max-width: 100%;
