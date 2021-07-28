@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { ReactComponent as Logo } from "../images/leaf.svg";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import Switch from "@material-ui/core/Switch";
+import { green } from "@material-ui/core/colors";
+import { State } from "../store/reducers";
+import { withStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import * as action from "../store/actions";
 const Header = () => {
+	const dispatch = useDispatch();
+	const [themeSwitch, setThemeSwitch] = useState(true);
+	const theme = useSelector((state: State) => state.global.theme);
+	const handleSwitch = () => {
+		dispatch(action.toggleTheme());
+		setThemeSwitch((prevState) => {
+			return !prevState;
+		});
+	};
+	const GreenSwitch = withStyles({
+		switchBase: {
+			color: green[300],
+			"&$checked": {
+				color: green[500],
+			},
+			"&$checked + $track": {
+				backgroundColor: green[500],
+			},
+		},
+		checked: {},
+		track: {},
+	})(Switch);
+
 	return (
 		<HeaderWrapper>
 			<HeaderLeft>
@@ -39,6 +68,12 @@ const Header = () => {
 			<HeaderRight>
 				<PermIdentityIcon />
 				<ShoppingCartOutlinedIcon />
+				<GreenSwitch
+					checked={themeSwitch}
+					onChange={() => {
+						handleSwitch();
+					}}
+				/>
 			</HeaderRight>
 		</HeaderWrapper>
 	);

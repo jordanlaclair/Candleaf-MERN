@@ -8,6 +8,8 @@ export {
 	getPosts,
 } from "./postsActionCreator";
 
+export { toggleTheme } from "./appActionCreator";
+
 interface PostsSchema {
 	title: string;
 	message: string;
@@ -40,6 +42,10 @@ interface LikePostAction {
 interface GetPosts {
 	type: ActionType.FETCH_ALL;
 	payload: Array<object>;
+}
+
+export interface ToggleTheme {
+	type: ActionType.TOGGLE_THEME;
 }
 
 export type PostActions =

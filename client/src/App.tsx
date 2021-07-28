@@ -8,10 +8,12 @@ import Header from "./components/Header";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { State } from "./store/reducers/index";
 import * as action from "./store/actions/index";
-
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./styles/Themes";
 function App() {
 	const posts = useSelector((state: State) => state.posts);
 	const dispatch = useDispatch();
+	const theme = useSelector((state: State) => state.global.theme);
 
 	useEffect(() => {
 		dispatch(action.getPosts());
@@ -21,18 +23,20 @@ function App() {
 	}, [posts]);
 
 	return (
-		<div className="App">
-			<Router>
-				<Switch>
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/">
-						<Header />
-						<Home />
-					</Route>
-					<Route exact path="/checkout" component={Checkout} />
-				</Switch>
-			</Router>
-		</div>
+		<ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>
+			<div className="App">
+				<Router>
+					<Switch>
+						<Route exact path="/login" component={Login} />
+						<Route exact path="/">
+							<Header />
+							<Home />
+						</Route>
+						<Route exact path="/checkout" component={Checkout} />
+					</Switch>
+				</Router>
+			</div>
+		</ThemeProvider>
 	);
 }
 
