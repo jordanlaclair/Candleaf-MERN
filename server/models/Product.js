@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
-const postSchema = mongoose.Schema({
+const productSchema = mongoose.Schema({
 	title: String,
 	message: String,
-	creator: String,
 	tags: [String],
-	selectedFile: String,
-	likeCount: {
+	purchaseCount: {
 		type: Number,
 		default: 0,
 	},
@@ -16,6 +14,6 @@ const postSchema = mongoose.Schema({
 	},
 });
 
-const PostMessage = mongoose.model("PostMessage", postSchema);
+const Candle = mongoose.model("Candle", productSchema);
 
-export default PostMessage;
+export default Candle;

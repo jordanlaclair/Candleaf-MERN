@@ -1,22 +1,22 @@
-import PostMessage from "../models/postMessage.js";
 import express from "express";
 import mongoose from "mongoose";
+import Candle from "../models/Product.js";
 
 const router = express.Router();
 
-export const getPosts = async (req, res) => {
+export const getCandles = async (req, res) => {
 	try {
-		const postMessages = await PostMessage.find();
-		res.status(200).json(postMessages);
+		const candles = await Candle.find();
+		res.status(200).json(candles);
 	} catch (error) {
 		res.status(404).json({ message: error.message });
 	}
 };
 
-export const getPost = async (req, res) => {
+export const getCandle = async (req, res) => {
 	const { id } = req.params;
 	try {
-		const post = await PostMessage.findById(id, () => {
+		const post = await Candle.findById(id, () => {
 			console.log("found by id");
 		});
 		res.status(200).json(post);
@@ -25,58 +25,58 @@ export const getPost = async (req, res) => {
 	}
 };
 
-export const createPost = async (req, res) => {
+export const createCandle = async (req, res) => {
 	const data = req.body;
-	const newPost = new PostMessage(data);
+	const newCandle = new Candle(data);
 
 	try {
-		await newPost.save();
-		res.status(201).json(newPost);
+		await newCandle.save();
+		res.status(201).json(newCandle);
 	} catch (error) {
 		res.status(409).json({ message: error.message });
 	}
 };
 
-export const deletePost = async (req, res) => {
+export const deleteCandle = async (req, res) => {
 	const { id } = req.params;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
-	await PostMessage.findByIdAndRemove(id);
+	await Candle.findByIdAndRemove(id);
 	res.status(204).json({ message: "Post deleted successfully." });
 };
 
-export const updatePost = async (req, res) => {
+export const updateCandle = async (req, res) => {
 	const { id } = req.params;
 
-	const { creator, message, title, selectedFile, tags } = req.body;
+	const { message, title, tags } = req.body;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
-	const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+	const updatedCandle = { title, message, tags, _id: id };
 
-	await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
+	await Candle.findByIdAndUpdate(id, updatedCandle, { new: true });
 
-	res.json(updatedPost);
+	res.json(updatedCandle);
 };
 
-export const likePost = async (req, res) => {
+export const purchaseCandle = async (req, res) => {
 	const { id } = req.params;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
-	const post = await PostMessage.findById(id);
+	const candle = await Candle.findById(id);
 
-	const updatedPost = await PostMessage.findByIdAndUpdate(
+	const likedCandle = await Candle.findByIdAndUpdate(
 		id,
-		{ likeCount: post.likeCount + 1 },
+		{ purchaseCount: candle.purchaseCount + 1 },
 		{ new: true }
 	);
 
-	res.json(updatedPost);
+	res.json(likedCandle);
 };
 
 export default router;

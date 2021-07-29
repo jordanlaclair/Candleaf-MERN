@@ -10,7 +10,6 @@ import { State } from "./store/reducers/index";
 import * as action from "./store/actions/index";
 import { GlobalStyles } from "./styles/globalStyles";
 import ProductDetails from "./components/ProductDetails";
-
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./styles/Themes";
 function App() {
@@ -19,7 +18,7 @@ function App() {
 	const theme = useSelector((state: State) => state.global.theme);
 
 	useEffect(() => {
-		dispatch(action.getPosts());
+		dispatch(action.getCandles());
 	}, []);
 	useEffect(() => {
 		console.log(posts);

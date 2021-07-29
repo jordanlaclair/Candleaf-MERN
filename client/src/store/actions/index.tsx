@@ -1,11 +1,11 @@
 import { ActionType } from "./actionTypes";
 
 export {
-	createPost,
-	deletePost,
-	updatePost,
-	likePost,
-	getPosts,
+	createCandle,
+	deleteCandle,
+	purchaseCandle,
+	getCandles,
+	getCandle,
 } from "./postsActionCreator";
 
 export { toggleTheme } from "./appActionCreator";
