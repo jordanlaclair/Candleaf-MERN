@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { State } from "./store/reducers/index";
 import * as action from "./store/actions/index";
 import { GlobalStyles } from "./styles/globalStyles";
+import ProductDetails from "./components/ProductDetails";
 
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./styles/Themes";
@@ -36,6 +37,11 @@ function App() {
 							<Home />
 						</Route>
 						<Route exact path="/checkout" component={Checkout} />
+						<Route
+							exact
+							path="/products/candles/:id"
+							component={ProductDetails}
+						/>
 					</Switch>
 				</Router>
 			</div>

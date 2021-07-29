@@ -1,22 +1,55 @@
+import { Button, makeStyles } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import Candle from "../images/candle.jpg";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import { useHistory } from "react-router-dom";
 type PropTypes = {
 	name: string;
 	price: number;
+	image: string;
+	id: number;
 };
-const Product = ({ name, price }: PropTypes) => {
+const Product = ({ name, price, image, id }: PropTypes) => {
+	let history = useHistory();
+
+	const useStyles = makeStyles((theme) => ({
+		button: {
+			marginTop: theme.spacing(1),
+			backgroundColor: "#49A010",
+			textTransform: "inherit",
+			fontFamily: "inherit",
+		},
+	}));
+
+	const classes = useStyles();
+
+	const handleProductSelect = (id: Number) => {
+		history.push(`/products/candles/${id}`);
+	};
+
 	return (
-		<ProductWrapper>
+		<ProductWrapper
+			onClick={() => {
+				handleProductSelect(id);
+			}}
+		>
 			<ProductTop>
 				<ImageWrapper>
-					<img src={Candle} alt="candle" />
+					<img src={image} alt="candle" />
 				</ImageWrapper>
 			</ProductTop>
 
 			<ProductBottom>
 				<Name>{name}</Name>
+
 				<Price>${price}</Price>
+				<Button
+					variant="contained"
+					className={classes.button}
+					startIcon={<ShoppingCartIcon />}
+				>
+					<h4>Add to Cart</h4>
+				</Button>
 			</ProductBottom>
 		</ProductWrapper>
 	);
@@ -43,7 +76,7 @@ const ProductTop = styled.div`
 	text-align: center;
 `;
 const ImageWrapper = styled.div`
-	width: 400px;
+	width: 100%;
 	> img {
 		max-width: 100%;
 		height: auto;

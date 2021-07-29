@@ -43,6 +43,7 @@ const Home = () => {
 						variant="contained"
 						className={classes.button}
 						startIcon={<StorefrontIcon />}
+						href="#products"
 					>
 						<h4>Browse the Collection</h4>
 					</Button>

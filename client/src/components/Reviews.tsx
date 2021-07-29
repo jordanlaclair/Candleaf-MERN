@@ -13,7 +13,9 @@ const Reviews = () => {
 				<Review
 					rating={4}
 					name="Luisa"
-					picture={ProfilePicture}
+					picture={
+						"https://avada.theme-fusion.com/wp-content/uploads/2019/07/person_sample_2.jpg"
+					}
 					description="I love it! No more Air fresheners!"
 				/>
 				<Review
@@ -45,6 +47,7 @@ const Header = styled.div`
 `;
 const GridWrapper = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	width: 70%;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 	grid-gap: 2rem;
 `;

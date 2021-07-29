@@ -17,7 +17,7 @@ const Review = ({ picture, rating, description, name }: AppProps) => {
 				<img src={picture} alt="profile picture" />
 			</ImageWrapper>
 			<Stars rating={rating} />
-			<Description>{description}</Description>
+			<Description>"{description}"</Description>
 			<Name>{name}</Name>
 		</ReviewWrapper>
 	);
@@ -31,6 +31,7 @@ const ReviewWrapper = styled.div`
 	box-shadow: 0px 2px 15px 2px gray;
 	display: flex;
 	padding: 40px;
+
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -42,6 +43,7 @@ const ImageWrapper = styled.div`
 	> img {
 		max-width: 100%;
 		height: auto;
+		border-radius: 50%;
 	}
 `;
 const Description = styled.h2``;
