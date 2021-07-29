@@ -24,7 +24,7 @@ const ProductsWrapper = styled.div`
 	width: 100%;
 	margin: 80px 0;
 	scroll-margin-top: 8rem;
-	background: whitesmoke;
+	background: ${(props) => props.theme.colors.primary};
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

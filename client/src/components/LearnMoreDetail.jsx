@@ -2,12 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Check } from "../images/check.svg";
 import devices from "../styles/devices.ts";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
 
 const LearnMoreDetail = ({ title, description }) => {
 	return (
 		<DetailWrapper>
 			<Header>
-				<Check />
+				<DoneAllIcon />
 				<Title>{title}: </Title>
 			</Header>
 			<Description>{description}</Description>
@@ -19,7 +20,6 @@ export default LearnMoreDetail;
 const Header = styled.div`
 	display: flex;
 	justify-content: center;
-
 	align-items: center;
 `;
 const DetailWrapper = styled.div`

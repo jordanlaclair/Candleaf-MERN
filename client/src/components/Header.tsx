@@ -13,7 +13,6 @@ import * as action from "../store/actions";
 const Header = () => {
 	const dispatch = useDispatch();
 	const [themeSwitch, setThemeSwitch] = useState(true);
-	const theme = useSelector((state: State) => state.global.theme);
 	const handleSwitch = () => {
 		dispatch(action.toggleTheme());
 		setThemeSwitch((prevState) => {
@@ -109,7 +108,7 @@ const HeaderWrapper = styled.div`
 	top: 0px;
 	left: 0px;
 	width: 100%;
-	background-color: whitesmoke;
+	background-color: ${(props) => props.theme.colors.primary};
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
@@ -122,7 +121,7 @@ const HeaderLeft = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: green;
+	color: ${(props) => props.theme.brand};
 
 	> div {
 		width: 40px;
@@ -170,7 +169,7 @@ const Discovery = styled.div`
 		text-align: center;
 		left: 0;
 		top: 2.5rem;
-		background-color: black;
+		background-color: ${(props) => props.theme.brand};
 	}
 `;
 
@@ -196,7 +195,7 @@ const Contact = styled.div`
 		text-align: center;
 		left: 0;
 		top: 2.5rem;
-		background-color: black;
+		background-color: ${(props) => props.theme.brand};
 	}
 `;
 const About = styled.div`
@@ -222,7 +221,7 @@ const About = styled.div`
 		text-align: center;
 		left: 0;
 		top: 2.5rem;
-		background-color: black;
+		background-color: ${(props) => props.theme.brand};
 	}
 `;
 

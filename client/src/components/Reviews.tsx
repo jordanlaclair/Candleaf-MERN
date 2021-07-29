@@ -31,8 +31,8 @@ export default Reviews;
 
 const ReviewsWrapper = styled.div`
 	width: 100%;
-	background: #eff8f3;
-	padding: 2rem 0;
+	background: ${(props) => props.theme.colors.primary};
+	padding: 5rem 0;
 	display: flex;
 	scroll-snap-align: start;
 
@@ -41,7 +41,7 @@ const ReviewsWrapper = styled.div`
 	justify-content: center;
 `;
 const Header = styled.div`
-	margin: 3rem 0;
+	margin-bottom: 2rem;
 `;
 const GridWrapper = styled.div`
 	display: grid;

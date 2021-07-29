@@ -8,6 +8,8 @@ import Header from "./components/Header";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { State } from "./store/reducers/index";
 import * as action from "./store/actions/index";
+import { GlobalStyles } from "./styles/globalStyles";
+
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./styles/Themes";
 function App() {
@@ -24,6 +26,7 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>
+			<GlobalStyles />
 			<div className="App">
 				<Router>
 					<Switch>

@@ -10,6 +10,7 @@ import devices from "../styles/devices";
 import LearnMore from "./LearnMore";
 import Reviews from "./Reviews";
 import Footer from "./Footer";
+import { lightTheme } from "../styles/Themes";
 
 const Home = () => {
 	const useStyles = makeStyles((theme) => ({
@@ -65,7 +66,7 @@ const HomeWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 	scroll-snap-type: y mandatory;
-	background-color: whitesmoke;
+	background-color: ${(props) => props.theme.colors.primary};
 `;
 const BackgroundWrapper = styled.div`
 	width: 100%;
@@ -89,8 +90,13 @@ const ForeGroundWrapper = styled.div`
 	left: 50%;
 	transform: translate(-50%, -50%);
 	padding: 20px;
-	background-color: rgba(250, 250, 250, 50%);
+
+	background-color: ${(props) =>
+		props.theme == lightTheme
+			? "rgba(250, 250, 250, 0.3)"
+			: "rgba(128, 128, 128, 0.6)"};
 	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
 	width: 60%;
 	height: 40%;
 `;

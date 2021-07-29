@@ -1,7 +1,7 @@
 import { Button, makeStyles } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import CandleGroup from "../images/CandleGroup.jpg";
+import CandleGroup from "../images/CandleGroup1.jpg";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import LearnMoreDetail from "./LearnMoreDetail";
 import devices from "../styles/devices";
@@ -79,7 +79,7 @@ const LearnMoreWrapper = styled.div`
 	width: 100%;
 	justify-content: space-evenly;
 	align-items: center;
-	background: #fefefe;
+	background: ${(props) => props.theme.colors.secondary};
 	padding: 50px 0px;
 	scroll-margin-top: 3rem;
 	scroll-snap-align: center;
@@ -109,6 +109,7 @@ const Header = styled.div`
 	justify-content: center;
 	align-items: flex-start;
 	text-align: start;
+	margin-bottom: 10px;
 	> h4 {
 		color: #49a010;
 	}
@@ -129,6 +130,9 @@ const Body = styled.div`
 
 const ImageWrapper = styled.div`
 	width: 100%;
+	@media ${devices.laptop} {
+		margin-top: 2rem;
+	}
 	> img {
 		height: auto;
 		max-width: 100%;

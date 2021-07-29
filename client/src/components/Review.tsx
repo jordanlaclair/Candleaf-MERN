@@ -26,7 +26,7 @@ const Review = ({ picture, rating, description, name }: AppProps) => {
 export default Review;
 
 const ReviewWrapper = styled.div`
-	background: whitesmoke;
+	background: ${(props) => props.theme.colors.secondary};
 	border-radius: 5px;
 	box-shadow: 0px 2px 15px 2px gray;
 	display: flex;

@@ -28,6 +28,7 @@ const ProductWrapper = styled.div`
 	box-shadow: 0px 2px 15px 2px gray;
 	border-radius: 5px;
 	padding: 20px;
+	background-color: ${(props) => props.theme.colors.secondary};
 	cursor: pointer;
 	transition: all 0.3s ease;
 	:hover {
