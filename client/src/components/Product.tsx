@@ -4,12 +4,11 @@ import styled from "styled-components";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { useHistory } from "react-router-dom";
 type PropTypes = {
-	name: string;
+	title: string;
 	price: number;
 	image: string;
-	id: number;
 };
-const Product = ({ name, price, image, id }: PropTypes) => {
+const Product = ({ title, price, image }: PropTypes) => {
 	let history = useHistory();
 
 	const useStyles = makeStyles((theme) => ({
@@ -23,16 +22,8 @@ const Product = ({ name, price, image, id }: PropTypes) => {
 
 	const classes = useStyles();
 
-	const handleProductSelect = (id: Number) => {
-		history.push(`/products/candles/${id}`);
-	};
-
 	return (
-		<ProductWrapper
-			onClick={() => {
-				handleProductSelect(id);
-			}}
-		>
+		<ProductWrapper>
 			<ProductTop>
 				<ImageWrapper>
 					<img src={image} alt="candle" />
@@ -40,7 +31,7 @@ const Product = ({ name, price, image, id }: PropTypes) => {
 			</ProductTop>
 
 			<ProductBottom>
-				<Name>{name}</Name>
+				<Name>{title}</Name>
 
 				<Price>${price}</Price>
 				<Button

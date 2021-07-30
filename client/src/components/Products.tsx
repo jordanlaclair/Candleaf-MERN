@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Product from "./Product";
 import PurpleCandle from "../images/purple-candle.png";
@@ -9,8 +9,43 @@ import GreenCandle from "../images/green-candle.png";
 import LightGreenCandle from "../images/lightgreen-candle.png";
 import RedCandle from "../images/red-candle.png";
 import PinkCandle from "../images/pink-candle.png";
-
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../store/reducers";
+import * as action from "../store/actions/index";
 const Products = () => {
+	interface PostsSchema {
+		title: string;
+		message: string;
+		tags: [string];
+		image: string;
+		purchaseCount: {
+			type: number;
+			default: 0;
+		};
+		createdAt: {
+			type: Date;
+			default: Date;
+		};
+		_id: string;
+		__v: {
+			type: number;
+			default: 0;
+		};
+	}
+
+	const candles: Array<PostsSchema> = useSelector(
+		(state: State) => state.candles
+	);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(action.getCandles());
+	}, []);
+
+	useEffect(() => {
+		console.log(candles);
+	}, [candles]);
+
 	return (
 		<ProductsWrapper id="products">
 			<Header>
@@ -18,39 +53,11 @@ const Products = () => {
 				<h2>Order it for you or for a loved one!</h2>
 			</Header>
 			<TableWrapper>
-				<Product name="Summer Cherries" price={4.99} image={RedCandle} id={1} />
-				<Product
-					name="Sweet Strawberry"
-					price={4.99}
-					image={PinkCandle}
-					id={2}
-				/>
-				<Product
-					name="Juicy Lemon"
-					price={4.99}
-					image={LightGreenCandle}
-					id={3}
-				/>
-				<Product
-					name="Fragrant Cinnamon"
-					price={4.99}
-					image={BrownCandle}
-					id={4}
-				/>
-				<Product name="Fresh Orange" price={4.99} image={YellowCandle} id={5} />
-				<Product
-					name="Clean Blueberries"
-					price={4.99}
-					image={LavenderCandle}
-					id={6}
-				/>
-				<Product
-					name="Clean Lavender"
-					price={4.99}
-					image={PurpleCandle}
-					id={7}
-				/>
-				<Product name="Spiced Mint" price={4.99} image={GreenCandle} id={8} />
+				{candles.map((candle) => {
+					return (
+						<Product title={candle.title} price={4.99} image={candle.image} />
+					);
+				})}
 			</TableWrapper>
 		</ProductsWrapper>
 	);

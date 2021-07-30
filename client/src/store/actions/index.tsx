@@ -6,41 +6,44 @@ export {
 	purchaseCandle,
 	getCandles,
 	getCandle,
-} from "./postsActionCreator";
+} from "./candlesActionCreator";
 
 export { toggleTheme } from "./appActionCreator";
 
 interface PostsSchema {
 	title: string;
 	message: string;
-	creator: string;
 	tags: [string];
-	selectedFile: string;
 	_id: string;
 }
 
-interface CreatePostAction {
-	type: ActionType.CREATE_POST;
+interface CreateCandleAction {
+	type: ActionType.CREATE_CANDLE;
 	payload: object;
 }
 
-interface DeletePostAction {
-	type: ActionType.DELETE_POST;
+interface DeleteCandleAction {
+	type: ActionType.DELETE_CANDLE;
 	payload: string;
 }
 
-interface UpdatePostAction {
-	type: ActionType.UPDATE_POST;
+interface UpdateCandleAction {
+	type: ActionType.UPDATE_CANDLE;
 	payload: PostsSchema;
 }
 
-interface LikePostAction {
-	type: ActionType.LIKE_POST;
+interface PurchaseCandleAction {
+	type: ActionType.PURCHASE_CANDLE;
 	payload: string;
 }
 
-interface GetPosts {
-	type: ActionType.FETCH_ALL;
+interface GetCandle {
+	type: ActionType.FETCH_ALL_CANDLES;
+	payload: object;
+}
+
+interface GetCandles {
+	type: ActionType.FETCH_CANDLE;
 	payload: Array<object>;
 }
 
@@ -48,9 +51,10 @@ export interface ToggleTheme {
 	type: ActionType.TOGGLE_THEME;
 }
 
-export type PostActions =
-	| GetPosts
-	| LikePostAction
-	| UpdatePostAction
-	| DeletePostAction
-	| CreatePostAction;
+export type CandleActions =
+	| GetCandles
+	| GetCandle
+	| PurchaseCandleAction
+	| UpdateCandleAction
+	| DeleteCandleAction
+	| CreateCandleAction;

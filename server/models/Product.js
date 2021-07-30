@@ -4,6 +4,7 @@ const productSchema = mongoose.Schema({
 	title: String,
 	message: String,
 	tags: [String],
+	image: String,
 	purchaseCount: {
 		type: Number,
 		default: 0,

@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
-import postReducer from "./postReducer";
+import candleReducer from "./candleReducer";
 import globalReducer from "./globalReducer";
 
 const allReducers = combineReducers({
 	global: globalReducer,
-	posts: postReducer,
+	candles: candleReducer,
 });
 
 export default allReducers;

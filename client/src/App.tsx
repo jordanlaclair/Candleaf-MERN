@@ -13,16 +13,8 @@ import ProductDetails from "./components/ProductDetails";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./styles/Themes";
 function App() {
-	const posts = useSelector((state: State) => state.posts);
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
-
-	useEffect(() => {
-		dispatch(action.getCandles());
-	}, []);
-	useEffect(() => {
-		console.log(posts);
-	}, [posts]);
 
 	return (
 		<ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>

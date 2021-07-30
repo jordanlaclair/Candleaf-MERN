@@ -1,1 +1,1 @@
-export * as postActionCreators from "./actions/postsActionCreator";
+export * as postActionCreators from "./actions/candlesActionCreator";
