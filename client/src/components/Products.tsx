@@ -1,14 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Product from "./Product";
-import PurpleCandle from "../images/purple-candle.png";
-import LavenderCandle from "../images/lavender-candle.png";
-import YellowCandle from "../images/yellow-candle.png";
-import BrownCandle from "../images/brown-candle.png";
-import GreenCandle from "../images/green-candle.png";
-import LightGreenCandle from "../images/lightgreen-candle.png";
-import RedCandle from "../images/red-candle.png";
-import PinkCandle from "../images/pink-candle.png";
+
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
