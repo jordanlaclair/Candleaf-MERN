@@ -38,12 +38,12 @@ interface PurchaseCandleAction {
 }
 
 interface GetCandle {
-	type: ActionType.FETCH_ALL_CANDLES;
+	type: ActionType.FETCH_CANDLE;
 	payload: object;
 }
 
 interface GetCandles {
-	type: ActionType.FETCH_CANDLE;
+	type: ActionType.FETCH_ALL_CANDLES;
 	payload: Array<object>;
 }
 

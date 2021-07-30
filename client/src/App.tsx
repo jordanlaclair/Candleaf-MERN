@@ -27,12 +27,13 @@ function App() {
 							<Header />
 							<Home />
 						</Route>
-						<Route exact path="/checkout" component={Checkout} />
-						<Route
-							exact
-							path="/products/candles/:id"
-							component={ProductDetails}
-						/>
+						<Route exact path="/checkout">
+							<Header />
+						</Route>
+						<Route exact path="/products/candles/:id">
+							<Header />
+							<ProductDetails />
+						</Route>
 					</Switch>
 				</Router>
 			</div>

@@ -30,7 +30,6 @@ const Products = () => {
 		(state: State) => state.candles
 	);
 	const dispatch = useDispatch();
-
 	useEffect(() => {
 		dispatch(action.getCandles());
 	}, []);
@@ -48,7 +47,12 @@ const Products = () => {
 			<TableWrapper>
 				{candles.map((candle) => {
 					return (
-						<Product title={candle.title} price={4.99} image={candle.image} />
+						<Product
+							title={candle.title}
+							price={4.99}
+							image={candle.image}
+							productId={candle._id}
+						/>
 					);
 				})}
 			</TableWrapper>

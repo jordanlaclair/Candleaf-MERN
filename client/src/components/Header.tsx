@@ -10,8 +10,10 @@ import { State } from "../store/reducers";
 import { withStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions";
+import { useHistory } from "react-router-dom";
 const Header = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const [themeSwitch, setThemeSwitch] = useState(true);
 	const handleSwitch = () => {
 		dispatch(action.toggleTheme());
@@ -32,14 +34,16 @@ const Header = () => {
 		checked: {},
 		track: {},
 	})(Switch);
-
+	const handleHome = () => {
+		history.push("/");
+	};
 	return (
 		<HeaderWrapper>
 			<HeaderLeft>
 				<LogoWrapper>
 					<Logo />
 				</LogoWrapper>
-				<h2>Candleaf</h2>
+				<h2 onClick={handleHome}>Candleaf</h2>
 			</HeaderLeft>
 
 			<HeaderMiddle>

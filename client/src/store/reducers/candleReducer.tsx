@@ -26,8 +26,6 @@ const reducer = (posts: PostsArray = initialState, action: CandleActions) => {
 	switch (action.type) {
 		case ActionType.FETCH_ALL_CANDLES:
 			return action.payload;
-		case ActionType.FETCH_CANDLE:
-			return action.payload;
 		case ActionType.PURCHASE_CANDLE:
 			return posts.map((post) =>
 				post._id === action.payload ? action.payload : post

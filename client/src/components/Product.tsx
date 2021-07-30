@@ -7,10 +7,9 @@ type PropTypes = {
 	title: string;
 	price: number;
 	image: string;
+	productId: string;
 };
-const Product = ({ title, price, image }: PropTypes) => {
-	let history = useHistory();
-
+const Product = ({ title, price, image, productId }: PropTypes) => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),
@@ -21,9 +20,18 @@ const Product = ({ title, price, image }: PropTypes) => {
 	}));
 
 	const classes = useStyles();
+	const history = useHistory();
+	const handleClick = (id: string) => {
+		history.push(`/products/candles/${id}`);
+		console.log("hi");
+	};
 
 	return (
-		<ProductWrapper>
+		<ProductWrapper
+			onClick={() => {
+				handleClick(productId);
+			}}
+		>
 			<ProductTop>
 				<ImageWrapper>
 					<img src={image} alt="candle" />
