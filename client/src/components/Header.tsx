@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions";
 import { useHistory } from "react-router-dom";
+import devices from "../styles/devices";
 const Header = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -21,6 +22,7 @@ const Header = () => {
 			return !prevState;
 		});
 	};
+
 	const GreenSwitch = withStyles({
 		switchBase: {
 			color: green[300],
@@ -126,7 +128,9 @@ const HeaderLeft = styled.div`
 	justify-content: center;
 	align-items: center;
 	color: ${(props) => props.theme.brand};
-
+	> h2 {
+		cursor: pointer;
+	}
 	> div {
 		width: 40px;
 		margin-right: 5px;
@@ -236,6 +240,9 @@ const HeaderMiddle = styled.div`
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+	@media ${devices.tablet} {
+		display: none;
+	}
 `;
 
 const HeaderRight = styled.div`
@@ -251,5 +258,8 @@ const HeaderRight = styled.div`
 		:hover {
 			transform: scale(1.4);
 		}
+	}
+	@media ${devices.tablet} {
+		display: none;
 	}
 `;

@@ -9,6 +9,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import Radio from "@material-ui/core/Radio";
+import { lightTheme } from "../styles/Themes";
 
 const ProductDetails = () => {
 	const [productQuantity, setProductQuantity] = useState(0);
@@ -85,54 +86,77 @@ const ProductDetails = () => {
 						<LocalShippingIcon />
 					</ProductSale>
 				</ProductDetailsLeft>
-				<ProductDetailsRight>
-					<ProductDetailsRightLeft>
-						<ProductTitle>{candleData.title} &reg;</ProductTitle>
-						<ProductPrice>$4.99</ProductPrice>
-						<ProductOptions></ProductOptions>
-						<ProductQuantityWrapper>
-							<h3>Quantity</h3>
-							<QuantityBottomWrapper>
-								<AddBoxIcon onClick={handleAdd} />
-								<h3>{productQuantity}</h3>
-								<IndeterminateCheckBoxIcon onClick={handleSubtract} />
-							</QuantityBottomWrapper>
-						</ProductQuantityWrapper>
+				<ProductDetailsRightWrapper>
+					<ProductDetailsRight>
+						<ProductDetailsRightLeft>
+							<ProductTitle>{candleData.title} &reg;</ProductTitle>
+							<ProductPrice>$4.99</ProductPrice>
+							<ProductOptions></ProductOptions>
+							<ProductQuantityWrapper>
+								<h3>Quantity</h3>
+								<QuantityBottomWrapper>
+									<IndeterminateCheckBoxIcon onClick={handleSubtract} />
 
-						<Button
-							variant="contained"
-							className={classes.button}
-							startIcon={<ShoppingCartIcon />}
-						>
-							<h4>Add to Cart</h4>
-						</Button>
-					</ProductDetailsRightLeft>
-					<ProductDetailsRightRight>
-						<PurchaseOption>
-							<h3>One Time Purchase</h3>
-							<Radio
-								checked={purchase === "One Time Purchase"}
-								onChange={handleChange}
-								value="One Time Purchase"
-								color="default"
-								name="radio-button-demo"
-								inputProps={{ "aria-label": "One Time Purchase" }}
-							/>
-						</PurchaseOption>
-						<PurchaseOption>
-							<h3>Subscription with Discount</h3>
-							<Radio
-								checked={purchase === "Subscription"}
-								onChange={handleChange}
-								value="Subscription"
-								color="default"
-								name="radio-button-demo"
-								inputProps={{ "aria-label": "Subscription" }}
-							/>
-						</PurchaseOption>
-					</ProductDetailsRightRight>
-				</ProductDetailsRight>
+									<h3>{productQuantity}</h3>
+									<AddBoxIcon onClick={handleAdd} />
+								</QuantityBottomWrapper>
+							</ProductQuantityWrapper>
+
+							<Button
+								variant="contained"
+								className={classes.button}
+								startIcon={<ShoppingCartIcon />}
+							>
+								<h4>Add to Cart</h4>
+							</Button>
+						</ProductDetailsRightLeft>
+
+						<ProductDetailsRightRight>
+							<h2>Purchase Options</h2>
+							<PurchaseOption>
+								<Radio
+									checked={purchase === "One Time Purchase"}
+									onChange={handleChange}
+									value="One Time Purchase"
+									color="default"
+									name="radio-button-demo"
+									inputProps={{ "aria-label": "One Time Purchase" }}
+								/>
+								<h4>One Time Purchase</h4>
+							</PurchaseOption>
+							<PurchaseOption>
+								<Radio
+									checked={purchase === "Subscription"}
+									onChange={handleChange}
+									value="Subscription"
+									color="default"
+									name="radio-button-demo"
+									inputProps={{ "aria-label": "Subscription" }}
+								/>
+								<h4>Subscription with Discount</h4>
+							</PurchaseOption>
+						</ProductDetailsRightRight>
+					</ProductDetailsRight>
+					<ProductSpecs>
+						<ProductSpecsDetail>
+							<span>Wax:</span> asklfajf;kj;fdlaksjd;lfj
+						</ProductSpecsDetail>
+						<ProductSpecsDetail>
+							<span>Fragrance:</span>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail>
+							<span>Burning Time:</span>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail>
+							<span>Dimensions:</span>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail>
+							<span>Weight:</span>
+						</ProductSpecsDetail>
+					</ProductSpecs>
+				</ProductDetailsRightWrapper>
 			</ProductDetailsWrapper>
+
 			<Footer />
 		</ProductDetailsOuterWrapper>
 	);
@@ -143,10 +167,29 @@ export default ProductDetails;
 const ProductDetailsWrapper = styled.div`
 	width: 80%;
 	margin-top: 100px;
-	padding: 50px;
+	padding: 100px 50px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`;
+
+const ProductSpecs = styled.div`
+	width: 100%;
+	padding: 25px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 15px 0;
+	border-radius: 8px;
+	align-items: flex-start;
+	color: ${(props) => props.theme.colors.primary};
+	background-color: ${(props) =>
+		props.theme == lightTheme ? "#4F4F4F" : props.theme.colors.opposite};
+`;
+const ProductSpecsDetail = styled.div`
+	> span {
+		font-weight: bold;
+	}
 `;
 
 const ProductDetailsOuterWrapper = styled.div`
@@ -157,13 +200,21 @@ const ProductDetailsOuterWrapper = styled.div`
 	align-items: center;
 `;
 
-const ImageWrapper = styled.div`
-	width: 350px;
+const ProductDetailsRightWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+`;
 
+const ImageWrapper = styled.div`
+	width: 450px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	background-color: #f7f8fa;
 	> img {
-		max-width: 100%;
-		height: auto;
+		object-fit: contain;
 	}
 `;
 
@@ -178,31 +229,35 @@ const ProductDetailsLeft = styled.div`
 
 const PurchaseOption = styled.div`
 	display: flex;
-
-	justify-content: center;
+	padding: 5px;
+	justify-content: flex-start;
 	align-items: center;
 `;
 const ProductDetailsRight = styled.div`
-	width: 50%;
+	width: 100%;
 	display: flex;
-
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
 `;
 const ProductDetailsRightLeft = styled.div`
 	display: flex;
 	flex-direction: column;
-
 	justify-content: center;
 	align-items: flex-start;
 `;
 const ProductDetailsRightRight = styled.div`
 	margin-left: 30px;
-	padding: 10px;
-	background-color: red;
+
+	padding: 30px;
+	color: ${(props) => props.theme.colors.primary};
+	background-color: ${(props) =>
+		props.theme == lightTheme ? "#4F4F4F" : props.theme.colors.opposite};
+	border-radius: 8px;
 `;
 
-const ProductTitle = styled.h1``;
+const ProductTitle = styled.h1`
+	text-align: start;
+`;
 
 const ProductPrice = styled.h3`
 	color: #49a010;
@@ -220,6 +275,8 @@ const ProductQuantityWrapper = styled.div`
 
 const ProductDescription = styled.h3`
 	margin-top: 14px;
+	padding: 5px;
+	width: 70%;
 `;
 
 const ProductSale = styled.h2`

@@ -15,7 +15,6 @@ import { lightTheme } from "../styles/Themes";
 const Home = () => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
-			marginTop: theme.spacing(6),
 			backgroundColor: "#49A010",
 			textTransform: "inherit",
 			fontFamily: "inherit",
@@ -100,6 +99,15 @@ const ForeGroundWrapper = styled.div`
 	-webkit-backdrop-filter: blur(10px);
 	width: 60%;
 	height: 40%;
+
+	> h4 {
+		margin-bottom: 15px;
+	}
+
+	@media ${devices.tablet} {
+		width: 80%;
+		height: 70%;
+	}
 `;
 const LeafWrapper = styled.div`
 	width: 40px;

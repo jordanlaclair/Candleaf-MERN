@@ -75,7 +75,11 @@ const ProductTop = styled.div`
 	text-align: center;
 `;
 const ImageWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
+	overflow: hidden;
 	> img {
 		max-width: 100%;
 		height: auto;

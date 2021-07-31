@@ -12,6 +12,7 @@ import { GlobalStyles } from "./styles/globalStyles";
 import ProductDetails from "./components/ProductDetails";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./styles/Themes";
+import ScrollToTop from "./components/ScrollToTop";
 function App() {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
@@ -21,6 +22,7 @@ function App() {
 			<GlobalStyles />
 			<div className="App">
 				<Router>
+					<ScrollToTop />
 					<Switch>
 						<Route exact path="/login" component={Login} />
 						<Route exact path="/">

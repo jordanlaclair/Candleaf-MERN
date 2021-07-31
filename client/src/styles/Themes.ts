@@ -4,6 +4,7 @@ export const lightTheme = {
 	colors: {
 		primary: "#FFFFFF",
 		secondary: "whitesmoke",
+		opposite: "#2C2F33",
 	},
 	hover: "",
 	brand: "green",
@@ -14,6 +15,7 @@ export const darkTheme = {
 	colors: {
 		primary: "#4F4F4F",
 		secondary: "#2C2F33",
+		opposite: "whitesmoke",
 	},
 	hover: "",
 	brand: "#81C784",
