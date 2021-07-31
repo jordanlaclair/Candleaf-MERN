@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import * as api from "../apis/memories";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, makeStyles, withStyles } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Footer from "./Footer";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
+import Radio from "@material-ui/core/Radio";
+
 const ProductDetails = () => {
+	const [productQuantity, setProductQuantity] = useState(0);
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),
@@ -44,9 +47,30 @@ const ProductDetails = () => {
 		const { data } = await api.fetchCandle(id);
 		setCandleData(data);
 	};
+
+	const handleAdd = () => {
+		setProductQuantity((prevState) => {
+			return prevState + 1;
+		});
+	};
+
+	const handleSubtract = () => {
+		setProductQuantity((prevState) => {
+			return prevState - 1;
+		});
+	};
 	useEffect(() => {
 		fetchCandle(id);
 	}, []);
+
+	const [purchase, setPurchase] = useState("One time purchase");
+	useEffect(() => {
+		console.log(purchase);
+	}, [purchase]);
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setPurchase(event.target.value);
+	};
 
 	return (
 		<ProductDetailsOuterWrapper>
@@ -62,25 +86,51 @@ const ProductDetails = () => {
 					</ProductSale>
 				</ProductDetailsLeft>
 				<ProductDetailsRight>
-					<ProductTitle>{candleData.title}</ProductTitle>
-					<ProductPrice>$4.99</ProductPrice>
-					<ProductOptions></ProductOptions>
-					<ProductQuantityWrapper>
-						<h3>Quantity</h3>
-						<QuantityBottomWrapper>
-							<AddBoxIcon />
-							<h3>3</h3>
-							<IndeterminateCheckBoxIcon />
-						</QuantityBottomWrapper>
-					</ProductQuantityWrapper>
+					<ProductDetailsRightLeft>
+						<ProductTitle>{candleData.title} &reg;</ProductTitle>
+						<ProductPrice>$4.99</ProductPrice>
+						<ProductOptions></ProductOptions>
+						<ProductQuantityWrapper>
+							<h3>Quantity</h3>
+							<QuantityBottomWrapper>
+								<AddBoxIcon onClick={handleAdd} />
+								<h3>{productQuantity}</h3>
+								<IndeterminateCheckBoxIcon onClick={handleSubtract} />
+							</QuantityBottomWrapper>
+						</ProductQuantityWrapper>
 
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<ShoppingCartIcon />}
-					>
-						<h4>Add to Cart</h4>
-					</Button>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<ShoppingCartIcon />}
+						>
+							<h4>Add to Cart</h4>
+						</Button>
+					</ProductDetailsRightLeft>
+					<ProductDetailsRightRight>
+						<PurchaseOption>
+							<h3>One Time Purchase</h3>
+							<Radio
+								checked={purchase === "One Time Purchase"}
+								onChange={handleChange}
+								value="One Time Purchase"
+								color="default"
+								name="radio-button-demo"
+								inputProps={{ "aria-label": "One Time Purchase" }}
+							/>
+						</PurchaseOption>
+						<PurchaseOption>
+							<h3>Subscription with Discount</h3>
+							<Radio
+								checked={purchase === "Subscription"}
+								onChange={handleChange}
+								value="Subscription"
+								color="default"
+								name="radio-button-demo"
+								inputProps={{ "aria-label": "Subscription" }}
+							/>
+						</PurchaseOption>
+					</ProductDetailsRightRight>
 				</ProductDetailsRight>
 			</ProductDetailsWrapper>
 			<Footer />
@@ -125,12 +175,31 @@ const ProductDetailsLeft = styled.div`
 	align-items: center;
 	width: 50%;
 `;
+
+const PurchaseOption = styled.div`
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+`;
 const ProductDetailsRight = styled.div`
 	width: 50%;
 	display: flex;
-	flex-direction: column;
+
 	justify-content: center;
 	align-items: flex-start;
+`;
+const ProductDetailsRightLeft = styled.div`
+	display: flex;
+	flex-direction: column;
+
+	justify-content: center;
+	align-items: flex-start;
+`;
+const ProductDetailsRightRight = styled.div`
+	margin-left: 30px;
+	padding: 10px;
+	background-color: red;
 `;
 
 const ProductTitle = styled.h1``;
@@ -149,7 +218,9 @@ const ProductQuantityWrapper = styled.div`
 	margin: 40px 0;
 `;
 
-const ProductDescription = styled.h3``;
+const ProductDescription = styled.h3`
+	margin-top: 14px;
+`;
 
 const ProductSale = styled.h2`
 	display: flex;
@@ -170,7 +241,7 @@ const QuantityBottomWrapper = styled.div`
 	padding: 5px;
 
 	> h3 {
-		margin: 0 5px;
+		width: 35px;
 	}
 
 	.MuiSvgIcon-root {
