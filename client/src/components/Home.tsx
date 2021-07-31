@@ -67,11 +67,18 @@ const HomeWrapper = styled.div`
 	height: 100%;
 	scroll-snap-type: y mandatory;
 	background-color: ${(props) => props.theme.colors.primary};
+	@media ${devices.laptop} {
+		margin-top: 70px;
+	}
 `;
 const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
 	scroll-snap-align: start;
+	@media ${devices.mobileXL} {
+		min-height: 250px;
+		padding: 40px 0;
+	}
 `;
 const BackgroundImage = styled.img`
 	height: auto;
@@ -79,6 +86,9 @@ const BackgroundImage = styled.img`
 `;
 const BackgroundImageWrapper = styled.div`
 	width: 100%;
+	@media ${devices.mobileXL} {
+		display: none;
+	}
 `;
 const ForeGroundWrapper = styled.div`
 	position: absolute;
@@ -102,11 +112,19 @@ const ForeGroundWrapper = styled.div`
 
 	> h4 {
 		margin-bottom: 15px;
+		@media ${devices.tablet} {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media ${devices.mobileXL} {
+		background: none;
+		backdrop-filter: none;
 	}
 
 	@media ${devices.tablet} {
 		width: 80%;
-		height: 70%;
+		height: 60%;
 	}
 `;
 const LeafWrapper = styled.div`

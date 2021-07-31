@@ -81,7 +81,7 @@ const ProductsWrapper = styled.div`
 const TableWrapper = styled.div`
 	width: 70%;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	grid-gap: 2rem;
 `;
 

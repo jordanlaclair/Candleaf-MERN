@@ -42,10 +42,12 @@ const Header = () => {
 	return (
 		<HeaderWrapper>
 			<HeaderLeft>
-				<LogoWrapper>
-					<Logo />
-				</LogoWrapper>
-				<h2 onClick={handleHome}>Candleaf</h2>
+				<LogoTitle>
+					<LogoWrapper>
+						<Logo />
+					</LogoWrapper>
+					<h2 onClick={handleHome}>Candleaf</h2>
+				</LogoTitle>
 			</HeaderLeft>
 
 			<HeaderMiddle>
@@ -80,6 +82,11 @@ const Header = () => {
 					}}
 				/>
 			</HeaderRight>
+			<HamBurgerMenu>
+				<Bar />
+				<Bar />
+				<Bar />
+			</HamBurgerMenu>
 		</HeaderWrapper>
 	);
 };
@@ -120,6 +127,9 @@ const HeaderWrapper = styled.div`
 	align-items: center;
 	padding: 15px 0;
 	z-index: 999;
+	@media ${devices.tablet} {
+		justify-content: space-between;
+	}
 `;
 
 const HeaderLeft = styled.div`
@@ -128,9 +138,15 @@ const HeaderLeft = styled.div`
 	justify-content: center;
 	align-items: center;
 	color: ${(props) => props.theme.brand};
-	> h2 {
-		cursor: pointer;
+	@media ${devices.tablet} {
+		justify-content: flex-start;
+		margin-left: 20px;
 	}
+`;
+const LogoTitle = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	> div {
 		width: 40px;
 		margin-right: 5px;
@@ -141,8 +157,10 @@ const HeaderLeft = styled.div`
 		max-width: 100%;
 		height: auto;
 	}
+	> h2 {
+		cursor: pointer;
+	}
 `;
-
 const Discovery = styled.div`
 	display: flex;
 	justify-content: center;
@@ -245,6 +263,27 @@ const HeaderMiddle = styled.div`
 	}
 `;
 
+const HamBurgerMenu = styled.div`
+	display: none;
+	margin-left: 5px;
+	padding: 0 20px;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	background: transparent;
+	width: 35px;
+	cursor: pointer;
+
+	@media ${devices.tablet} {
+		display: flex;
+	}
+`;
+const Bar = styled.div`
+	background: ${(props) => props.theme.colors.opposite};
+	width: 100%;
+	height: 2px;
+	margin: 3px;
+`;
 const HeaderRight = styled.div`
 	flex: 1;
 	display: flex;

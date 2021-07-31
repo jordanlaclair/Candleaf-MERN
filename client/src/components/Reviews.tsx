@@ -44,10 +44,11 @@ const ReviewsWrapper = styled.div`
 `;
 const Header = styled.div`
 	margin-bottom: 2rem;
+	padding: 10px;
 `;
 const GridWrapper = styled.div`
 	display: grid;
 	width: 70%;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 	grid-gap: 2rem;
 `;

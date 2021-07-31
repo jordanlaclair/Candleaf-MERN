@@ -232,6 +232,7 @@ const PurchaseOption = styled.div`
 	padding: 5px;
 	justify-content: flex-start;
 	align-items: center;
+	text-align: start;
 `;
 const ProductDetailsRight = styled.div`
 	width: 100%;

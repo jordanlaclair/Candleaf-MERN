@@ -60,6 +60,7 @@ const Header = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-left: 10px;
 	> h1 {
 		margin-left: 10px;
 	}
@@ -82,6 +83,7 @@ const FooterLeft = styled.div`
 	align-items: flex-start;
 	> h4 {
 		margin-top: 15px;
+		padding: 15px;
 	}
 `;
 
@@ -104,6 +106,10 @@ const FooterColumn = styled.div`
 		transition: all 0.3s ease;
 		:hover {
 			transform: scale(1.1);
+		}
+		@media ${devices.mobileXL} {
+			margin: 10px;
+			padding: 3.5px;
 		}
 	}
 	> h4.header {
