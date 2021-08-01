@@ -16,6 +16,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Header = () => {
 	const { loginWithRedirect } = useAuth0();
+	const { logout } = useAuth0();
+	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [themeSwitch, setThemeSwitch] = useState(true);
@@ -24,6 +26,14 @@ const Header = () => {
 		setThemeSwitch((prevState) => {
 			return !prevState;
 		});
+	};
+
+	const handleLogIn = () => {
+		if (user == undefined) {
+			loginWithRedirect();
+		} else {
+			logout();
+		}
 	};
 
 	const GreenSwitch = withStyles({
@@ -76,15 +86,17 @@ const Header = () => {
 			</HeaderMiddle>
 
 			<HeaderRight>
-				<UserStatus>
-					<MenuWrapper>
+				<UserStatus
+					onClick={() => {
+						handleLogIn();
+					}}
+				>
+					<Status>{!isAuthenticated ? "Sign In" : "Sign Out"}</Status>
+					{isAuthenticated ? (
+						<UserProfilePicture src={user?.picture} />
+					) : (
 						<PermIdentityIcon />
-						<MenuItemWrapper>
-							<MenuItem>1</MenuItem>
-							<MenuItem>2</MenuItem>
-							<MenuItem>3</MenuItem>
-						</MenuItemWrapper>
-					</MenuWrapper>
+					)}
 				</UserStatus>
 
 				<ShoppingCartOutlinedIcon
@@ -132,11 +144,7 @@ const slideDown = keyframes`
 	}	
 
 `;
-const fadeIn = keyframes`
-  0% { opacity: 0; }
-    100% { flex: 1; opacity: 1; }
 
-`;
 const HeaderWrapper = styled.div`
 	position: fixed;
 	top: 0px;
@@ -169,45 +177,31 @@ const UserStatus = styled.div`
 	justify-content: center;
 	align-items: center;
 	position: relative;
-`;
-const MenuWrapper = styled.div`
-	display: flex;
-	flex-flow: column nowrap;
-	position: relative;
-
-	:hover > div {
-		animation: 240ms ${fadeIn} linear forwards;
-	}
-	.MuiSvgIcon-root {
-	}
-`;
-const MenuItemWrapper = styled.div`
-	height: 0;
-	opacity: 0;
-	width: auto;
-	background-color: white;
-	display: flex;
-	position: absolute;
-	margin-top: 95px;
-
-	left: -38px;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	transition: all 1s ease;
-`;
-const MenuItem = styled.div`
-	display: flex;
-	justify-content: center;
-	background-color: white;
-	width: 100px;
-	align-items: center;
 	cursor: pointer;
-	padding: 10px;
+	transition: all 0.3s ease;
+	> a {
+		text-decoration: none;
+		color: inherit;
+	}
+
 	:hover {
-		background-color: ${(props) => props.theme.colors.secondary};
+		transform: scale(1.1);
+	}
+	:hover::after {
+		position: absolute;
+		content: "";
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 2px;
+		text-align: center;
+		left: 0;
+		top: 2.5rem;
+		background-color: ${(props) => props.theme.brand};
 	}
 `;
+
 const LogoTitle = styled.div`
 	display: flex;
 	justify-content: center;
@@ -366,4 +360,15 @@ const HeaderRight = styled.div`
 	@media ${devices.tablet} {
 		display: none;
 	}
+`;
+
+const Status = styled.h3`
+	cursor: pointer;
+	margin-right: 20px;
+`;
+
+const UserProfilePicture = styled.img`
+	border-radius: 50%;
+	width: 35px;
+	height: auto;
 `;
