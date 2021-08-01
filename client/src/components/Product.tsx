@@ -95,5 +95,5 @@ const ProductBottom = styled.div`
 
 const Name = styled.h3``;
 const Price = styled.h3`
-	color: #49a010;
+	color: ${(props) => props.theme.brand};
 `;

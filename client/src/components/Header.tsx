@@ -12,7 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions";
 import { useHistory } from "react-router-dom";
 import devices from "../styles/devices";
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Header = () => {
+	const { loginWithRedirect } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [themeSwitch, setThemeSwitch] = useState(true);
@@ -66,15 +69,29 @@ const Header = () => {
 					</a>
 				</About>
 				<Contact>
-					<a href="#contact">
-						<h3>Contact Us</h3>
+					<a href="#orders">
+						<h3>Your Orders</h3>
 					</a>
 				</Contact>
 			</HeaderMiddle>
 
 			<HeaderRight>
-				<PermIdentityIcon />
-				<ShoppingCartOutlinedIcon />
+				<UserStatus>
+					<MenuWrapper>
+						<PermIdentityIcon />
+						<MenuItemWrapper>
+							<MenuItem>1</MenuItem>
+							<MenuItem>2</MenuItem>
+							<MenuItem>3</MenuItem>
+						</MenuItemWrapper>
+					</MenuWrapper>
+				</UserStatus>
+
+				<ShoppingCartOutlinedIcon
+					onClick={() => {
+						history.push("/checkout");
+					}}
+				/>
 				<GreenSwitch
 					checked={themeSwitch}
 					onChange={() => {
@@ -115,7 +132,11 @@ const slideDown = keyframes`
 	}	
 
 `;
+const fadeIn = keyframes`
+  0% { opacity: 0; }
+    100% { flex: 1; opacity: 1; }
 
+`;
 const HeaderWrapper = styled.div`
 	position: fixed;
 	top: 0px;
@@ -141,6 +162,50 @@ const HeaderLeft = styled.div`
 	@media ${devices.tablet} {
 		justify-content: flex-start;
 		margin-left: 20px;
+	}
+`;
+const UserStatus = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+`;
+const MenuWrapper = styled.div`
+	display: flex;
+	flex-flow: column nowrap;
+	position: relative;
+
+	:hover > div {
+		animation: 240ms ${fadeIn} linear forwards;
+	}
+	.MuiSvgIcon-root {
+	}
+`;
+const MenuItemWrapper = styled.div`
+	height: 0;
+	opacity: 0;
+	width: auto;
+	background-color: white;
+	display: flex;
+	position: absolute;
+	margin-top: 95px;
+
+	left: -38px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	transition: all 1s ease;
+`;
+const MenuItem = styled.div`
+	display: flex;
+	justify-content: center;
+	background-color: white;
+	width: 100px;
+	align-items: center;
+	cursor: pointer;
+	padding: 10px;
+	:hover {
+		background-color: ${(props) => props.theme.colors.secondary};
 	}
 `;
 const LogoTitle = styled.div`

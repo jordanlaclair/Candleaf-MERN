@@ -140,7 +140,13 @@ const ProductDetails = () => {
 									name="radio-button-demo"
 									inputProps={{ "aria-label": "One Time Purchase" }}
 								/>
-								<h4>One Time Purchase</h4>
+								<h4
+									onClick={() => {
+										setPurchase("One Time Purchase");
+									}}
+								>
+									One Time Purchase
+								</h4>
 							</PurchaseOption>
 							<PurchaseOption>
 								<Radio
@@ -151,24 +157,30 @@ const ProductDetails = () => {
 									name="radio-button-demo"
 									inputProps={{ "aria-label": "Subscription" }}
 								/>
-								<h4>Subscription with Discount</h4>
+								<h4
+									onClick={() => {
+										setPurchase("Subscription");
+									}}
+								>
+									Subscription with Discount
+								</h4>
 							</PurchaseOption>
 						</ProductDetailsRightRight>
 						<ProductSpecs>
-							<ProductSpecsDetail>
-								<span>Wax:</span> asklfajf;kj;fdlaksjd;lfj
+							<ProductSpecsDetail flex="row">
+								<h3>Wax: </h3> &nbsp; <h4>{candleData.wax}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<span>Fragrance:</span>
+							<ProductSpecsDetail flex="column">
+								<h3>Fragrance: </h3> <h4>{candleData.fragrance}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<span>Burning Time:</span>
+							<ProductSpecsDetail flex="row">
+								<h3>Burning Time: </h3> &nbsp; <h4>{candleData.burningTime}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<span>Dimensions:</span>
+							<ProductSpecsDetail flex="row">
+								<h3>Dimensions: </h3> &nbsp; <h4>{candleData.dimensions}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<span>Weight:</span>
+							<ProductSpecsDetail flex="row">
+								<h3>Weight: </h3> &nbsp; <h4>{candleData.weight}</h4>
 							</ProductSpecsDetail>
 						</ProductSpecs>
 					</ProductDetailsRightWrapper>
@@ -212,9 +224,17 @@ const ProductSpecs = styled.div`
 	align-items: flex-start;
 	background-color: ${(props) => props.theme.colors.secondary};
 `;
-const ProductSpecsDetail = styled.div`
-	> span {
-		font-weight: bold;
+const ProductSpecsDetail = styled.div<{ flex: string }>`
+	display: flex;
+	justify-content: center;
+	flex-direction: ${(props) => (props.flex == "row" ? "row" : "column")};
+	align-items: flex-end;
+	text-align: start;
+	> h3 {
+		align-self: flex-start;
+	}
+	> h4 {
+		opacity: 0.7;
 	}
 `;
 
@@ -260,11 +280,14 @@ const PurchaseOption = styled.div`
 	justify-content: flex-start;
 	align-items: center;
 	text-align: start;
+	> h4 {
+		cursor: pointer;
+	}
 `;
 const ProductDetailsRight = styled.div`
 	width: 100%;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 `;
 const ProductDetailsRightLeft = styled.div`
@@ -272,6 +295,7 @@ const ProductDetailsRightLeft = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
+	margin-bottom: 15px;
 `;
 const ProductDetailsRightRight = styled.div`
 	margin-top: 15px;
@@ -285,7 +309,7 @@ const ProductTitle = styled.h1`
 	text-align: start;
 `;
 
-const ProductPrice = styled.h3`
+const ProductPrice = styled.h2`
 	color: #49a010;
 `;
 
