@@ -11,6 +11,8 @@ const Products = () => {
 		message: string;
 		tags: [string];
 		image: string;
+
+		price: number;
 		purchaseCount: {
 			type: number;
 			default: 0;
@@ -49,7 +51,7 @@ const Products = () => {
 					return (
 						<Product
 							title={candle.title}
-							price={4.99}
+							price={candle.price}
 							image={candle.image}
 							productId={candle._id}
 						/>

@@ -50,12 +50,35 @@ export const deleteCandle = async (req, res) => {
 export const updateCandle = async (req, res) => {
 	const { id } = req.params;
 
-	const { message, title, tags, image } = req.body;
+	const {
+		message,
+		title,
+		tags,
+		image,
+		wax,
+		fragrance,
+		burningTime,
+		dimensions,
+		weight,
+		price,
+	} = req.body;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
-	const updatedCandle = { title, message, tags, image, _id: id };
+	const updatedCandle = {
+		title,
+		message,
+		tags,
+		image,
+		price,
+		_id: id,
+		wax,
+		fragrance,
+		burningTime,
+		dimensions,
+		weight,
+	};
 
 	await Candle.findByIdAndUpdate(id, updatedCandle, { new: true });
 

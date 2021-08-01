@@ -30,6 +30,12 @@ const ProductDetails = () => {
 		tags: [string];
 		purchaseCount: number;
 		image: string;
+		wax: string;
+		fragrance: string;
+		burningTime: string;
+		dimensions: string;
+		weight: string;
+		price: number;
 	}
 	let initialState: CandleSchema = {
 		title: "",
@@ -37,6 +43,12 @@ const ProductDetails = () => {
 		tags: [""],
 		purchaseCount: 0,
 		image: "",
+		wax: "",
+		fragrance: "",
+		burningTime: "",
+		dimensions: "",
+		weight: "",
+		price: 0,
 	};
 	const [candleData, setCandleData] = useState<CandleSchema>(initialState);
 
@@ -96,7 +108,7 @@ const ProductDetails = () => {
 						<ProductDetailsRight>
 							<ProductDetailsRightLeft>
 								<ProductTitle>{candleData.title} &reg;</ProductTitle>
-								<ProductPrice>$4.99</ProductPrice>
+								<ProductPrice>${candleData.price}</ProductPrice>
 								<ProductOptions></ProductOptions>
 								<ProductQuantityWrapper>
 									<h3>Quantity</h3>
@@ -116,33 +128,32 @@ const ProductDetails = () => {
 									<h4>Add to Cart</h4>
 								</Button>
 							</ProductDetailsRightLeft>
-
-							<ProductDetailsRightRight>
-								<h2>Purchase Options</h2>
-								<PurchaseOption>
-									<Radio
-										checked={purchase === "One Time Purchase"}
-										onChange={handleChange}
-										value="One Time Purchase"
-										color="default"
-										name="radio-button-demo"
-										inputProps={{ "aria-label": "One Time Purchase" }}
-									/>
-									<h4>One Time Purchase</h4>
-								</PurchaseOption>
-								<PurchaseOption>
-									<Radio
-										checked={purchase === "Subscription"}
-										onChange={handleChange}
-										value="Subscription"
-										color="default"
-										name="radio-button-demo"
-										inputProps={{ "aria-label": "Subscription" }}
-									/>
-									<h4>Subscription with Discount</h4>
-								</PurchaseOption>
-							</ProductDetailsRightRight>
 						</ProductDetailsRight>
+						<ProductDetailsRightRight>
+							<h2>Purchase Options</h2>
+							<PurchaseOption>
+								<Radio
+									checked={purchase === "One Time Purchase"}
+									onChange={handleChange}
+									value="One Time Purchase"
+									color="default"
+									name="radio-button-demo"
+									inputProps={{ "aria-label": "One Time Purchase" }}
+								/>
+								<h4>One Time Purchase</h4>
+							</PurchaseOption>
+							<PurchaseOption>
+								<Radio
+									checked={purchase === "Subscription"}
+									onChange={handleChange}
+									value="Subscription"
+									color="default"
+									name="radio-button-demo"
+									inputProps={{ "aria-label": "Subscription" }}
+								/>
+								<h4>Subscription with Discount</h4>
+							</PurchaseOption>
+						</ProductDetailsRightRight>
 						<ProductSpecs>
 							<ProductSpecsDetail>
 								<span>Wax:</span> asklfajf;kj;fdlaksjd;lfj
@@ -199,9 +210,7 @@ const ProductSpecs = styled.div`
 	margin: 15px 0;
 	border-radius: 8px;
 	align-items: flex-start;
-	color: ${(props) => props.theme.colors.primary};
-	background-color: ${(props) =>
-		props.theme == lightTheme ? "#4F4F4F" : props.theme.colors.opposite};
+	background-color: ${(props) => props.theme.colors.secondary};
 `;
 const ProductSpecsDetail = styled.div`
 	> span {
@@ -225,7 +234,7 @@ const ProductDetailsRightWrapper = styled.div`
 `;
 
 const ImageWrapper = styled.div`
-	width: 350px;
+	width: 400px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -240,7 +249,7 @@ const ProductDetailsLeft = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 40px;
+	padding: 20px;
 	align-items: center;
 	width: 50%;
 `;
@@ -265,12 +274,10 @@ const ProductDetailsRightLeft = styled.div`
 	align-items: flex-start;
 `;
 const ProductDetailsRightRight = styled.div`
-	margin-left: 30px;
-
-	padding: 30px;
-	color: ${(props) => props.theme.colors.primary};
-	background-color: ${(props) =>
-		props.theme == lightTheme ? "#4F4F4F" : props.theme.colors.opposite};
+	margin-top: 15px;
+	padding: 25px;
+	width: 100%;
+	background-color: ${(props) => props.theme.colors.secondary};
 	border-radius: 8px;
 `;
 
