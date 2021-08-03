@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import * as api from "../apis/memories";
+import * as api from "../apis/products";
 import { Button, makeStyles, withStyles } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Footer from "./Footer";

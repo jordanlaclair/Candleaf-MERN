@@ -1,7 +1,6 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Login from "./components/Login";
 import Home from "./components/Home";
 import Checkout from "./components/Checkout";
 import Header from "./components/Header";
@@ -34,7 +33,6 @@ function App() {
 				<Router>
 					<ScrollToTop />
 					<Switch>
-						<Route exact path="/login" component={Login} />
 						<Route exact path="/">
 							<Header />
 							<Home />

@@ -1,7 +1,7 @@
 import { ActionType } from "./actionTypes";
 import { Dispatch } from "redux";
 import { CandleActions } from "./index";
-import * as api from "../../apis/memories";
+import * as api from "../../apis/products";
 
 export const getCandles = () => async (dispatch: Dispatch<CandleActions>) => {
 	try {
