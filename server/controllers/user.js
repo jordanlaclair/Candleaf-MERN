@@ -33,7 +33,7 @@ export const createUser = async (req, res) => {
 	try {
 		const doesUserExist = await Users.exists({ auth0ID: auth0ID });
 		if (doesUserExist) {
-			return res.status(404).send(`User with that id exists already!`);
+			res.status(201).json(newUser);
 		} else {
 			await newUser.save();
 			res.status(201).json(newUser);
@@ -46,7 +46,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	const { id } = req.params;
 
-	const { orders, name, auth0ID } = req.body;
+	const { orders, name, auth0ID, createdAt, __v, _id, cart } = req.body;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
@@ -55,9 +55,36 @@ export const updateUser = async (req, res) => {
 		orders,
 		name,
 		auth0ID,
+		_id,
+		createdAt,
+		__v,
+		cart,
 	};
 
 	await Users.findByIdAndUpdate(id, updatedUser, { new: true });
+
+	res.json(updatedUser);
+};
+
+export const addToCart = async (req, res) => {
+	const { id } = req.params;
+
+	const { orders, name, auth0ID, createdAt, __v, _id, cart } = req.body;
+
+	if (!mongoose.Types.ObjectId.isValid(id))
+		return res.status(404).send(`No post with id: ${id}`);
+
+	const updatedUser = {
+		orders,
+		name,
+		auth0ID,
+		_id,
+		createdAt,
+		__v,
+		cart,
+	};
+
+	await Users.findByIdAndUpdate(id, { cart: cart }, { new: true });
 
 	res.json(updatedUser);
 };

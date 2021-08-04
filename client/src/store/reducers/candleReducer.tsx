@@ -1,9 +1,10 @@
 import { ActionType } from "../actions/actionTypes";
 import { CandleActions } from "../actions";
+import { Reducer } from "redux";
 interface PostsSchema {
 	title: string;
 	message: string;
-	tags: [string];
+	tags: Array<string>;
 	purchaseCount: {
 		type: number;
 		default: 0;
@@ -17,29 +18,38 @@ interface PostsSchema {
 		type: number;
 		default: 0;
 	};
+	burningTime: string;
+	dimensions: string;
+	fragrance: string;
+	wax: string;
+	weight: string;
+	price: number;
 }
 
 type PostsArray = Array<PostsSchema>;
 let initialState: PostsArray = [];
 
-const reducer = (posts: PostsArray = initialState, action: CandleActions) => {
+const reducer: Reducer<PostsArray, CandleActions> = (
+	candles = initialState,
+	action
+) => {
 	switch (action.type) {
 		case ActionType.FETCH_ALL_CANDLES:
 			return action.payload;
 		case ActionType.PURCHASE_CANDLE:
-			return posts.map((post) =>
-				post._id === action.payload ? action.payload : post
+			let foundIndex = candles.findIndex(
+				(candle) => candle._id === action.payload._id
 			);
+			candles[foundIndex] = action.payload;
+			return candles;
 		case ActionType.CREATE_CANDLE:
-			return [...posts, action.payload];
+			return [...candles, action.payload];
 		case ActionType.UPDATE_CANDLE:
-			return posts.map((post) =>
-				post._id === action.payload._id ? action.payload : post
-			);
+			return action.payload;
 		case ActionType.DELETE_CANDLE:
-			return posts.filter((post) => post._id !== action.payload);
+			return candles.filter((candle) => candle._id !== action.payload);
 		default:
-			return posts;
+			return candles;
 	}
 };
 

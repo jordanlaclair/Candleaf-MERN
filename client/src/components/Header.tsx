@@ -13,6 +13,7 @@ import * as action from "../store/actions";
 import { useHistory } from "react-router-dom";
 import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 
 const Header = () => {
 	const { loginWithRedirect } = useAuth0();
@@ -27,6 +28,18 @@ const Header = () => {
 			return !prevState;
 		});
 	};
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
+			let newUser = {
+				name: user?.name!,
+				auth0ID: user?.sub!,
+			};
+
+			dispatch(action.createUser(newUser));
+		}
+	}, [isAuthenticated]);
 
 	const handleLogIn = () => {
 		if (user == undefined) {
