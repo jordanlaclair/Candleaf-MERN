@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import * as api from "../apis/products";
@@ -11,7 +11,7 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import Radio from "@material-ui/core/Radio";
 import { lightTheme } from "../styles/Themes";
 import Spinner from "react-spinkit";
-const ProductDetails = () => {
+const ProductDetails: FC = () => {
 	const [productQuantity, setProductQuantity] = useState(0);
 
 	const useStyles = makeStyles((theme) => ({

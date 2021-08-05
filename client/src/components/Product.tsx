@@ -3,13 +3,19 @@ import React from "react";
 import styled from "styled-components";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { useHistory } from "react-router-dom";
+import * as action from "../store/actions/index";
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../store/reducers/index";
+import { FC } from "react";
+
 type PropTypes = {
 	title: string;
 	price: number;
 	image: string;
 	productId: string;
 };
-const Product = ({ title, price, image, productId }: PropTypes) => {
+const Product: FC<PropTypes> = ({ title, price, image, productId }) => {
+	const user = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),
@@ -18,12 +24,21 @@ const Product = ({ title, price, image, productId }: PropTypes) => {
 			fontFamily: "inherit",
 		},
 	}));
-
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	const history = useHistory();
 	const handleClick = (id: string) => {
 		history.push(`/products/candles/${id}`);
 		console.log("hi");
+	};
+
+	const addToCart = (
+		title: string,
+		price: number,
+		image: string,
+		productId: string
+	) => {
+		dispatch(action.addToCart(user._id, { title, price, image, productId }));
 	};
 
 	return (
@@ -46,6 +61,9 @@ const Product = ({ title, price, image, productId }: PropTypes) => {
 					variant="contained"
 					className={classes.button}
 					startIcon={<ShoppingCartIcon />}
+					onClick={() => {
+						addToCart(title, price, image, productId);
+					}}
 				>
 					<h4>Add to Cart</h4>
 				</Button>

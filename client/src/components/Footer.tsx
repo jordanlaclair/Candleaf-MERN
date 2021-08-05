@@ -1,8 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { ReactComponent as Icon } from "../images/icon.svg";
 import devices from "../styles/devices";
-const Footer = () => {
+const Footer: FC = () => {
 	return (
 		<FooterWrapper>
 			<FooterTop>

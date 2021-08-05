@@ -1,10 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { ReactComponent as Check } from "../images/check.svg";
-import devices from "../styles/devices.ts";
+import devices from "../styles/devices.js";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
-
-const LearnMoreDetail = ({ title, description }) => {
+interface PropTypes {
+	title: string;
+	description: string;
+}
+const LearnMoreDetail: FC<PropTypes> = ({ title, description }) => {
 	return (
 		<DetailWrapper>
 			<Header>

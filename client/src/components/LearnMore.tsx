@@ -1,11 +1,11 @@
 import { Button, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import CandleGroup from "../images/CandleGroup1.jpg";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import LearnMoreDetail from "./LearnMoreDetail";
 import devices from "../styles/devices";
-const LearnMore = () => {
+const LearnMore: FC = () => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(6),

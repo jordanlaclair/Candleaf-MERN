@@ -4,13 +4,14 @@ import { skipPartiallyEmittedExpressions } from "typescript";
 import PropTypes from "prop-types";
 
 import Stars from "./Stars";
-type AppProps = {
+import { FC } from "react";
+interface PropTypes {
 	rating: number;
 	name: string;
 	picture: string;
 	description: string;
-};
-const Review = ({ picture, rating, description, name }: AppProps) => {
+}
+const Review: FC<PropTypes> = ({ picture, rating, description, name }) => {
 	return (
 		<ReviewWrapper>
 			<ImageWrapper>

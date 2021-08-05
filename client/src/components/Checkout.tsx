@@ -1,8 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-const Checkout = () => {
+const Checkout: FC = () => {
 	const history = useHistory();
 	const handleBackToHome = () => {
 		history.push("/");
@@ -11,6 +11,7 @@ const Checkout = () => {
 		<CheckoutWrapper>
 			<Title>Your Cart Items</Title>
 			<SubTitle onClick={handleBackToHome}>Back To Shopping</SubTitle>
+			<GridWrapper></GridWrapper>
 		</CheckoutWrapper>
 	);
 };

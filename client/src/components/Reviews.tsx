@@ -1,8 +1,9 @@
 import React from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import ProfilePicture from "../images/profilePicture.png";
 import Review from "./Review";
-const Reviews = () => {
+const Reviews: FC = () => {
 	return (
 		<ReviewsWrapper id="reviews">
 			<Header>

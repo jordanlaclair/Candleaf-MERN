@@ -14,7 +14,8 @@ import { lightTheme, darkTheme } from "./styles/Themes";
 import ScrollToTop from "./components/ScrollToTop";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "react-spinkit";
-function App() {
+import { FC } from "react";
+const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
 	const { isLoading } = useAuth0();
@@ -49,7 +50,7 @@ function App() {
 			</div>
 		</ThemeProvider>
 	);
-}
+};
 
 export default App;
 

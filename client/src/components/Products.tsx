@@ -5,7 +5,8 @@ import Product from "./Product";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
-const Products = () => {
+import { FC } from "react";
+const Products: FC = () => {
 	interface PostsSchema {
 		title: string;
 		message: string;

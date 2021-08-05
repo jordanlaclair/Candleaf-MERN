@@ -11,8 +11,9 @@ import LearnMore from "./LearnMore";
 import Reviews from "./Reviews";
 import Footer from "./Footer";
 import { lightTheme } from "../styles/Themes";
+import { FC } from "react";
 
-const Home = () => {
+const Home: FC = () => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			backgroundColor: "#49A010",

@@ -14,14 +14,15 @@ import { useHistory } from "react-router-dom";
 import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
+import { FC } from "react";
 
-const Header = () => {
+const Header: FC = () => {
 	const { loginWithRedirect } = useAuth0();
 	const { logout } = useAuth0();
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const [themeSwitch, setThemeSwitch] = useState(true);
+	const [themeSwitch, setThemeSwitch] = useState<boolean>(true);
 	const handleSwitch = () => {
 		dispatch(action.toggleTheme());
 		setThemeSwitch((prevState) => {
