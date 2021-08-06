@@ -38,7 +38,9 @@ const reducer: Reducer<UserSchema, UserActions> = (
 		case ActionType.UPDATE_USER:
 			return action.payload;
 		case ActionType.ADD_TO_CART:
-			return action.payload;
+			user.cart.push(action.payload);
+			return user;
+
 		default:
 			return user;
 	}

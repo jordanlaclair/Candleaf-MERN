@@ -19,11 +19,14 @@ const Checkout: FC = () => {
 export default Checkout;
 
 const CheckoutWrapper = styled.div`
-	width: 100%;
+	width: 100vw;
+	background: red;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+
 	align-items: center;
+	margin-top: 300px;
 `;
 
 const Title = styled.h1``;

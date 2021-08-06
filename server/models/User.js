@@ -4,7 +4,15 @@ const userSchema = mongoose.Schema({
 	orders: [
 		{
 			productName: String,
-			productQuantity: Number,
+			productId: String,
+			totalPrice: {
+				default: 0,
+				type: Number,
+			},
+			productQuantity: {
+				default: 0,
+				type: Number,
+			},
 		},
 	],
 	name: {
@@ -22,7 +30,15 @@ const userSchema = mongoose.Schema({
 	cart: [
 		{
 			productName: String,
-			productQuantity: Number,
+			productId: String,
+			totalPrice: {
+				default: 0,
+				type: Number,
+			},
+			productQuantity: {
+				default: 0,
+				type: Number,
+			},
 		},
 	],
 });

@@ -15,6 +15,8 @@ interface NewUserSchema {
 }
 interface OrdersSchema {
 	productName: string;
+	productId: string;
+	totalPrice: number;
 	productQuantity: number;
 }
 
@@ -60,25 +62,16 @@ export const updateUser =
 	};
 
 export const addToCart =
-	(id: string, product: object) => async (dispatch: Dispatch<UserActions>) => {
+	(userID: string, candleData: OrdersSchema) =>
+	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(id);
+			const { data } = await api.fetchUser(userID);
 
-			const { cart, name, createdAt, auth0ID, _id, orders, __v } = data;
-			const newCart = cart.push(product);
-			const newUser = {
-				cart: newCart,
-				name,
-				createdAt,
-				auth0ID,
-				_id,
-				orders,
-				__v,
-			};
-
-			await api.updateUser(id, newUser);
-
-			dispatch({ type: ActionType.ADD_TO_CART, payload: newUser });
+			let exists = Object.values(data).includes(candleData.productId);
+			if (!exists) {
+				await api.updateUser(userID, candleData);
+				dispatch({ type: ActionType.ADD_TO_CART, payload: candleData });
+			}
 		} catch (error) {
 			console.log(error);
 		}

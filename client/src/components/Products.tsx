@@ -7,17 +7,11 @@ import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
 import { FC } from "react";
 const Products: FC = () => {
-	interface PostsSchema {
+	interface CandleSchema {
 		title: string;
 		message: string;
-		tags: [string];
-		image: string;
-
-		price: number;
-		purchaseCount: {
-			type: number;
-			default: 0;
-		};
+		tags: Array<string>;
+		purchaseCount: number;
 		createdAt: {
 			type: Date;
 			default: Date;
@@ -27,9 +21,15 @@ const Products: FC = () => {
 			type: number;
 			default: 0;
 		};
+		burningTime: string;
+		dimensions: string;
+		fragrance: string;
+		image: string;
+		wax: string;
+		weight: string;
+		price: number;
 	}
-
-	const candles: Array<PostsSchema> = useSelector(
+	const candles: Array<CandleSchema> = useSelector(
 		(state: State) => state.candles
 	);
 	const dispatch = useDispatch();
@@ -55,6 +55,7 @@ const Products: FC = () => {
 							price={candle.price}
 							image={candle.image}
 							productId={candle._id}
+							productQuantity={candle.purchaseCount}
 						/>
 					);
 				})}

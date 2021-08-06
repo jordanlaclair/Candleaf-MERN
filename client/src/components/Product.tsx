@@ -13,8 +13,22 @@ type PropTypes = {
 	price: number;
 	image: string;
 	productId: string;
+	productQuantity: number;
 };
-const Product: FC<PropTypes> = ({ title, price, image, productId }) => {
+interface OrdersSchema {
+	productName: string;
+	productId: string;
+	totalPrice: number;
+	productQuantity: number;
+}
+
+const Product: FC<PropTypes> = ({
+	title,
+	price,
+	image,
+	productId,
+	productQuantity,
+}) => {
 	const user = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -33,12 +47,19 @@ const Product: FC<PropTypes> = ({ title, price, image, productId }) => {
 	};
 
 	const addToCart = (
-		title: string,
-		price: number,
-		image: string,
-		productId: string
+		userID: string,
+		productName: string,
+		totalPrice: number,
+		productId: string,
+		productQuantity: number
 	) => {
-		dispatch(action.addToCart(user._id, { title, price, image, productId }));
+		let order: OrdersSchema = {
+			productName,
+			productId,
+			totalPrice,
+			productQuantity,
+		};
+		dispatch(action.addToCart(userID, order));
 	};
 
 	return (
@@ -62,7 +83,7 @@ const Product: FC<PropTypes> = ({ title, price, image, productId }) => {
 					className={classes.button}
 					startIcon={<ShoppingCartIcon />}
 					onClick={() => {
-						addToCart(title, price, image, productId);
+						addToCart(user._id, title, price, productId, productQuantity);
 					}}
 				>
 					<h4>Add to Cart</h4>

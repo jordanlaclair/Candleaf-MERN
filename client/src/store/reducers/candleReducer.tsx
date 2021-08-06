@@ -1,14 +1,11 @@
 import { ActionType } from "../actions/actionTypes";
 import { CandleActions } from "../actions";
 import { Reducer } from "redux";
-interface PostsSchema {
+interface CandleSchema {
 	title: string;
 	message: string;
 	tags: Array<string>;
-	purchaseCount: {
-		type: number;
-		default: 0;
-	};
+	purchaseCount: number;
 	createdAt: {
 		type: Date;
 		default: Date;
@@ -19,6 +16,7 @@ interface PostsSchema {
 		default: 0;
 	};
 	burningTime: string;
+	image: string;
 	dimensions: string;
 	fragrance: string;
 	wax: string;
@@ -26,10 +24,10 @@ interface PostsSchema {
 	price: number;
 }
 
-type PostsArray = Array<PostsSchema>;
-let initialState: PostsArray = [];
+type CandlesArray = Array<CandleSchema>;
+let initialState: CandlesArray = [];
 
-const reducer: Reducer<PostsArray, CandleActions> = (
+const reducer: Reducer<CandlesArray, CandleActions> = (
 	candles = initialState,
 	action
 ) => {
@@ -37,15 +35,19 @@ const reducer: Reducer<PostsArray, CandleActions> = (
 		case ActionType.FETCH_ALL_CANDLES:
 			return action.payload;
 		case ActionType.PURCHASE_CANDLE:
-			let foundIndex = candles.findIndex(
+			let foundPurchased = candles.findIndex(
 				(candle) => candle._id === action.payload._id
 			);
-			candles[foundIndex] = action.payload;
+			candles[foundPurchased] = action.payload;
 			return candles;
 		case ActionType.CREATE_CANDLE:
 			return [...candles, action.payload];
 		case ActionType.UPDATE_CANDLE:
-			return action.payload;
+			let foundUpdated = candles.findIndex(
+				(candle) => candle._id === action.payload._id
+			);
+			candles[foundUpdated] = action.payload;
+			return candles;
 		case ActionType.DELETE_CANDLE:
 			return candles.filter((candle) => candle._id !== action.payload);
 		default:

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { ReactComponent as Check } from "../images/check.svg";
-import devices from "../styles/devices.js";
+import devices from "../styles/devices";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
 interface PropTypes {
 	title: string;

@@ -21,14 +21,11 @@ export interface ToggleTheme {
 	type: ActionType.TOGGLE_THEME;
 }
 
-interface PostsSchema {
+interface CandleSchema {
 	title: string;
 	message: string;
 	tags: Array<string>;
-	purchaseCount: {
-		type: number;
-		default: 0;
-	};
+	purchaseCount: number;
 	createdAt: {
 		type: Date;
 		default: Date;
@@ -39,6 +36,7 @@ interface PostsSchema {
 		default: 0;
 	};
 	burningTime: string;
+	image: string;
 	dimensions: string;
 	fragrance: string;
 	wax: string;
@@ -46,9 +44,11 @@ interface PostsSchema {
 	price: number;
 }
 
+type CandlesArray = Array<CandleSchema>;
+
 interface CreateCandleAction {
 	type: ActionType.CREATE_CANDLE;
-	payload: Array<PostsSchema>;
+	payload: CandleSchema;
 }
 
 interface DeleteCandleAction {
@@ -58,22 +58,22 @@ interface DeleteCandleAction {
 
 interface UpdateCandleAction {
 	type: ActionType.UPDATE_CANDLE;
-	payload: PostsSchema;
+	payload: CandleSchema;
 }
 
 interface PurchaseCandleAction {
 	type: ActionType.PURCHASE_CANDLE;
-	payload: PostsSchema;
+	payload: CandleSchema;
 }
 
 interface GetCandle {
 	type: ActionType.FETCH_CANDLE;
-	payload: PostsSchema;
+	payload: CandleSchema;
 }
 
 interface GetCandles {
 	type: ActionType.FETCH_ALL_CANDLES;
-	payload: Array<PostsSchema>;
+	payload: CandlesArray;
 }
 
 export interface ToggleTheme {
@@ -90,8 +90,11 @@ export type CandleActions =
 
 interface OrdersSchema {
 	productName: string;
+	productId: string;
+	totalPrice: number;
 	productQuantity: number;
 }
+
 interface UsersSchema {
 	name: string;
 	auth0ID: string;
@@ -112,7 +115,7 @@ interface UpdateUserAction {
 
 interface AddToCartAction {
 	type: ActionType.ADD_TO_CART;
-	payload: UsersSchema;
+	payload: OrdersSchema;
 }
 
 interface GetUserAction {
