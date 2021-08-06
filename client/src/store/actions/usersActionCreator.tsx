@@ -106,6 +106,17 @@ export const addToCart =
 					}
 				}
 
+				if (exists == false) {
+					console.log("not existing case");
+					let newProduct = {
+						productName: candleData.productName,
+						productId: candleData.productId,
+						totalPrice: 0,
+						productQuantity: 0,
+						_id: _id,
+					};
+					cart.push(newProduct);
+				}
 				const newData = {
 					orders,
 					name,
@@ -116,16 +127,6 @@ export const addToCart =
 					__v,
 				};
 				await api.updateUser(userID, newData);
-				/* if (!exists) {
-					let newProduct = {
-						productName: candleData.productName,
-						productId: candleData.productId,
-						totalPrice: 0,
-						productQuantity: 0,
-						_id: _id,
-					};
-					cart.push(newProduct);
-				} */
 				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
 			}
 		} catch (error) {
