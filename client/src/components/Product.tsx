@@ -15,11 +15,10 @@ type PropTypes = {
 	productId: string;
 	productQuantity: number;
 };
-interface OrdersSchema {
+interface ProductSchema {
 	productName: string;
+	price: number;
 	productId: string;
-	totalPrice: number;
-	productQuantity: number;
 }
 
 const Product: FC<PropTypes> = ({
@@ -49,15 +48,13 @@ const Product: FC<PropTypes> = ({
 	const addToCart = (
 		userID: string,
 		productName: string,
-		totalPrice: number,
-		productId: string,
-		productQuantity: number
+		price: number,
+		productId: string
 	) => {
-		let order: OrdersSchema = {
+		let order: ProductSchema = {
 			productName,
 			productId,
-			totalPrice,
-			productQuantity,
+			price,
 		};
 		dispatch(action.addToCart(userID, order));
 	};
@@ -82,8 +79,9 @@ const Product: FC<PropTypes> = ({
 					variant="contained"
 					className={classes.button}
 					startIcon={<ShoppingCartIcon />}
-					onClick={() => {
-						addToCart(user._id, title, price, productId, productQuantity);
+					onClick={(e) => {
+						e.stopPropagation();
+						addToCart(user._id, title, price, productId);
 					}}
 				>
 					<h4>Add to Cart</h4>

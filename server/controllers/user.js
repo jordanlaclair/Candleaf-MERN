@@ -1,8 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import Users from "../models/User.js";
-
+import axios from "axios";
 const router = express.Router();
+const url = "http://localhost:5000/users";
 
 export const getUsers = async (req, res) => {
 	try {
@@ -26,15 +27,38 @@ export const getUser = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-	const data = req.body;
-	const newUser = new Users(data);
-	const { auth0ID } = req.body;
+	let { orders, cart, name, createdAt, auth0ID, _id } = req.body;
 
 	try {
+		const newData = {
+			orders,
+			cart,
+			name,
+			createdAt,
+			auth0ID,
+			_id,
+		};
 		const doesUserExist = await Users.exists({ auth0ID: auth0ID });
 		if (doesUserExist) {
-			res.status(201).json(newUser);
+			await Users.findOne({ auth0ID: auth0ID }, (err, user) => {
+				res.status(201).json(user);
+			});
 		} else {
+			//handle subdocuments (set subdocument path to a non-nullish value)
+
+			orders = {};
+			cart = {};
+
+			const newData = {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+			};
+
+			const newUser = new Users(newData);
 			await newUser.save();
 			res.status(201).json(newUser);
 		}
@@ -46,7 +70,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	const { id } = req.params;
 
-	const { orders, name, auth0ID, createdAt, __v, _id, cart } = req.body;
+	const { orders, name, auth0ID, createdAt, cart, _id, __v } = req.body;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
@@ -55,10 +79,10 @@ export const updateUser = async (req, res) => {
 		orders,
 		name,
 		auth0ID,
-		_id,
 		createdAt,
-		__v,
 		cart,
+		_id,
+		__v,
 	};
 
 	await Users.findByIdAndUpdate(id, updatedUser, { new: true });
@@ -69,18 +93,16 @@ export const updateUser = async (req, res) => {
 export const addToCart = async (req, res) => {
 	const { id } = req.params;
 
-	const { orders, name, auth0ID, createdAt, __v, _id, cart } = req.body;
-
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
+
+	const { orders, name, auth0ID, createdAt, cart } = req.body;
 
 	const updatedUser = {
 		orders,
 		name,
 		auth0ID,
-		_id,
 		createdAt,
-		__v,
 		cart,
 	};
 

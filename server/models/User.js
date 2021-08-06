@@ -3,15 +3,21 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
 	orders: [
 		{
-			productName: String,
-			productId: String,
+			productName: {
+				type: String,
+				default: "none",
+			},
+			productId: {
+				type: String,
+				default: "none",
+			},
 			totalPrice: {
-				default: 0,
 				type: Number,
+				default: 0,
 			},
 			productQuantity: {
-				default: 0,
 				type: Number,
+				default: 0,
 			},
 		},
 	],
@@ -29,15 +35,21 @@ const userSchema = mongoose.Schema({
 	},
 	cart: [
 		{
-			productName: String,
-			productId: String,
+			productName: {
+				type: String,
+				default: "none",
+			},
+			productId: {
+				type: String,
+				default: "none",
+			},
 			totalPrice: {
-				default: 0,
 				type: Number,
+				default: 0,
 			},
 			productQuantity: {
-				default: 0,
 				type: Number,
+				default: 0,
 			},
 		},
 	],

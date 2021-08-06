@@ -40,6 +40,7 @@ const App: FC = () => {
 						</Route>
 						<Route exact path="/checkout">
 							<Header />
+							<Checkout />
 						</Route>
 						<Route exact path="/products/candles/:id">
 							<Header />

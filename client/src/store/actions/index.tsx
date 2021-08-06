@@ -88,19 +88,29 @@ export type CandleActions =
 	| DeleteCandleAction
 	| CreateCandleAction;
 
-interface OrdersSchema {
+interface CartSchema {
 	productName: string;
 	productId: string;
 	totalPrice: number;
+	productQuantity: number;
+	_id: string;
+}
+
+type CartsArray = Array<CartSchema>;
+
+interface productSchema {
+	productName: string;
+	productId: string;
+	price: number;
 	productQuantity: number;
 }
 
 interface UsersSchema {
 	name: string;
 	auth0ID: string;
-	orders: Array<OrdersSchema>;
+	orders: Array<CartSchema>;
 	_id: string;
-	cart: Array<OrdersSchema>;
+	cart: Array<CartSchema>;
 }
 
 interface CreateUserAction {
@@ -115,7 +125,7 @@ interface UpdateUserAction {
 
 interface AddToCartAction {
 	type: ActionType.ADD_TO_CART;
-	payload: OrdersSchema;
+	payload: CartsArray;
 }
 
 interface GetUserAction {

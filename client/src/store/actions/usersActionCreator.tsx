@@ -2,22 +2,29 @@ import { ActionType } from "./actionTypes";
 import { Dispatch } from "redux";
 import { UserActions } from "./index";
 import * as api from "../../apis/users";
+import * as productApi from "../../apis/products";
 
 interface UsersSchema {
 	name: string;
 	auth0ID: string;
-	orders: Array<OrdersSchema>;
-	cart: Array<OrdersSchema>;
+	orders: Array<CartSchema>;
+	cart: Array<CartSchema>;
 }
 interface NewUserSchema {
 	name: string;
 	auth0ID: string;
 }
-interface OrdersSchema {
+interface CartSchema {
 	productName: string;
 	productId: string;
 	totalPrice: number;
 	productQuantity: number;
+	_id: string;
+}
+interface ProductSchema {
+	productName: string;
+	price: number;
+	productId: string;
 }
 
 export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
@@ -62,15 +69,64 @@ export const updateUser =
 	};
 
 export const addToCart =
-	(userID: string, candleData: OrdersSchema) =>
+	(userID: string, candleData: ProductSchema) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let exists = Object.values(data).includes(candleData.productId);
-			if (!exists) {
-				await api.updateUser(userID, candleData);
-				dispatch({ type: ActionType.ADD_TO_CART, payload: candleData });
+			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
+
+			let exists = false;
+			//if cart is empty
+			if (cart[0].productName == "none" && cart.length == 1) {
+				cart[0].productName = candleData.productName;
+				cart[0].productId = candleData.productId;
+				cart[0].totalPrice = candleData.price;
+				cart[0].productQuantity = 1;
+
+				const newData = {
+					orders,
+					name,
+					auth0ID,
+					createdAt,
+					cart,
+					_id,
+					__v,
+				};
+				await api.updateUser(userID, newData);
+				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
+			} else {
+				for (let i = 0; i < cart.length; i++) {
+					exists = Object.values(cart[i]).includes(candleData.productId);
+					if (exists) {
+						console.log("here3");
+						cart[i].productQuantity += 1;
+						cart[i].totalPrice += candleData.price;
+						break;
+					}
+				}
+
+				const newData = {
+					orders,
+					name,
+					auth0ID,
+					createdAt,
+					cart,
+					_id,
+					__v,
+				};
+				await api.updateUser(userID, newData);
+				/* if (!exists) {
+					let newProduct = {
+						productName: candleData.productName,
+						productId: candleData.productId,
+						totalPrice: 0,
+						productQuantity: 0,
+						_id: _id,
+					};
+					cart.push(newProduct);
+				} */
+				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
 			}
 		} catch (error) {
 			console.log(error);
