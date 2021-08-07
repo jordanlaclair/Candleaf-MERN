@@ -115,7 +115,7 @@ const Header: FC = () => {
 
 				<ShoppingCartOutlinedIcon
 					onClick={() => {
-						history.push("/checkout");
+						history.push("/cart");
 					}}
 				/>
 				<GreenSwitch

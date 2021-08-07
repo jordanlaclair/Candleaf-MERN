@@ -92,6 +92,7 @@ interface CartSchema {
 	productName: string;
 	productId: string;
 	totalPrice: number;
+	price: number;
 	productQuantity: number;
 	_id: string;
 }

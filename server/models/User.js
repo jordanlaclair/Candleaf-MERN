@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema({
 				type: Number,
 				default: 0,
 			},
+			price: {
+				type: Number,
+				default: 0,
+			},
 			productQuantity: {
 				type: Number,
 				default: 0,
@@ -44,6 +48,10 @@ const userSchema = mongoose.Schema({
 				default: "none",
 			},
 			totalPrice: {
+				type: Number,
+				default: 0,
+			},
+			price: {
 				type: Number,
 				default: 0,
 			},

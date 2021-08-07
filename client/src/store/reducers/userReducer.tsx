@@ -7,6 +7,7 @@ interface CartSchema {
 	productId: string;
 	totalPrice: number;
 	productQuantity: number;
+	price: number;
 	_id: string;
 }
 
@@ -32,6 +33,7 @@ let initialState: UserSchema = {
 			productId: "none",
 			totalPrice: 0,
 			_id: "none",
+			price: 0,
 		},
 	],
 };

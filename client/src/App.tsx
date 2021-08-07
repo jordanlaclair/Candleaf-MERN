@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "./components/Home";
-import Checkout from "./components/Checkout";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { State } from "./store/reducers/index";
@@ -15,6 +14,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "react-spinkit";
 import { FC } from "react";
+import Cart from "./components/Cart";
 const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
@@ -38,9 +38,9 @@ const App: FC = () => {
 							<Header />
 							<Home />
 						</Route>
-						<Route exact path="/checkout">
+						<Route exact path="/cart">
 							<Header />
-							<Checkout />
+							<Cart />
 						</Route>
 						<Route exact path="/products/candles/:id">
 							<Header />
