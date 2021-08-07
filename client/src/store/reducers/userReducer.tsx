@@ -47,14 +47,15 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			return action.payload;
 		case ActionType.UPDATE_USER:
 			return action.payload;
+		case ActionType.REMOVE_FROM_CART:
+			user.cart = action.payload;
+			return user;
 		case ActionType.ADD_TO_CART:
-			if (user.cart[0].productName == "none" && user.cart.length == 1) {
-				user.cart = action.payload;
-				return user;
-			} else {
-				user.cart = action.payload;
-				return user;
-			}
+			user.cart = action.payload;
+			return user;
+		case ActionType.LOWER_QUANTITY:
+			user.cart = action.payload;
+			return user;
 
 		default:
 			return user;

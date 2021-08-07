@@ -13,7 +13,9 @@ export {
 	getUser,
 	updateUser,
 	addToCart,
+	lowerQuantity,
 	createUser,
+	removeFromCart,
 } from "./usersActionCreator";
 
 export { toggleTheme } from "./appActionCreator";
@@ -129,6 +131,16 @@ interface AddToCartAction {
 	payload: CartsArray;
 }
 
+interface RemoveFromCartAction {
+	type: ActionType.REMOVE_FROM_CART;
+	payload: CartsArray;
+}
+
+interface LowerQuantityAction {
+	type: ActionType.LOWER_QUANTITY;
+	payload: CartsArray;
+}
+
 interface GetUserAction {
 	type: ActionType.GET_USER;
 	payload: UsersSchema;
@@ -144,4 +156,6 @@ export type UserActions =
 	| UpdateUserAction
 	| GetUsersAction
 	| AddToCartAction
+	| RemoveFromCartAction
+	| LowerQuantityAction
 	| CreateUserAction;

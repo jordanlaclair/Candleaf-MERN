@@ -22,6 +22,7 @@ interface CartSchema {
 	productQuantity: number;
 	_id: string;
 }
+type CartsArray = Array<CartSchema>;
 interface ProductSchema {
 	productName: string;
 	price: number;
@@ -76,17 +77,43 @@ export const addToCart =
 			const { data } = await api.fetchUser(userID);
 
 			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
-
+			let newData;
 			let exists = false;
+
 			//if cart is empty
-			if (cart[0].productName == "none" && cart.length == 1) {
+			if (cart.length == 0) {
+				let firstItem = {
+					productName: candleData.productName,
+					productId: candleData.productId,
+					totalPrice: candleData.price,
+					price: candleData.price,
+					productQuantity: 1,
+				};
+
+				cart.push(firstItem);
+				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
+				newData = {
+					orders,
+					name,
+					auth0ID,
+					createdAt,
+					cart,
+					_id,
+					__v,
+				};
+				await api.updateUser(userID, newData);
+			} else if (
+				cart.length > 0 &&
+				cart[0].productName == "none" &&
+				cart.length == 1
+			) {
 				cart[0].productName = candleData.productName;
 				cart[0].productId = candleData.productId;
 				cart[0].totalPrice = candleData.price;
 				cart[0].price = candleData.price;
 				cart[0].productQuantity = 1;
 
-				const newData = {
+				newData = {
 					orders,
 					name,
 					auth0ID,
@@ -101,7 +128,6 @@ export const addToCart =
 				for (let i = 0; i < cart.length; i++) {
 					exists = Object.values(cart[i]).includes(candleData.productId);
 					if (exists) {
-						console.log("here3");
 						cart[i].productQuantity += 1;
 						cart[i].totalPrice += candleData.price;
 						break;
@@ -109,7 +135,6 @@ export const addToCart =
 				}
 
 				if (exists == false) {
-					console.log("not existing case");
 					let newProduct = {
 						productName: candleData.productName,
 						productId: candleData.productId,
@@ -120,7 +145,7 @@ export const addToCart =
 					};
 					cart.push(newProduct);
 				}
-				const newData = {
+				newData = {
 					orders,
 					name,
 					auth0ID,
@@ -137,20 +162,66 @@ export const addToCart =
 		}
 	};
 
-/* export const increaseQuantity =
+export const removeFromCart =
 	(productID: string, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
+			const { data } = await api.fetchUser(userID);
 
-			
+			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
 
+			let filtered: CartsArray = cart.filter((product: CartSchema) => {
+				return product.productId != productID;
+			});
 
+			const newData = {
+				orders,
+				name,
+				auth0ID,
+				createdAt,
+				cart: filtered,
+				_id,
+				__v,
+			};
 
-			
-
-			dispatch({ type: ActionType.UPDATE_USER, payload: data });
+			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.REMOVE_FROM_CART, payload: filtered });
 		} catch (error) {
 			console.log(error);
 		}
 	};
- */
+
+export const lowerQuantity =
+	(productID: string, userID: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
+
+			for (var i in cart) {
+				if (cart[i].productId == productID) {
+					if (cart[i].productQuantity > 1) {
+						cart[i].totalPrice -= cart[i].price;
+						cart[i].productQuantity -= 1;
+						break;
+					}
+				}
+			}
+
+			const newData = {
+				orders,
+				name,
+				auth0ID,
+				createdAt,
+				cart: cart,
+				_id,
+				__v,
+			};
+
+			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.LOWER_QUANTITY, payload: cart });
+		} catch (error) {
+			console.log(error);
+		}
+	};
