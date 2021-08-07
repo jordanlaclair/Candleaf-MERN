@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import App from "./App";
 import { store } from "./store/store";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 let domain: string;
 let clientID: string;
@@ -26,7 +28,9 @@ ReactDOM.render(
 			redirectUri={window.location.origin}
 		>
 			<Provider store={store}>
-				<App />
+				<PersistGate loading={null} persistor={persistor}>
+					<App />
+				</PersistGate>
 			</Provider>
 		</Auth0Provider>
 	</React.StrictMode>,
