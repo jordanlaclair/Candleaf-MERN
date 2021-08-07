@@ -11,9 +11,12 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import Radio from "@material-ui/core/Radio";
 import { lightTheme } from "../styles/Themes";
 import Spinner from "react-spinkit";
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../store/reducers";
+import { addToCart } from "../store/actions";
 const ProductDetails: FC = () => {
 	const [productQuantity, setProductQuantity] = useState(0);
-
+	const user = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),
@@ -23,7 +26,12 @@ const ProductDetails: FC = () => {
 		},
 	}));
 	const classes = useStyles();
-
+	const dispatch = useDispatch();
+	interface ProductSchema {
+		productName: string;
+		price: number;
+		productId: string;
+	}
 	interface CandleSchema {
 		title: string;
 		message: string;
@@ -86,6 +94,20 @@ const ProductDetails: FC = () => {
 		setPurchase(event.target.value);
 	};
 
+	const handleAddToCart = (
+		productName: string,
+		price: number,
+		productId: string
+	) => {
+		let order: ProductSchema = {
+			productName,
+			price,
+			productId,
+		};
+
+		dispatch(addToCart(user._id, order));
+	};
+
 	return (
 		<ProductDetailsOuterWrapper>
 			{candleData.title == "" ? (
@@ -123,6 +145,9 @@ const ProductDetails: FC = () => {
 								<Button
 									variant="contained"
 									className={classes.button}
+									onClick={() => {
+										handleAddToCart(user._id, candleData.price, id);
+									}}
 									startIcon={<ShoppingCartIcon />}
 								>
 									<h4>Add to Cart</h4>

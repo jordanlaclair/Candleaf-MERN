@@ -1,8 +1,10 @@
+import { Button, makeStyles } from "@material-ui/core";
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { State } from "../store/reducers";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartItem from "./CartItem";
 
 const Cart: FC = () => {
@@ -10,8 +12,19 @@ const Cart: FC = () => {
 	const handleBackToHome = () => {
 		history.push("/");
 	};
+
 	const dispatch = useDispatch();
 	const cart = useSelector((state: State) => state.user.cart);
+
+	const useStyles = makeStyles((theme) => ({
+		button: {
+			marginTop: theme.spacing(1),
+			backgroundColor: "#49A010",
+			textTransform: "inherit",
+			fontFamily: "inherit",
+		},
+	}));
+	const classes = useStyles();
 
 	return (
 		<CheckoutWrapper>
@@ -31,6 +44,15 @@ const Cart: FC = () => {
 					);
 				})}
 			</CartItemWrapper>
+			<ProceedCheckoutWrapper>
+				<Button
+					variant="contained"
+					className={classes.button}
+					startIcon={<ShoppingCartIcon />}
+				>
+					<h3>Proceed to Checkout</h3>
+				</Button>
+			</ProceedCheckoutWrapper>
 		</CheckoutWrapper>
 	);
 };
@@ -58,3 +80,5 @@ const SubTitle = styled.h2`
 	color: ${(props) => props.theme.brand};
 	cursor: pointer;
 `;
+
+const ProceedCheckoutWrapper = styled.div``;
