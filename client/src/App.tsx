@@ -15,6 +15,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "react-spinkit";
 import { FC } from "react";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
 const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
@@ -33,6 +34,7 @@ const App: FC = () => {
 			<div className="App">
 				<Router>
 					<ScrollToTop />
+
 					<Switch>
 						<Route exact path="/">
 							<Header />
@@ -42,8 +44,10 @@ const App: FC = () => {
 							<Header />
 							<Cart />
 						</Route>
+						<Route exact path="/checkout">
+							<Checkout />
+						</Route>
 						<Route exact path="/products/candles/:id">
-							<Header />
 							<ProductDetails />
 						</Route>
 					</Switch>

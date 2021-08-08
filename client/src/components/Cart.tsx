@@ -29,6 +29,10 @@ const Cart: FC = () => {
 			fontFamily: "inherit",
 		},
 	}));
+
+	const handleProceedCheckout = () => {
+		history.push("/checkout");
+	};
 	const classes = useStyles();
 
 	return (
@@ -60,6 +64,7 @@ const Cart: FC = () => {
 					variant="contained"
 					className={classes.button}
 					startIcon={<ShoppingCartIcon />}
+					onClick={handleProceedCheckout}
 				>
 					<h3>Proceed to Checkout</h3>
 				</Button>

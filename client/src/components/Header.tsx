@@ -123,12 +123,12 @@ const Header: FC = () => {
 						<PermIdentityIcon />
 					)}
 				</UserStatus>
-				<CartWrapper>
-					<ShoppingCartOutlinedIcon
-						onClick={() => {
-							history.push("/cart");
-						}}
-					/>
+				<CartWrapper
+					onClick={() => {
+						history.push("/cart");
+					}}
+				>
+					<ShoppingCartOutlinedIcon />
 					{cartItemsCount > 0 ? <h3>({cartItemsCount})</h3> : null}
 				</CartWrapper>
 
@@ -192,7 +192,13 @@ const HeaderWrapper = styled.div`
 const CartWrapper = styled.div`
 	display: flex;
 	justify-content: center;
+	cursor: pointer;
 	align-items: center;
+	transition: all 0.3s ease;
+
+	:hover {
+		transform: scale(1.2);
+	}
 	> h3 {
 		margin-left: 5px;
 	}
@@ -385,12 +391,7 @@ const HeaderRight = styled.div`
 	align-items: center;
 
 	.MuiSvgIcon-root {
-		transition: all 0.3s ease;
-		cursor: pointer;
 		transform: scale(1.2);
-		:hover {
-			transform: scale(1.4);
-		}
 	}
 	@media ${devices.tablet} {
 		display: none;
