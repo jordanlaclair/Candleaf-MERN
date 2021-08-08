@@ -204,7 +204,7 @@ const ProductDetails: FC = () => {
 										setPurchase("Subscription");
 									}}
 								>
-									Subscription with Discount
+									Purchase with Subscription
 								</h4>
 							</PurchaseOption>
 						</ProductDetailsRightRight>

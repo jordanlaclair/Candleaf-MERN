@@ -72,6 +72,7 @@ export default Cart;
 
 const CheckoutWrapper = styled.div`
 	display: flex;
+	padding-bottom: 50px;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;

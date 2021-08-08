@@ -23,6 +23,17 @@ const Header: FC = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [themeSwitch, setThemeSwitch] = useState<boolean>(true);
+	const [cartItemsCount, setCartItemsCount] = useState(0);
+
+	const cart = useSelector((state: State) => state.user.cart);
+	useEffect(() => {
+		let cartItems = 0;
+		cart.forEach((product) => {
+			cartItems += product.productQuantity;
+		});
+		setCartItemsCount(cartItems);
+	}, [cart]);
+
 	const handleSwitch = () => {
 		dispatch(action.toggleTheme());
 		setThemeSwitch((prevState) => {
@@ -69,18 +80,18 @@ const Header: FC = () => {
 	return (
 		<HeaderWrapper>
 			<HeaderLeft>
-				<LogoTitle>
+				<LogoTitle onClick={handleHome}>
 					<LogoWrapper>
 						<Logo />
 					</LogoWrapper>
-					<h2 onClick={handleHome}>Candleaf</h2>
+					<h2>Candleaf</h2>
 				</LogoTitle>
 			</HeaderLeft>
 
 			<HeaderMiddle>
 				<Discovery>
 					<div>
-						<a href="#products">
+						<a onClick={handleHome} href="#products">
 							<h3>Discovery</h3>
 						</a>
 					</div>
@@ -88,15 +99,15 @@ const Header: FC = () => {
 				</Discovery>
 
 				<About>
-					<a href="#about">
+					<a onClick={handleHome} href="#about">
 						<h3>About</h3>
 					</a>
 				</About>
-				<Contact>
+				<Orders>
 					<a href="#orders">
 						<h3>Your Orders</h3>
 					</a>
-				</Contact>
+				</Orders>
 			</HeaderMiddle>
 
 			<HeaderRight>
@@ -112,12 +123,15 @@ const Header: FC = () => {
 						<PermIdentityIcon />
 					)}
 				</UserStatus>
+				<CartWrapper>
+					<ShoppingCartOutlinedIcon
+						onClick={() => {
+							history.push("/cart");
+						}}
+					/>
+					{cartItemsCount > 0 ? <h3>({cartItemsCount})</h3> : null}
+				</CartWrapper>
 
-				<ShoppingCartOutlinedIcon
-					onClick={() => {
-						history.push("/cart");
-					}}
-				/>
 				<GreenSwitch
 					checked={themeSwitch}
 					onChange={() => {
@@ -175,6 +189,15 @@ const HeaderWrapper = styled.div`
 	}
 `;
 
+const CartWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	> h3 {
+		margin-left: 5px;
+	}
+`;
+
 const HeaderLeft = styled.div`
 	flex: 1;
 	display: flex;
@@ -220,6 +243,7 @@ const LogoTitle = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 	> div {
 		width: 40px;
 		margin-right: 5px;
@@ -229,9 +253,6 @@ const LogoTitle = styled.div`
 	> div > svg {
 		max-width: 100%;
 		height: auto;
-	}
-	> h2 {
-		cursor: pointer;
 	}
 `;
 const Discovery = styled.div`
@@ -272,7 +293,7 @@ const Discovery = styled.div`
 	}
 `;
 
-const Contact = styled.div`
+const Orders = styled.div`
 	position: relative;
 	cursor: pointer;
 	transition: all 0.3s ease;
