@@ -15,10 +15,15 @@ const Cart: FC = () => {
 
 	const dispatch = useDispatch();
 	const cart = useSelector((state: State) => state.user.cart);
-
+	const getSubTotal = () => {
+		let subTotal = 0;
+		cart.forEach((product) => {
+			subTotal += product.totalPrice;
+		});
+		return Math.round(subTotal * 100) / 100;
+	};
 	const useStyles = makeStyles((theme) => ({
 		button: {
-			marginTop: theme.spacing(1),
 			backgroundColor: "#49A010",
 			textTransform: "inherit",
 			fontFamily: "inherit",
@@ -44,7 +49,13 @@ const Cart: FC = () => {
 					);
 				})}
 			</CartItemWrapper>
+
 			<ProceedCheckoutWrapper>
+				<SubTotalWrapper>
+					<h3>Sub-Total</h3>
+					<h3>{`$${getSubTotal()}`}</h3>
+				</SubTotalWrapper>
+
 				<Button
 					variant="contained"
 					className={classes.button}
@@ -81,4 +92,19 @@ const SubTitle = styled.h2`
 	cursor: pointer;
 `;
 
-const ProceedCheckoutWrapper = styled.div``;
+const ProceedCheckoutWrapper = styled.div`
+	display: flex;
+	align-self: flex-end;
+	justify-content: center;
+	align-items: center;
+`;
+
+const SubTotalWrapper = styled.div`
+	display: flex;
+	margin: 0px 20px;
+	justify-content: center;
+	align-items: center;
+	> h3 {
+		padding: 0px 10px;
+	}
+`;
