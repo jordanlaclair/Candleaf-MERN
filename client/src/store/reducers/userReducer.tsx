@@ -56,6 +56,9 @@ const reducer: Reducer<UserSchema, UserActions> = (
 		case ActionType.LOWER_QUANTITY:
 			user.cart = action.payload;
 			return user;
+		case ActionType.ADD_TO_CART_QUANTITY:
+			user.cart = action.payload;
+			return user;
 
 		default:
 			return user;

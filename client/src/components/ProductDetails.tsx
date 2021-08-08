@@ -13,9 +13,9 @@ import { lightTheme } from "../styles/Themes";
 import Spinner from "react-spinkit";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
-import { addToCart } from "../store/actions";
+import { addSpecificAmount, addToCart } from "../store/actions";
 const ProductDetails: FC = () => {
-	const [productQuantity, setProductQuantity] = useState(0);
+	const [productQuantity, setProductQuantity] = useState(1);
 	const user = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -63,6 +63,12 @@ const ProductDetails: FC = () => {
 	interface DataTypes {
 		id: string;
 	}
+	interface ProductSchema {
+		productName: string;
+		price: number;
+		productId: string;
+	}
+
 	const { id }: DataTypes = useParams();
 
 	const fetchCandle = async (id: string) => {
@@ -78,7 +84,10 @@ const ProductDetails: FC = () => {
 
 	const handleSubtract = () => {
 		setProductQuantity((prevState) => {
-			return prevState - 1;
+			if (prevState > 1) {
+				return prevState - 1;
+			}
+			return prevState;
 		});
 	};
 	useEffect(() => {
@@ -95,17 +104,19 @@ const ProductDetails: FC = () => {
 	};
 
 	const handleAddToCart = (
+		productId: string,
 		productName: string,
 		price: number,
-		productId: string
+		userId: string,
+		quantity: number
 	) => {
-		let order: ProductSchema = {
-			productName,
-			price,
+		let candleData: ProductSchema = {
 			productId,
+			price,
+			productName,
 		};
-
-		dispatch(addToCart(user._id, order));
+		dispatch(addSpecificAmount(userId, candleData, quantity));
+		setProductQuantity(1);
 	};
 
 	return (
@@ -146,7 +157,13 @@ const ProductDetails: FC = () => {
 									variant="contained"
 									className={classes.button}
 									onClick={() => {
-										handleAddToCart(user._id, candleData.price, id);
+										handleAddToCart(
+											id,
+											candleData.title,
+											candleData.price,
+											user._id,
+											productQuantity
+										);
 									}}
 									startIcon={<ShoppingCartIcon />}
 								>

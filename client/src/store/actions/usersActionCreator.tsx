@@ -225,3 +225,51 @@ export const lowerQuantity =
 			console.log(error);
 		}
 	};
+
+export const addSpecificAmount =
+	(userID: string, productData: ProductSchema, quantity: number) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
+
+			let hasProduct = cart.some(
+				(product: CartSchema) => product.productId === productData.productId
+			);
+
+			if (!hasProduct) {
+				let newData = {
+					productName: productData.productName,
+					productId: productData.productId,
+					totalPrice: productData.price * quantity,
+					price: productData.price,
+					productQuantity: quantity,
+				};
+				cart.push(newData);
+			} else {
+				for (var i in cart) {
+					if (cart[i].productId == productData.productId) {
+						cart[i].totalPrice += productData.price * quantity;
+						cart[i].productQuantity += quantity;
+						break;
+					}
+				}
+			}
+
+			const newData = {
+				orders,
+				name,
+				auth0ID,
+				createdAt,
+				cart: cart,
+				_id,
+				__v,
+			};
+
+			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.ADD_TO_CART_QUANTITY, payload: cart });
+		} catch (error) {
+			console.log(error);
+		}
+	};

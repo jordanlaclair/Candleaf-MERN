@@ -16,6 +16,7 @@ export {
 	lowerQuantity,
 	createUser,
 	removeFromCart,
+	addSpecificAmount,
 } from "./usersActionCreator";
 
 export { toggleTheme } from "./appActionCreator";
@@ -131,6 +132,11 @@ interface AddToCartAction {
 	payload: CartsArray;
 }
 
+interface AddToCartQuantityAction {
+	type: ActionType.ADD_TO_CART_QUANTITY;
+	payload: CartsArray;
+}
+
 interface RemoveFromCartAction {
 	type: ActionType.REMOVE_FROM_CART;
 	payload: CartsArray;
@@ -158,4 +164,5 @@ export type UserActions =
 	| AddToCartAction
 	| RemoveFromCartAction
 	| LowerQuantityAction
+	| AddToCartQuantityAction
 	| CreateUserAction;

@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
 import BackgroundSrcImage from "../images/homebackground1.jpg";
+import BackgroundImageWallpaper from "../images/background.jpg";
 import { ReactComponent as Leaf } from "../images/leaf2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -28,7 +29,7 @@ const Home: FC = () => {
 		<HomeWrapper>
 			<BackgroundWrapper>
 				<BackgroundImageWrapper>
-					<BackgroundImage src={BackgroundSrcImage} />
+					<BackgroundImage src={BackgroundImageWallpaper} />
 				</BackgroundImageWrapper>
 				<ForeGroundWrapper>
 					<LeafWrapper>
@@ -86,9 +87,13 @@ const BackgroundImage = styled.img`
 	max-width: 100%;
 `;
 const BackgroundImageWrapper = styled.div`
+	margin-top: -300px;
 	width: 100%;
 	@media ${devices.mobileXL} {
 		display: none;
+	}
+	@media ${devices.laptopL} {
+		margin: 0px;
 	}
 `;
 const ForeGroundWrapper = styled.div`
