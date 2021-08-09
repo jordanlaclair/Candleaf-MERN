@@ -7,6 +7,7 @@ const size = {
 	tablet: "768px",
 	laptop: "1024px",
 	laptopL: "1440px",
+	mediumDesktop: "1744px",
 	desktop: "2560px",
 };
 
@@ -19,6 +20,6 @@ export default {
 	tablet: `(max-width: ${size.tablet})`,
 	laptop: `(max-width: ${size.laptop})`,
 	laptopL: `(max-width: ${size.laptopL})`,
+	desktopM: `(max-width: ${size.mediumDesktop})`,
 	desktop: `(max-width: ${size.desktop})`,
-	desktopL: `(max-width: ${size.desktop})`,
 };
