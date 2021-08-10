@@ -15,6 +15,7 @@ const Cart: FC = () => {
 
 	const dispatch = useDispatch();
 	const cart = useSelector((state: State) => state.user.cart);
+	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const getSubTotal = () => {
 		let subTotal = 0;
 		cart.forEach((product) => {
@@ -57,7 +58,7 @@ const Cart: FC = () => {
 			<ProceedCheckoutWrapper>
 				<SubTotalWrapper>
 					<h3>Sub-Total</h3>
-					<h3>{`$${getSubTotal()}`}</h3>
+					<h3>{Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
 				</SubTotalWrapper>
 
 				<Button

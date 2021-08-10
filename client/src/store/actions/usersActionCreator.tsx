@@ -76,7 +76,8 @@ export const addToCart =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
+			let { orders, name, auth0ID, createdAt, cart, _id, __v, cartTotal } =
+				data;
 			let newData;
 			let exists = false;
 
@@ -89,24 +90,26 @@ export const addToCart =
 					price: candleData.price,
 					productQuantity: 1,
 				};
-
 				cart.push(firstItem);
-				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
 				newData = {
 					orders,
 					name,
 					auth0ID,
 					createdAt,
 					cart,
+					cartTotal: candleData.price,
 					_id,
 					__v,
 				};
+
 				await api.updateUser(userID, newData);
+				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 			} else if (
 				cart.length > 0 &&
 				cart[0].productName == "none" &&
 				cart.length == 1
 			) {
+				cartTotal = candleData.price;
 				cart[0].productName = candleData.productName;
 				cart[0].productId = candleData.productId;
 				cart[0].totalPrice = candleData.price;
@@ -119,17 +122,19 @@ export const addToCart =
 					auth0ID,
 					createdAt,
 					cart,
+					cartTotal,
 					_id,
 					__v,
 				};
 				await api.updateUser(userID, newData);
-				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
+				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 			} else {
 				for (let i = 0; i < cart.length; i++) {
 					exists = Object.values(cart[i]).includes(candleData.productId);
 					if (exists) {
 						cart[i].productQuantity += 1;
 						cart[i].totalPrice += candleData.price;
+						cartTotal += candleData.price;
 						break;
 					}
 				}
@@ -144,6 +149,7 @@ export const addToCart =
 						price: candleData.price,
 					};
 					cart.push(newProduct);
+					cartTotal += candleData.price;
 				}
 				newData = {
 					orders,
@@ -151,11 +157,12 @@ export const addToCart =
 					auth0ID,
 					createdAt,
 					cart,
+					cartTotal,
 					_id,
 					__v,
 				};
 				await api.updateUser(userID, newData);
-				dispatch({ type: ActionType.ADD_TO_CART, payload: cart });
+				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 			}
 		} catch (error) {
 			console.log(error);
@@ -168,8 +175,13 @@ export const removeFromCart =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
-
+			let { orders, name, auth0ID, createdAt, cart, cartTotal, _id, __v } =
+				data;
+			for (const product of cart) {
+				if (product.productId == productID) {
+					cartTotal -= product.totalPrice;
+				}
+			}
 			let filtered: CartsArray = cart.filter((product: CartSchema) => {
 				return product.productId != productID;
 			});
@@ -180,12 +192,13 @@ export const removeFromCart =
 				auth0ID,
 				createdAt,
 				cart: filtered,
+				cartTotal,
 				_id,
 				__v,
 			};
 
 			await api.updateUser(userID, newData);
-			dispatch({ type: ActionType.REMOVE_FROM_CART, payload: filtered });
+			dispatch({ type: ActionType.REMOVE_FROM_CART, payload: newData });
 		} catch (error) {
 			console.log(error);
 		}
@@ -197,12 +210,14 @@ export const lowerQuantity =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
+			let { orders, name, auth0ID, createdAt, cart, cartTotal, _id, __v } =
+				data;
 
 			for (var i in cart) {
 				if (cart[i].productId == productID) {
 					if (cart[i].productQuantity > 1) {
 						cart[i].totalPrice -= cart[i].price;
+						cartTotal -= cart[i].price;
 						cart[i].productQuantity -= 1;
 						break;
 					}
@@ -215,12 +230,13 @@ export const lowerQuantity =
 				auth0ID,
 				createdAt,
 				cart: cart,
+				cartTotal,
 				_id,
 				__v,
 			};
 
 			await api.updateUser(userID, newData);
-			dispatch({ type: ActionType.LOWER_QUANTITY, payload: cart });
+			dispatch({ type: ActionType.LOWER_QUANTITY, payload: newData });
 		} catch (error) {
 			console.log(error);
 		}
@@ -232,7 +248,8 @@ export const addSpecificAmount =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, _id, __v } = data;
+			let { orders, name, auth0ID, createdAt, cart, cartTotal, _id, __v } =
+				data;
 
 			let hasProduct = cart.some(
 				(product: CartSchema) => product.productId === productData.productId
@@ -247,9 +264,11 @@ export const addSpecificAmount =
 					productQuantity: quantity,
 				};
 				cart.push(newData);
+				cartTotal = productData.price;
 			} else {
 				for (var i in cart) {
 					if (cart[i].productId == productData.productId) {
+						cartTotal += productData.price * quantity;
 						cart[i].totalPrice += productData.price * quantity;
 						cart[i].productQuantity += quantity;
 						break;
@@ -263,12 +282,13 @@ export const addSpecificAmount =
 				auth0ID,
 				createdAt,
 				cart: cart,
+				cartTotal,
 				_id,
 				__v,
 			};
 
 			await api.updateUser(userID, newData);
-			dispatch({ type: ActionType.ADD_TO_CART_QUANTITY, payload: cart });
+			dispatch({ type: ActionType.ADD_TO_CART_QUANTITY, payload: newData });
 		} catch (error) {
 			console.log(error);
 		}

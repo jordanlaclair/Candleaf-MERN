@@ -61,6 +61,10 @@ const userSchema = mongoose.Schema({
 			},
 		},
 	],
+	cartTotal: {
+		type: Number,
+		default: 0,
+	},
 });
 
 const User = mongoose.model("User", userSchema);

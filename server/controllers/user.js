@@ -27,17 +27,9 @@ export const getUser = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-	let { orders, cart, name, createdAt, auth0ID, _id } = req.body;
+	let { orders, cart, name, createdAt, auth0ID, _id, cartTotal } = req.body;
 
 	try {
-		const newData = {
-			orders,
-			cart,
-			name,
-			createdAt,
-			auth0ID,
-			_id,
-		};
 		const doesUserExist = await Users.exists({ auth0ID: auth0ID });
 		if (doesUserExist) {
 			await Users.findOne({ auth0ID: auth0ID }, (err, user) => {
@@ -56,6 +48,7 @@ export const createUser = async (req, res) => {
 				createdAt,
 				auth0ID,
 				_id,
+				cartTotal,
 			};
 
 			const newUser = new Users(newData);
@@ -70,7 +63,8 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	const { id } = req.params;
 
-	const { orders, name, auth0ID, createdAt, cart, _id, __v } = req.body;
+	const { orders, name, auth0ID, createdAt, cart, _id, __v, cartTotal } =
+		req.body;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
@@ -81,6 +75,7 @@ export const updateUser = async (req, res) => {
 		auth0ID,
 		createdAt,
 		cart,
+		cartTotal,
 		_id,
 		__v,
 	};
@@ -96,7 +91,7 @@ export const addToCart = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
-	const { orders, name, auth0ID, createdAt, cart } = req.body;
+	const { orders, name, auth0ID, createdAt, cart, cartTotal } = req.body;
 
 	const updatedUser = {
 		orders,
@@ -104,6 +99,7 @@ export const addToCart = async (req, res) => {
 		auth0ID,
 		createdAt,
 		cart,
+		cartTotal,
 	};
 
 	await Users.findByIdAndUpdate(id, { cart: cart }, { new: true });

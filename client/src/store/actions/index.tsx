@@ -115,6 +115,7 @@ interface UsersSchema {
 	orders: Array<CartSchema>;
 	_id: string;
 	cart: Array<CartSchema>;
+	cartTotal: number;
 }
 
 interface CreateUserAction {
@@ -129,22 +130,22 @@ interface UpdateUserAction {
 
 interface AddToCartAction {
 	type: ActionType.ADD_TO_CART;
-	payload: CartsArray;
+	payload: UsersSchema;
 }
 
 interface AddToCartQuantityAction {
 	type: ActionType.ADD_TO_CART_QUANTITY;
-	payload: CartsArray;
+	payload: UsersSchema;
 }
 
 interface RemoveFromCartAction {
 	type: ActionType.REMOVE_FROM_CART;
-	payload: CartsArray;
+	payload: UsersSchema;
 }
 
 interface LowerQuantityAction {
 	type: ActionType.LOWER_QUANTITY;
-	payload: CartsArray;
+	payload: UsersSchema;
 }
 
 interface GetUserAction {

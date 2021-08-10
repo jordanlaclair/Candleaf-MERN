@@ -25,6 +25,7 @@ const Checkout = () => {
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [country, setCountry] = useState("");
 	const cart = useSelector((state: State) => state.user.cart);
+	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
 
 	const [region, setRegion] = useState("");
@@ -230,7 +231,7 @@ const Checkout = () => {
 				<DetailsOuterWrapper>
 					<DetailsWrapper>
 						<h3>Subtotal</h3>
-						<h3>$</h3>
+						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Shipping</h3>

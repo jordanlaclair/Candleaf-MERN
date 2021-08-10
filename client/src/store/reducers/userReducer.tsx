@@ -17,6 +17,7 @@ interface UserSchema {
 	orders: CartsArray;
 	_id: string;
 	cart: CartsArray;
+	cartTotal: number;
 }
 
 type CartsArray = Array<CartSchema>;
@@ -36,6 +37,7 @@ let initialState: UserSchema = {
 			price: 0,
 		},
 	],
+	cartTotal: 0,
 };
 
 const reducer: Reducer<UserSchema, UserActions> = (
@@ -48,17 +50,14 @@ const reducer: Reducer<UserSchema, UserActions> = (
 		case ActionType.UPDATE_USER:
 			return action.payload;
 		case ActionType.REMOVE_FROM_CART:
-			user.cart = action.payload;
-			return user;
+			return action.payload;
+
 		case ActionType.ADD_TO_CART:
-			user.cart = action.payload;
-			return user;
+			return action.payload;
 		case ActionType.LOWER_QUANTITY:
-			user.cart = action.payload;
-			return user;
+			return action.payload;
 		case ActionType.ADD_TO_CART_QUANTITY:
-			user.cart = action.payload;
-			return user;
+			return action.payload;
 
 		default:
 			return user;
