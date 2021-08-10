@@ -16,10 +16,16 @@ import { useHistory } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
 import devices from "../styles/devices";
+import { State } from "../store/reducers";
+import { useSelector } from "react-redux";
+import Product from "./Product";
 
 const Checkout = () => {
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [country, setCountry] = useState("");
+	const cart = useSelector((state: State) => state.user.cart);
+	const candles = useSelector((state: State) => state.candles);
+
 	const [region, setRegion] = useState("");
 	const history = useHistory();
 	const useStyles = makeStyles((theme) => ({
@@ -114,6 +120,17 @@ const Checkout = () => {
 		history.push("/shipping");
 	};
 
+	const handleGetImageSrc = (id: string) => {
+		let result: string = "";
+		candles.forEach((candle) => {
+			if (candle._id == id) {
+				result = candle.image;
+			}
+		});
+
+		return result;
+	};
+
 	return (
 		<CheckoutWrapper>
 			<FirstHalf>
@@ -150,7 +167,8 @@ const Checkout = () => {
 					</NewsLetterWrapper>
 
 					<InputHeader>Contact</InputHeader>
-					<InputField placeholder="Name" type="text" />
+					<InputField fieldType="name" placeholder="First Name" type="text" />
+					<InputField fieldType="name" placeholder="Last Name" type="text" />
 					<InputField placeholder="Address" type="text" />
 					<InputField placeholder="Shipping note (optional)" type="text" />
 					<InputField placeholder="City" type="text" />
@@ -180,7 +198,23 @@ const Checkout = () => {
 				</ShippingWrapper>
 			</FirstHalf>
 
-			<SecondHalf>f</SecondHalf>
+			<SecondHalf>
+				<ProductsWrapper>
+					{cart.map((product) => {
+						let result = handleGetImageSrc(product.productId);
+						return (
+							<CartProduct
+								title={product.productName}
+								price={product.price}
+								image={result}
+								productId={product.productId}
+								productQuantity={product.productQuantity}
+								showQuantity={true}
+							/>
+						);
+					})}
+				</ProductsWrapper>
+			</SecondHalf>
 		</CheckoutWrapper>
 	);
 };
@@ -199,15 +233,20 @@ const FirstHalf = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
 	flex: 1;
 	padding: 0px 3.5rem;
+`;
+
+const CartProduct = styled(Product)`
+	background: red !important;
+	color: green;
 `;
 const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	height: 100vh;
 	display: flex;
-	padding-right: 10rem;
+	padding: 3rem 3.5rem;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -218,9 +257,8 @@ const HeaderWrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
-	align-self: flex-start;
 	margin-top: 30px;
-
+	margin-left: -100px;
 	margin-bottom: 50px;
 `;
 const Header = styled.div`
@@ -279,10 +317,10 @@ const NewsLetterWrapper = styled.div`
 
 const InputHeader = styled.h2``;
 
-const InputField = styled.input`
+const InputField = styled.input<{ fieldType?: string }>`
 	padding: 15px;
 	outline: none;
-	min-width: 380px;
+	min-width: ${(props) => (props.fieldType == "name" ? "200px" : "380px")};
 	border: 2.5px solid ${(props) => props.theme.brand};
 	font-family: "Poppins", sans-serif;
 	font-weight: bold;
@@ -295,4 +333,11 @@ const ShippingWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+`;
+
+const ProductsWrapper = styled.div`
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	grid-gap: 2rem;
 `;

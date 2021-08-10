@@ -56,9 +56,6 @@ const CartItem: FC<PropTypes> = ({
 	const handleGetImage = () => {
 		return candles.map((candle) => {
 			if (candle._id == productId) {
-				console.log(candle._id);
-				console.log(productId);
-
 				return <img src={candle.image} alt="Candleaf candle" />;
 			}
 		});

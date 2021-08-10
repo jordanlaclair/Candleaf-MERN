@@ -48,6 +48,7 @@ const App: FC = () => {
 							<Checkout />
 						</Route>
 						<Route exact path="/products/candles/:id">
+							<Header />
 							<ProductDetails />
 						</Route>
 					</Switch>

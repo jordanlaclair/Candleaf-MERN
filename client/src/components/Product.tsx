@@ -14,6 +14,7 @@ type PropTypes = {
 	image: string;
 	productId: string;
 	productQuantity: number;
+	showQuantity: boolean;
 };
 interface ProductSchema {
 	productName: string;
@@ -27,6 +28,7 @@ const Product: FC<PropTypes> = ({
 	image,
 	productId,
 	productQuantity,
+	showQuantity,
 }) => {
 	const user = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
@@ -61,10 +63,17 @@ const Product: FC<PropTypes> = ({
 
 	return (
 		<ProductWrapper
+			showQuantity={showQuantity}
 			onClick={() => {
 				handleClick(productId);
 			}}
 		>
+			{showQuantity ? (
+				<ProductQuanityWrapper>
+					<h4>{productQuantity}</h4>
+				</ProductQuanityWrapper>
+			) : null}
+
 			<ProductTop>
 				<ImageWrapper>
 					<img src={image} alt="candle" />
@@ -73,7 +82,6 @@ const Product: FC<PropTypes> = ({
 
 			<ProductBottom>
 				<Name>{title}</Name>
-
 				<Price>${price}</Price>
 				<Button
 					variant="contained"
@@ -93,13 +101,15 @@ const Product: FC<PropTypes> = ({
 
 export default Product;
 
-const ProductWrapper = styled.div`
+const ProductWrapper = styled.div<{ showQuantity?: boolean }>`
 	box-shadow: 0px 2px 15px 2px gray;
+
+	max-width: ${(props) => (props.showQuantity == true ? "210px" : "unset")};
 	border-radius: 5px;
 	padding: 20px;
 	background-color: ${(props) => props.theme.colors.secondary};
 	cursor: pointer;
-
+	position: relative;
 	transition: all 0.3s ease;
 	:hover {
 		transform: scale(1.1);
@@ -108,9 +118,23 @@ const ProductWrapper = styled.div`
 
 const ProductTop = styled.div`
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+`;
+const ProductQuanityWrapper = styled.div`
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	background: ${(props) => props.theme.brand};
 `;
 const ImageWrapper = styled.div`
 	display: flex;
