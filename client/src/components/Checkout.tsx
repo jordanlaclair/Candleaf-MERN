@@ -17,13 +17,41 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import devices from "../styles/devices";
+import { useAuth0 } from "@auth0/auth0-react";
 import { State } from "../store/reducers";
 import { useSelector } from "react-redux";
 import Product from "./Product";
 
 const Checkout = () => {
+	const { user, isAuthenticated } = useAuth0();
+
+	interface userData {
+		firstName: string;
+		lastName: string;
+		address: string;
+		shippingNote?: string;
+		city: string;
+		postalCode: string;
+		email: string;
+		country: string;
+		region: string;
+	}
+
+	const initialUserState = {
+		firstName: user?.name!.split(" ")[0] || "",
+		lastName: user?.name!.split(" ").slice(-1)[0] || "",
+		address: "",
+		shippingNote: "",
+		city: "",
+		postalCode: "",
+		country: "",
+		region: "",
+		email: user?.email || "",
+	};
+
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [country, setCountry] = useState("");
+	const [userData, setUserData] = useState<userData>(initialUserState);
 	const cart = useSelector((state: State) => state.user.cart);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
@@ -78,6 +106,7 @@ const Checkout = () => {
 		id: "",
 		classes: "",
 		showDefaultOption: true,
+		required: true,
 		priorityOptions: [],
 		defaultOptionLabel: "Select Country",
 		labelType: undefined,
@@ -99,6 +128,7 @@ const Checkout = () => {
 		name: "rcrs-region",
 		id: "",
 		classes: "",
+		required: true,
 		showDefaultOption: undefined,
 		priorityOptions: [],
 		defaultOptionLabel: "Select Region",
@@ -118,7 +148,8 @@ const Checkout = () => {
 		history.push("/cart");
 	};
 
-	const handleShipping = () => {
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		history.push("/shipping");
 	};
 
@@ -156,9 +187,23 @@ const Checkout = () => {
 						<NextBreadCrumb>Payment</NextBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapper>
-				<FormWrapper>
+				<FormWrapper
+					onSubmit={(e) => {
+						handleSubmit(e);
+					}}
+				>
 					<InputHeader>Contact</InputHeader>
-					<InputField placeholder="Email" type="email" />
+					<InputField
+						placeholder="Email"
+						type="email"
+						value={userData.email}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, email: e.target.value };
+							});
+						}}
+						required
+					/>
 					<NewsLetterWrapper>
 						<GreenCheckbox
 							checked={checkNewsLetter}
@@ -169,35 +214,98 @@ const Checkout = () => {
 					</NewsLetterWrapper>
 
 					<InputHeader>Contact</InputHeader>
-					<InputField fieldType="name" placeholder="First Name" type="text" />
-					<InputField fieldType="name" placeholder="Last Name" type="text" />
-					<InputField placeholder="Address" type="text" />
-					<InputField placeholder="Shipping note (optional)" type="text" />
-					<InputField placeholder="City" type="text" />
-					<InputField placeholder="Postal Code" type="text" />
+					<InputField
+						fieldType="name"
+						name="First Name"
+						placeholder="First Name"
+						type="text"
+						value={userData.firstName}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, firstName: e.target.value };
+							});
+						}}
+						required
+					/>
+					<InputField
+						fieldType="name"
+						placeholder="Last Name"
+						required
+						type="text"
+						value={userData.lastName}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, lastName: e.target.value };
+							});
+						}}
+					/>
+					<InputField
+						placeholder="Address"
+						type="text"
+						required
+						value={userData.address}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, address: e.target.value };
+							});
+						}}
+					/>
+					<InputField
+						placeholder="Shipping note (optional)"
+						type="text"
+						required
+						value={userData.shippingNote}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, shippingNote: e.target.value };
+							});
+						}}
+					/>
+					<InputField
+						placeholder="City"
+						type="text"
+						required
+						value={userData.city}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, city: e.target.value };
+							});
+						}}
+					/>
+					<InputField
+						placeholder="Postal Code"
+						type="text"
+						required
+						value={userData.postalCode}
+						onChange={(e) => {
+							setUserData((prevState) => {
+								return { ...prevState, postalCode: e.target.value };
+							});
+						}}
+					/>
 					<LocationWrapper>
 						<CountryDropdown {...countryProps} />
 						<RegionDropdown {...regionProps} />
 					</LocationWrapper>
+					<ShippingWrapper>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<ShoppingCartIcon />}
+							onClick={handleBackToCart}
+						>
+							<h3>Back To Cart</h3>
+						</Button>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<AirplanemodeActiveIcon />}
+							type="submit"
+						>
+							<h3>Continue</h3>
+						</Button>
+					</ShippingWrapper>
 				</FormWrapper>
-				<ShippingWrapper>
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<ShoppingCartIcon />}
-						onClick={handleBackToCart}
-					>
-						<h3>Back To Cart</h3>
-					</Button>
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<AirplanemodeActiveIcon />}
-						onClick={handleShipping}
-					>
-						<h3>Continue</h3>
-					</Button>
-				</ShippingWrapper>
 			</FirstHalf>
 
 			<SecondHalf>
@@ -328,7 +436,7 @@ const LocationWrapper = styled.div`
 
 const NextBreadCrumb = styled.h3``;
 
-const FormWrapper = styled.div`
+const FormWrapper = styled.form`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

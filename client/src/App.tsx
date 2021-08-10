@@ -16,6 +16,7 @@ import Spinner from "react-spinkit";
 import { FC } from "react";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
+import Shipping from "./components/Shipping";
 const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
@@ -46,6 +47,9 @@ const App: FC = () => {
 						</Route>
 						<Route exact path="/checkout">
 							<Checkout />
+						</Route>
+						<Route exact path="/shipping">
+							<Shipping />
 						</Route>
 						<Route exact path="/products/candles/:id">
 							<Header />
