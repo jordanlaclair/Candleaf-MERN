@@ -15,6 +15,7 @@ import { OutlinedInput } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
+import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import devices from "../styles/devices";
 import { State } from "../store/reducers";
 import { useSelector } from "react-redux";
@@ -214,6 +215,33 @@ const Checkout = () => {
 						);
 					})}
 				</ProductsWrapper>
+				<HorizontalLine />
+				<CouponWrapper>
+					<InputField placeholder="Coupon Code" type="text" />
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<LoyaltyIcon />}
+					>
+						<h3>Add Code</h3>
+					</Button>
+				</CouponWrapper>
+				<HorizontalLine />
+				<DetailsOuterWrapper>
+					<DetailsWrapper>
+						<h3>Subtotal</h3>
+						<h3>$</h3>
+					</DetailsWrapper>
+					<DetailsWrapper>
+						<h3>Shipping</h3>
+						<Shipping>Calculated at the next step</Shipping>
+					</DetailsWrapper>
+				</DetailsOuterWrapper>
+				<HorizontalLine />
+				<TotalWrapper>
+					<h3>Total</h3>
+					<h2>$</h2>
+				</TotalWrapper>
 			</SecondHalf>
 		</CheckoutWrapper>
 	);
@@ -246,9 +274,9 @@ const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	height: 100vh;
 	display: flex;
-	padding: 3rem 3.5rem;
+	padding: 3rem 5rem;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: center;
 	flex: 2;
 `;
@@ -340,4 +368,39 @@ const ProductsWrapper = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	grid-gap: 2rem;
+`;
+
+const HorizontalLine = styled.hr`
+	width: 100%;
+`;
+const CouponWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	> input {
+		margin-right: 10px;
+	}
+`;
+const DetailsOuterWrapper = styled.div`
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
+const DetailsWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
+
+const TotalWrapper = styled(DetailsWrapper)`
+	width: 80%;
+`;
+
+const Shipping = styled.h3`
+	opacity: 0.8;
 `;
