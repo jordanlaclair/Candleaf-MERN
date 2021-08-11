@@ -15,6 +15,7 @@ type PropTypes = {
 	productId: string;
 	productQuantity: number;
 	showQuantity: boolean;
+	showAddToCart: boolean;
 };
 interface ProductSchema {
 	productName: string;
@@ -29,6 +30,7 @@ const Product: FC<PropTypes> = ({
 	productId,
 	productQuantity,
 	showQuantity,
+	showAddToCart,
 }) => {
 	const user = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
@@ -83,17 +85,19 @@ const Product: FC<PropTypes> = ({
 			<ProductBottom>
 				<Name>{title}</Name>
 				<Price>${price}</Price>
-				<Button
-					variant="contained"
-					className={classes.button}
-					startIcon={<ShoppingCartIcon />}
-					onClick={(e) => {
-						e.stopPropagation();
-						addToCart(user._id, title, price, productId);
-					}}
-				>
-					<h4>Add to Cart</h4>
-				</Button>
+				{showAddToCart && (
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<ShoppingCartIcon />}
+						onClick={(e) => {
+							e.stopPropagation();
+							addToCart(user._id, title, price, productId);
+						}}
+					>
+						<h4>Add to Cart</h4>
+					</Button>
+				)}
 			</ProductBottom>
 		</ProductWrapper>
 	);

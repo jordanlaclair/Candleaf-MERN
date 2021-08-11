@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../images/leaf.svg";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
@@ -25,7 +25,7 @@ import Product from "./Product";
 const Checkout = () => {
 	const { user, isAuthenticated } = useAuth0();
 
-	interface userData {
+	interface UserData {
 		firstName: string;
 		lastName: string;
 		address: string;
@@ -37,10 +37,16 @@ const Checkout = () => {
 		region: string;
 	}
 
+	interface DiscountData {
+		coupon: number;
+		newsLetter: number;
+		totalDiscounts: number;
+	}
+
 	const initialUserState = {
 		firstName: user?.name!.split(" ")[0] || "",
 		lastName: user?.name!.split(" ").slice(-1)[0] || "",
-		address: "",
+		address: user?.address! || "",
 		shippingNote: "",
 		city: "",
 		postalCode: "",
@@ -49,13 +55,23 @@ const Checkout = () => {
 		email: user?.email || "",
 	};
 
+	const initialDiscountData = {
+		coupon: 0,
+		newsLetter: 0,
+		totalDiscounts: 0,
+	};
+
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [country, setCountry] = useState("");
-	const [userData, setUserData] = useState<userData>(initialUserState);
+	const [couponCode, setCouponCode] = useState("");
+	const [validCouponCode, setValidCouponCode] = useState(false);
+	const [discountData, setDiscountData] =
+		useState<DiscountData>(initialDiscountData);
+	const [userData, setUserData] = useState<UserData>(initialUserState);
 	const cart = useSelector((state: State) => state.user.cart);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
-
+	const [total, setTotal] = useState(0);
 	const [region, setRegion] = useState("");
 	const history = useHistory();
 	const useStyles = makeStyles((theme) => ({
@@ -66,10 +82,68 @@ const Checkout = () => {
 		},
 	}));
 	const classes = useStyles();
+	const handleCoupon = () => {
+		if (couponCode.length > 1) {
+			setCouponCode("");
+			setValidCouponCode(true);
+		} else {
+			setValidCouponCode(false);
+		}
+	};
+
+	useEffect(() => {
+		if (checkNewsLetter) {
+			let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
+
+			setDiscountData((prevState) => {
+				return {
+					...prevState,
+					newsLetter: discount,
+					totalDiscounts: discountData.totalDiscounts + discount,
+				};
+			});
+		} else {
+			setDiscountData((prevState) => {
+				return {
+					...prevState,
+					newsLetter: 0,
+					totalDiscounts: discountData.totalDiscounts - discountData.newsLetter,
+				};
+			});
+		}
+	}, [checkNewsLetter]);
+
+	useEffect(() => {
+		if (validCouponCode) {
+			let discount =
+				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
+
+			setDiscountData((prevState) => {
+				return {
+					...prevState,
+					coupon: discount,
+					totalDiscounts: discountData.totalDiscounts + discount,
+				};
+			});
+		} else {
+			setDiscountData((prevState) => {
+				return {
+					...prevState,
+					coupon: 0,
+					totalDiscounts: discountData.totalDiscounts - discountData.coupon,
+				};
+			});
+		}
+	}, [validCouponCode]);
+
+	useEffect(() => {
+		console.log(discountData);
+	}, [discountData]);
 
 	const handleNewsLetter = () => {
 		setCheckNewsLetter(!checkNewsLetter);
 	};
+
 	const GreenCheckbox = withStyles({
 		root: {
 			color: green[500],
@@ -302,7 +376,7 @@ const Checkout = () => {
 							startIcon={<AirplanemodeActiveIcon />}
 							type="submit"
 						>
-							<h3>Continue</h3>
+							<h3>Continue to Shipping</h3>
 						</Button>
 					</ShippingWrapper>
 				</FormWrapper>
@@ -313,24 +387,33 @@ const Checkout = () => {
 					{cart.map((product) => {
 						let result = handleGetImageSrc(product.productId);
 						return (
-							<CartProduct
+							<Product
 								title={product.productName}
 								price={product.price}
 								image={result}
 								productId={product.productId}
 								productQuantity={product.productQuantity}
 								showQuantity={true}
+								showAddToCart={false}
 							/>
 						);
 					})}
 				</ProductsWrapper>
 				<HorizontalLine />
 				<CouponWrapper>
-					<InputField placeholder="Coupon Code" type="text" />
+					<InputField
+						placeholder="Coupon Code"
+						type="text"
+						value={couponCode}
+						onChange={(e) => {
+							setCouponCode(e.target.value);
+						}}
+					/>
 					<Button
 						variant="contained"
 						className={classes.button}
 						startIcon={<LoyaltyIcon />}
+						onClick={handleCoupon}
 					>
 						<h3>Add Code</h3>
 					</Button>
@@ -342,6 +425,21 @@ const Checkout = () => {
 						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
+						<h3>Coupon Code</h3>
+						<h3>
+							{" "}
+							{discountData.coupon === 0 ? "None" : `-$${discountData.coupon}`}
+						</h3>
+					</DetailsWrapper>
+					<DetailsWrapper>
+						<h3>Discount</h3>
+						<h3>
+							{discountData.newsLetter === 0
+								? "None"
+								: `-$${discountData.newsLetter}`}
+						</h3>
+					</DetailsWrapper>
+					<DetailsWrapper>
 						<h3>Shipping</h3>
 						<Shipping>Calculated at the next step</Shipping>
 					</DetailsWrapper>
@@ -349,7 +447,16 @@ const Checkout = () => {
 				<HorizontalLine />
 				<TotalWrapper>
 					<h3>Total</h3>
-					<h2>$</h2>
+
+					{discountData.totalDiscounts === 0 ? (
+						<h3>None</h3>
+					) : (
+						<h2>{`$${
+							Math.round(
+								(cartTotal - discountData.totalDiscounts + Number.EPSILON) * 100
+							) / 100
+						}`}</h2>
+					)}
 				</TotalWrapper>
 			</SecondHalf>
 		</CheckoutWrapper>
@@ -375,10 +482,6 @@ const FirstHalf = styled.div`
 	padding: 0px 3.5rem;
 `;
 
-const CartProduct = styled(Product)`
-	background: red !important;
-	color: green;
-`;
 const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	height: 100vh;

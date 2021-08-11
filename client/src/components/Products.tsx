@@ -57,6 +57,7 @@ const Products: FC = () => {
 							productId={candle._id}
 							productQuantity={candle.purchaseCount}
 							showQuantity={false}
+							showAddToCart={true}
 						/>
 					);
 				})}
