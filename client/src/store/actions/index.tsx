@@ -112,12 +112,23 @@ interface productSchema {
 interface UsersSchema {
 	name: string;
 	auth0ID: string;
-	orders: Array<CartSchema>;
+	couponDiscount: number;
+	newsLetterDiscount: number;
+	totalDiscounts: number;
+	shippingCost: number;
+	total: number;
+	email: string;
+	address: string;
+	createdAt: string;
+	city: string;
+	postalCode: string;
+	country: string;
+	region: string;
+	orders: CartsArray;
 	_id: string;
-	cart: Array<CartSchema>;
+	cart: CartsArray;
 	cartTotal: number;
 }
-
 interface CreateUserAction {
 	type: ActionType.CREATE_USER;
 	payload: UsersSchema;
@@ -158,6 +169,22 @@ interface GetUsersAction {
 	payload: Array<object>;
 }
 
+interface UpdateCouponDiscount {
+	type: ActionType.UPDATE_COUPON_DISCOUNT;
+	payload: number;
+}
+
+interface UpdateNewsLetterDiscount {
+	type: ActionType.UPDATE_NEWSLETTER_DISCOUNT;
+	payload: number;
+}
+interface UpdateTotalDiscounts {
+	type: ActionType.UPDATE_TOTAL_DISCOUNT;
+}
+interface UpdateTotal {
+	type: ActionType.UPDATE_TOTAL;
+	payload: number;
+}
 export type UserActions =
 	| GetUserAction
 	| UpdateUserAction
@@ -165,5 +192,9 @@ export type UserActions =
 	| AddToCartAction
 	| RemoveFromCartAction
 	| LowerQuantityAction
+	| UpdateTotalDiscounts
+	| UpdateTotal
 	| AddToCartQuantityAction
+	| UpdateCouponDiscount
+	| UpdateNewsLetterDiscount
 	| CreateUserAction;

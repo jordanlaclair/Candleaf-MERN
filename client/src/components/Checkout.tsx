@@ -19,9 +19,14 @@ import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { State } from "../store/reducers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
-
+import {
+	updateNewsLetterDiscount,
+	updateCouponDiscount,
+	updateTotalDiscounts,
+	updateTotal,
+} from "../store/actions/usersActionCreator";
 const Checkout = () => {
 	const { user, isAuthenticated } = useAuth0();
 
@@ -60,7 +65,7 @@ const Checkout = () => {
 		newsLetter: 0,
 		totalDiscounts: 0,
 	};
-
+	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [country, setCountry] = useState("");
 	const [couponCode, setCouponCode] = useState("");
@@ -69,8 +74,18 @@ const Checkout = () => {
 		useState<DiscountData>(initialDiscountData);
 	const [userData, setUserData] = useState<UserData>(initialUserState);
 	const cart = useSelector((state: State) => state.user.cart);
+	const userID = useSelector((state: State) => state.user._id);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
+	const totalDiscounts = useSelector(
+		(state: State) => state.user.totalDiscounts
+	);
+	const couponDiscount = useSelector(
+		(state: State) => state.user.couponDiscount
+	);
+	const newsLetterDiscount = useSelector(
+		(state: State) => state.user.newsLetterDiscount
+	);
 	const [total, setTotal] = useState(0);
 	const [region, setRegion] = useState("");
 	const history = useHistory();
@@ -92,9 +107,19 @@ const Checkout = () => {
 	};
 
 	useEffect(() => {
+		dispatch(updateTotalDiscounts(userID));
+		dispatch(updateTotal(userID, newsLetterDiscount));
+	}, [newsLetterDiscount]);
+
+	useEffect(() => {
+		dispatch(updateTotalDiscounts(userID));
+		dispatch(updateTotal(userID, couponDiscount));
+	}, [couponDiscount]);
+
+	useEffect(() => {
 		if (checkNewsLetter) {
 			let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
-
+			dispatch(updateNewsLetterDiscount(discount, userID));
 			setDiscountData((prevState) => {
 				return {
 					...prevState,
@@ -103,6 +128,7 @@ const Checkout = () => {
 				};
 			});
 		} else {
+			dispatch(updateNewsLetterDiscount(0, userID));
 			setDiscountData((prevState) => {
 				return {
 					...prevState,
@@ -117,7 +143,7 @@ const Checkout = () => {
 		if (validCouponCode) {
 			let discount =
 				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
-
+			dispatch(updateCouponDiscount(discount, userID));
 			setDiscountData((prevState) => {
 				return {
 					...prevState,
@@ -126,6 +152,7 @@ const Checkout = () => {
 				};
 			});
 		} else {
+			dispatch(updateCouponDiscount(0, userID));
 			setDiscountData((prevState) => {
 				return {
 					...prevState,
@@ -327,7 +354,6 @@ const Checkout = () => {
 					<InputField
 						placeholder="Shipping note (optional)"
 						type="text"
-						required
 						value={userData.shippingNote}
 						onChange={(e) => {
 							setUserData((prevState) => {
@@ -465,7 +491,7 @@ const Checkout = () => {
 
 export default Checkout;
 
-const CheckoutWrapper = styled.div`
+export const CheckoutWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -473,7 +499,7 @@ const CheckoutWrapper = styled.div`
 	width: 100%;
 `;
 
-const FirstHalf = styled.div`
+export const FirstHalf = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -482,7 +508,7 @@ const FirstHalf = styled.div`
 	padding: 0px 3.5rem;
 `;
 
-const SecondHalf = styled.div`
+export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	height: 100vh;
 	display: flex;
@@ -492,7 +518,7 @@ const SecondHalf = styled.div`
 	align-items: center;
 	flex: 2;
 `;
-const HeaderWrapper = styled.div`
+export const HeaderWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -501,43 +527,43 @@ const HeaderWrapper = styled.div`
 	margin-left: -100px;
 	margin-bottom: 50px;
 `;
-const Header = styled.div`
+export const Header = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 `;
 
-const LogoWrapper = styled.div`
+export const LogoWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: ${(props) => props.theme.brand};
 `;
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
 	width: 40px;
 	> svg {
 		max-width: 100%;
 		height: auto;
 	}
 `;
-const BreadCrumbs = styled.div`
+export const BreadCrumbs = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 `;
 
-const PastBreadCrumb = styled.h3`
+export const PastBreadCrumb = styled.h3`
 	opacity: 0.7;
 `;
-const CurrentBreadCrumb = styled.h3`
+export const CurrentBreadCrumb = styled.h3`
 	color: ${(props) => props.theme.brand};
 `;
-const LocationWrapper = styled.div`
+export const LocationWrapper = styled.div`
 	min-width: 380px;
 `;
 
-const NextBreadCrumb = styled.h3``;
+export const NextBreadCrumb = styled.h3``;
 
 const FormWrapper = styled.form`
 	display: flex;
@@ -557,7 +583,7 @@ const NewsLetterWrapper = styled.div`
 
 const InputHeader = styled.h2``;
 
-const InputField = styled.input<{ fieldType?: string }>`
+export const InputField = styled.input<{ fieldType?: string }>`
 	padding: 15px;
 	outline: none;
 	min-width: ${(props) => (props.fieldType == "name" ? "200px" : "380px")};
@@ -582,7 +608,7 @@ const ProductsWrapper = styled.div`
 	grid-gap: 2rem;
 `;
 
-const HorizontalLine = styled.hr`
+export const HorizontalLine = styled.hr`
 	width: 100%;
 `;
 const CouponWrapper = styled.div`

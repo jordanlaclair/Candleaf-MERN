@@ -7,8 +7,22 @@ import * as productApi from "../../apis/products";
 interface UsersSchema {
 	name: string;
 	auth0ID: string;
+	couponDiscount: number;
+	newsLetterDiscount: number;
+	totalDiscounts: number;
+	shippingCost: number;
+	total: number;
+	email: string;
+	address: string;
+	createdAt: string;
+	city: string;
+	postalCode: string;
+	country: string;
+	region: string;
 	orders: Array<CartSchema>;
+	_id: string;
 	cart: Array<CartSchema>;
+	cartTotal: number;
 }
 interface NewUserSchema {
 	name: string;
@@ -76,8 +90,26 @@ export const addToCart =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, _id, __v, cartTotal } =
-				data;
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
+			} = data;
 			let newData;
 			let exists = false;
 
@@ -93,23 +125,34 @@ export const addToCart =
 				cart.push(firstItem);
 				newData = {
 					orders,
-					name,
-					auth0ID,
-					createdAt,
 					cart,
-					cartTotal: candleData.price,
+					name,
+					createdAt,
+					auth0ID,
 					_id,
-					__v,
+					cartTotal: candleData.price,
+					email,
+					postalCode,
+					shippingCost,
+					country,
+					region,
+					address,
+					city,
+					total: candleData.price,
+					couponDiscount,
+					totalDiscounts,
+					newsLetterDiscount,
 				};
 
 				await api.updateUser(userID, newData);
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 			} else if (
 				cart.length > 0 &&
-				cart[0].productName == "none" &&
+				cart[0].productName == "None" &&
 				cart.length == 1
 			) {
 				cartTotal = candleData.price;
+				total = candleData.price;
 				cart[0].productName = candleData.productName;
 				cart[0].productId = candleData.productId;
 				cart[0].totalPrice = candleData.price;
@@ -118,13 +161,23 @@ export const addToCart =
 
 				newData = {
 					orders,
-					name,
-					auth0ID,
-					createdAt,
 					cart,
-					cartTotal,
+					name,
+					createdAt,
+					auth0ID,
 					_id,
-					__v,
+					cartTotal,
+					email,
+					postalCode,
+					shippingCost,
+					country,
+					region,
+					address,
+					city,
+					total,
+					couponDiscount,
+					totalDiscounts,
+					newsLetterDiscount,
 				};
 				await api.updateUser(userID, newData);
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
@@ -135,6 +188,7 @@ export const addToCart =
 						cart[i].productQuantity += 1;
 						cart[i].totalPrice += candleData.price;
 						cartTotal += candleData.price;
+						total += candleData.price;
 						break;
 					}
 				}
@@ -150,16 +204,27 @@ export const addToCart =
 					};
 					cart.push(newProduct);
 					cartTotal += candleData.price;
+					total += candleData.price;
 				}
 				newData = {
 					orders,
-					name,
-					auth0ID,
-					createdAt,
 					cart,
-					cartTotal,
+					name,
+					createdAt,
+					auth0ID,
 					_id,
-					__v,
+					cartTotal,
+					email,
+					postalCode,
+					shippingCost,
+					country,
+					region,
+					address,
+					city,
+					total,
+					couponDiscount,
+					totalDiscounts,
+					newsLetterDiscount,
 				};
 				await api.updateUser(userID, newData);
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
@@ -175,11 +240,30 @@ export const removeFromCart =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, cartTotal, _id, __v } =
-				data;
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
+			} = data;
 			for (const product of cart) {
 				if (product.productId == productID) {
 					cartTotal -= product.totalPrice;
+					total -= product.totalPrice;
 				}
 			}
 			let filtered: CartsArray = cart.filter((product: CartSchema) => {
@@ -188,13 +272,23 @@ export const removeFromCart =
 
 			const newData = {
 				orders,
+				cart,
 				name,
-				auth0ID,
 				createdAt,
-				cart: filtered,
-				cartTotal,
+				auth0ID,
 				_id,
-				__v,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
 			};
 
 			await api.updateUser(userID, newData);
@@ -210,14 +304,33 @@ export const lowerQuantity =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, cartTotal, _id, __v } =
-				data;
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
+			} = data;
 
 			for (var i in cart) {
 				if (cart[i].productId == productID) {
 					if (cart[i].productQuantity > 1) {
 						cart[i].totalPrice -= cart[i].price;
 						cartTotal -= cart[i].price;
+						total -= cart[i].price;
 						cart[i].productQuantity -= 1;
 						break;
 					}
@@ -226,13 +339,23 @@ export const lowerQuantity =
 
 			const newData = {
 				orders,
+				cart,
 				name,
-				auth0ID,
 				createdAt,
-				cart: cart,
-				cartTotal,
+				auth0ID,
 				_id,
-				__v,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
 			};
 
 			await api.updateUser(userID, newData);
@@ -248,8 +371,26 @@ export const addSpecificAmount =
 		try {
 			const { data } = await api.fetchUser(userID);
 
-			let { orders, name, auth0ID, createdAt, cart, cartTotal, _id, __v } =
-				data;
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
+			} = data;
 
 			let hasProduct = cart.some(
 				(product: CartSchema) => product.productId === productData.productId
@@ -265,10 +406,12 @@ export const addSpecificAmount =
 				};
 				cart.push(newData);
 				cartTotal = productData.price;
+				total = productData.price;
 			} else {
 				for (var i in cart) {
 					if (cart[i].productId == productData.productId) {
 						cartTotal += productData.price * quantity;
+						total += productData.price * quantity;
 						cart[i].totalPrice += productData.price * quantity;
 						cart[i].productQuantity += quantity;
 						break;
@@ -278,17 +421,243 @@ export const addSpecificAmount =
 
 			const newData = {
 				orders,
+				cart,
 				name,
-				auth0ID,
 				createdAt,
-				cart: cart,
-				cartTotal,
+				auth0ID,
 				_id,
-				__v,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
 			};
 
 			await api.updateUser(userID, newData);
 			dispatch({ type: ActionType.ADD_TO_CART_QUANTITY, payload: newData });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+export const updateCouponDiscount =
+	(value: number, userID: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				totalDiscounts,
+				newsLetterDiscount,
+			} = data;
+			const newData = {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount: value,
+				totalDiscounts,
+				newsLetterDiscount,
+			};
+
+			await api.updateUser(userID, newData);
+
+			dispatch({ type: ActionType.UPDATE_COUPON_DISCOUNT, payload: value });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+export const updateNewsLetterDiscount =
+	(value: number, userID: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+			} = data;
+			const newData = {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount: value,
+			};
+
+			await api.updateUser(userID, newData);
+
+			dispatch({ type: ActionType.UPDATE_NEWSLETTER_DISCOUNT, payload: value });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+export const updateTotalDiscounts =
+	(userID: string) => async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				newsLetterDiscount,
+				totalDiscounts,
+			} = data;
+
+			const newData = {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				totalDiscounts: couponDiscount + newsLetterDiscount,
+				total,
+				couponDiscount,
+				newsLetterDiscount,
+			};
+
+			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.UPDATE_TOTAL_DISCOUNT });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+export const updateTotal =
+	(userID: string, value: number) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				totalDiscounts,
+				total,
+				couponDiscount,
+				newsLetterDiscount,
+			} = data;
+
+			const newData = {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				totalDiscounts,
+				total: total - value,
+				couponDiscount,
+				newsLetterDiscount,
+			};
+
+			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.UPDATE_TOTAL, payload: value });
 		} catch (error) {
 			console.log(error);
 		}

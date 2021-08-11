@@ -5,11 +5,11 @@ const userSchema = mongoose.Schema({
 		{
 			productName: {
 				type: String,
-				default: "none",
+				default: "None",
 			},
 			productId: {
 				type: String,
-				default: "none",
+				default: "None",
 			},
 			totalPrice: {
 				type: Number,
@@ -29,6 +29,54 @@ const userSchema = mongoose.Schema({
 		default: "Guest",
 		type: String,
 	},
+	address: {
+		default: "None",
+		type: String,
+	},
+	postalCode: {
+		default: "None",
+		type: String,
+	},
+	city: {
+		default: "None",
+		type: String,
+	},
+	country: {
+		default: "None",
+		type: String,
+	},
+	region: {
+		default: "None",
+		type: String,
+	},
+	email: {
+		default: "None",
+		type: String,
+	},
+	couponDiscount: {
+		default: 0,
+		type: Number,
+	},
+	newsLetterDiscount: {
+		default: 0,
+		type: Number,
+	},
+	totalDiscounts: {
+		default: 0,
+		type: Number,
+	},
+	total: {
+		default: 0,
+		type: Number,
+	},
+	shippingCost: {
+		default: 0,
+		type: Number,
+	},
+	newsLetterDiscount: {
+		default: 0,
+		type: Number,
+	},
 	createdAt: {
 		type: Date,
 		default: new Date(),
@@ -41,11 +89,11 @@ const userSchema = mongoose.Schema({
 		{
 			productName: {
 				type: String,
-				default: "none",
+				default: "None",
 			},
 			productId: {
 				type: String,
-				default: "none",
+				default: "None",
 			},
 			totalPrice: {
 				type: Number,

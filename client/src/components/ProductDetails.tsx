@@ -316,7 +316,7 @@ const ProductDetailsLeft = styled.div`
 	width: 50%;
 `;
 
-const PurchaseOption = styled.div`
+export const PurchaseOption = styled.div`
 	display: flex;
 	padding: 5px;
 	justify-content: flex-start;

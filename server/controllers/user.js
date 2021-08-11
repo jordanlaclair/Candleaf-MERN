@@ -27,7 +27,24 @@ export const getUser = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-	let { orders, cart, name, createdAt, auth0ID, _id, cartTotal } = req.body;
+	let {
+		orders,
+		cart,
+		name,
+		createdAt,
+		auth0ID,
+		_id,
+		cartTotal,
+		email,
+		postalCode,
+		shippingCost,
+		address,
+		city,
+		total,
+		couponDiscount,
+		totalDiscounts,
+		newsLetterDiscount,
+	} = req.body;
 
 	try {
 		const doesUserExist = await Users.exists({ auth0ID: auth0ID });
@@ -49,6 +66,15 @@ export const createUser = async (req, res) => {
 				auth0ID,
 				_id,
 				cartTotal,
+				email,
+				postalCode,
+				shippingCost,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
 			};
 
 			const newUser = new Users(newData);
@@ -63,21 +89,45 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	const { id } = req.params;
 
-	const { orders, name, auth0ID, createdAt, cart, _id, __v, cartTotal } =
-		req.body;
+	const {
+		orders,
+		cart,
+		name,
+		createdAt,
+		auth0ID,
+		_id,
+		cartTotal,
+		email,
+		postalCode,
+		shippingCost,
+		address,
+		city,
+		total,
+		couponDiscount,
+		totalDiscounts,
+		newsLetterDiscount,
+	} = req.body;
 
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
 	const updatedUser = {
 		orders,
-		name,
-		auth0ID,
-		createdAt,
 		cart,
-		cartTotal,
+		name,
+		createdAt,
+		auth0ID,
 		_id,
-		__v,
+		cartTotal,
+		email,
+		postalCode,
+		shippingCost,
+		address,
+		city,
+		total,
+		couponDiscount,
+		totalDiscounts,
+		newsLetterDiscount,
 	};
 
 	await Users.findByIdAndUpdate(id, updatedUser, { new: true });
@@ -91,15 +141,42 @@ export const addToCart = async (req, res) => {
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
-	const { orders, name, auth0ID, createdAt, cart, cartTotal } = req.body;
+	const {
+		orders,
+		cart,
+		name,
+		createdAt,
+		auth0ID,
+		_id,
+		cartTotal,
+		email,
+		postalCode,
+		shippingCost,
+		address,
+		city,
+		total,
+		couponDiscount,
+		totalDiscounts,
+		newsLetterDiscount,
+	} = req.body;
 
 	const updatedUser = {
 		orders,
-		name,
-		auth0ID,
-		createdAt,
 		cart,
+		name,
+		createdAt,
+		auth0ID,
+		_id,
 		cartTotal,
+		email,
+		postalCode,
+		shippingCost,
+		address,
+		city,
+		total,
+		couponDiscount,
+		totalDiscounts,
+		newsLetterDiscount,
 	};
 
 	await Users.findByIdAndUpdate(id, { cart: cart }, { new: true });
