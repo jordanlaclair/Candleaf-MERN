@@ -22,10 +22,10 @@ import { State } from "../store/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
 import {
-	updateNewsLetterDiscount,
-	updateCouponDiscount,
+	addNewsLetterDiscount,
+	removeNewsLetterDiscount,
+	addCouponDiscount,
 	updateTotalDiscounts,
-	updateTotal,
 } from "../store/actions/usersActionCreator";
 const Checkout = () => {
 	const { user, isAuthenticated } = useAuth0();
@@ -42,12 +42,6 @@ const Checkout = () => {
 		region: string;
 	}
 
-	interface DiscountData {
-		coupon: number;
-		newsLetter: number;
-		totalDiscounts: number;
-	}
-
 	const initialUserState = {
 		firstName: user?.name!.split(" ")[0] || "",
 		lastName: user?.name!.split(" ").slice(-1)[0] || "",
@@ -60,18 +54,19 @@ const Checkout = () => {
 		email: user?.email || "",
 	};
 
-	const initialDiscountData = {
-		coupon: 0,
-		newsLetter: 0,
-		totalDiscounts: 0,
-	};
 	const dispatch = useDispatch();
-	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
+	const [checkNewsLetter, setCheckNewsLetter] = useState(() => {
+		let saved = localStorage.getItem("newsLetterChecked");
+		let initialValue;
+		if (saved != null) {
+			initialValue = JSON.parse(saved);
+		}
+		return initialValue || false;
+	});
 	const [country, setCountry] = useState("");
 	const [couponCode, setCouponCode] = useState("");
 	const [validCouponCode, setValidCouponCode] = useState(false);
-	const [discountData, setDiscountData] =
-		useState<DiscountData>(initialDiscountData);
+
 	const [userData, setUserData] = useState<UserData>(initialUserState);
 	const cart = useSelector((state: State) => state.user.cart);
 	const userID = useSelector((state: State) => state.user._id);
@@ -83,10 +78,10 @@ const Checkout = () => {
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
 	);
+	const total = useSelector((state: State) => state.user.total);
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
-	const [total, setTotal] = useState(0);
 	const [region, setRegion] = useState("");
 	const history = useHistory();
 	const useStyles = makeStyles((theme) => ({
@@ -107,65 +102,33 @@ const Checkout = () => {
 	};
 
 	useEffect(() => {
-		dispatch(updateTotalDiscounts(userID));
-		dispatch(updateTotal(userID, newsLetterDiscount));
-	}, [newsLetterDiscount]);
+		if (newsLetterDiscount !== 0 || couponDiscount !== 0) {
+			dispatch(updateTotalDiscounts(userID));
+		}
+	}, [newsLetterDiscount, couponDiscount]);
 
 	useEffect(() => {
-		dispatch(updateTotalDiscounts(userID));
-		dispatch(updateTotal(userID, couponDiscount));
-	}, [couponDiscount]);
+		localStorage.setItem("newsLetterChecked", JSON.stringify(checkNewsLetter));
 
-	useEffect(() => {
-		if (checkNewsLetter) {
-			let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
-			dispatch(updateNewsLetterDiscount(discount, userID));
-			setDiscountData((prevState) => {
-				return {
-					...prevState,
-					newsLetter: discount,
-					totalDiscounts: discountData.totalDiscounts + discount,
-				};
-			});
-		} else {
-			dispatch(updateNewsLetterDiscount(0, userID));
-			setDiscountData((prevState) => {
-				return {
-					...prevState,
-					newsLetter: 0,
-					totalDiscounts: discountData.totalDiscounts - discountData.newsLetter,
-				};
-			});
+		let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
+		if (checkNewsLetter && newsLetterDiscount === 0) {
+			dispatch(addNewsLetterDiscount(discount, userID));
+		} else if (checkNewsLetter == false && newsLetterDiscount > 0) {
+			dispatch(removeNewsLetterDiscount(discount, userID));
 		}
 	}, [checkNewsLetter]);
 
 	useEffect(() => {
-		if (validCouponCode) {
-			let discount =
-				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
-			dispatch(updateCouponDiscount(discount, userID));
-			setDiscountData((prevState) => {
-				return {
-					...prevState,
-					coupon: discount,
-					totalDiscounts: discountData.totalDiscounts + discount,
-				};
-			});
-		} else {
-			dispatch(updateCouponDiscount(0, userID));
-			setDiscountData((prevState) => {
-				return {
-					...prevState,
-					coupon: 0,
-					totalDiscounts: discountData.totalDiscounts - discountData.coupon,
-				};
-			});
-		}
-	}, [validCouponCode]);
+		console.log(cart);
+	}, [cart]);
 
 	useEffect(() => {
-		console.log(discountData);
-	}, [discountData]);
+		if (validCouponCode && couponDiscount === 0) {
+			let discount =
+				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
+			dispatch(addCouponDiscount(discount, userID));
+		}
+	}, [validCouponCode]);
 
 	const handleNewsLetter = () => {
 		setCheckNewsLetter(!checkNewsLetter);
@@ -452,17 +415,12 @@ const Checkout = () => {
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Coupon Code</h3>
-						<h3>
-							{" "}
-							{discountData.coupon === 0 ? "None" : `-$${discountData.coupon}`}
-						</h3>
+						<h3> {couponDiscount === 0 ? "None" : `-$${couponDiscount}`}</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Discount</h3>
 						<h3>
-							{discountData.newsLetter === 0
-								? "None"
-								: `-$${discountData.newsLetter}`}
+							{newsLetterDiscount === 0 ? "None" : `-$${newsLetterDiscount}`}
 						</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
@@ -474,14 +432,10 @@ const Checkout = () => {
 				<TotalWrapper>
 					<h3>Total</h3>
 
-					{discountData.totalDiscounts === 0 ? (
+					{totalDiscounts === 0 ? (
 						<h3>None</h3>
 					) : (
-						<h2>{`$${
-							Math.round(
-								(cartTotal - discountData.totalDiscounts + Number.EPSILON) * 100
-							) / 100
-						}`}</h2>
+						<h2>{`$${Math.round((total + Number.EPSILON) * 100) / 100}`}</h2>
 					)}
 				</TotalWrapper>
 			</SecondHalf>

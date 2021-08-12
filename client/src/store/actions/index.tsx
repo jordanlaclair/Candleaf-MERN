@@ -169,13 +169,23 @@ interface GetUsersAction {
 	payload: Array<object>;
 }
 
-interface UpdateCouponDiscount {
-	type: ActionType.UPDATE_COUPON_DISCOUNT;
+interface AddCouponDiscount {
+	type: ActionType.ADD_COUPON_DISCOUNT;
 	payload: number;
 }
 
-interface UpdateNewsLetterDiscount {
-	type: ActionType.UPDATE_NEWSLETTER_DISCOUNT;
+interface RemoveCouponDiscount {
+	type: ActionType.REMOVE_COUPON_DISCOUNT;
+	payload: number;
+}
+
+interface AddNewsLetterDiscount {
+	type: ActionType.ADD_NEWSLETTER_DISCOUNT;
+	payload: number;
+}
+
+interface RemoveNewsLetterDiscount {
+	type: ActionType.REMOVE_NEWSLETTER_DISCOUNT;
 	payload: number;
 }
 interface UpdateTotalDiscounts {
@@ -195,6 +205,8 @@ export type UserActions =
 	| UpdateTotalDiscounts
 	| UpdateTotal
 	| AddToCartQuantityAction
-	| UpdateCouponDiscount
-	| UpdateNewsLetterDiscount
+	| RemoveNewsLetterDiscount
+	| AddCouponDiscount
+	| RemoveCouponDiscount
+	| AddNewsLetterDiscount
 	| CreateUserAction;

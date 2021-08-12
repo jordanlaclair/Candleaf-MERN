@@ -82,17 +82,20 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			return action.payload;
 		case ActionType.ADD_TO_CART_QUANTITY:
 			return action.payload;
-		case ActionType.UPDATE_COUPON_DISCOUNT:
+		case ActionType.ADD_COUPON_DISCOUNT:
 			user.couponDiscount = action.payload;
+			user.total -= user.couponDiscount;
 			return user;
-		case ActionType.UPDATE_NEWSLETTER_DISCOUNT:
+		case ActionType.ADD_NEWSLETTER_DISCOUNT:
 			user.newsLetterDiscount = action.payload;
+			user.total -= user.newsLetterDiscount;
+			return user;
+		case ActionType.REMOVE_NEWSLETTER_DISCOUNT:
+			user.total += user.newsLetterDiscount;
+			user.newsLetterDiscount = 0;
 			return user;
 		case ActionType.UPDATE_TOTAL_DISCOUNT:
 			user.totalDiscounts = user.couponDiscount + user.newsLetterDiscount;
-			return user;
-		case ActionType.UPDATE_TOTAL:
-			user.total = user.total - action.payload;
 			return user;
 
 		default:

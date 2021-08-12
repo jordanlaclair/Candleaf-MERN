@@ -18,6 +18,7 @@ import { FC } from "react";
 
 const Header: FC = () => {
 	const { loginWithRedirect } = useAuth0();
+	const reduxUser = useSelector((state: State) => state.user);
 	const { logout } = useAuth0();
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();

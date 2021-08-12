@@ -58,7 +58,7 @@ const Cart: FC = () => {
 			<ProceedCheckoutWrapper>
 				<SubTotalWrapper>
 					<h3>Sub-Total</h3>
-					<h3>{Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
+					<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
 				</SubTotalWrapper>
 
 				<Button
