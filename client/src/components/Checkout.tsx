@@ -21,13 +21,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { State } from "../store/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
-import {
-	addNewsLetterDiscount,
-	removeNewsLetterDiscount,
-	addCouponDiscount,
-	updateTotalDiscounts,
-	userSubmitDetails,
-} from "../store/actions/usersActionCreator";
+import * as userAction from "../store/actions/usersActionCreator";
+import { updateUser } from "../apis/users";
 const Checkout = () => {
 	const { user, isAuthenticated } = useAuth0();
 
@@ -45,24 +40,14 @@ const Checkout = () => {
 
 	interface UserSubmitDetails {
 		userEmail: string;
+		userFirstName: string;
+		userLastName: string;
 		userPostalCode: string;
 		userCountry: string;
 		userRegion: string;
 		userAddress: string;
 		userCity: string;
 	}
-
-	const initialUserState = {
-		firstName: user?.name!.split(" ")[0] || "",
-		lastName: user?.name!.split(" ").slice(-1)[0] || "",
-		address: user?.address! || "",
-		shippingNote: "",
-		city: "",
-		postalCode: "",
-		country: "",
-		region: "",
-		email: user?.email || "",
-	};
 
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(() => {
@@ -75,9 +60,12 @@ const Checkout = () => {
 	});
 	const [couponCode, setCouponCode] = useState("");
 	const [validCouponCode, setValidCouponCode] = useState(false);
-
-	const [userData, setUserData] = useState<UserData>(initialUserState);
+	const [shippingNote, setShippingNote] = useState("");
 	const cart = useSelector((state: State) => state.user.cart);
+
+	const country = useSelector((state: State) => state.user.country);
+	const region = useSelector((state: State) => state.user.region);
+	const reduxUser = useSelector((state: State) => state.user);
 	const userID = useSelector((state: State) => state.user._id);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
@@ -111,7 +99,7 @@ const Checkout = () => {
 
 	useEffect(() => {
 		if (newsLetterDiscount !== 0 || couponDiscount !== 0) {
-			dispatch(updateTotalDiscounts(userID));
+			dispatch(userAction.updateTotalDiscounts(userID));
 		}
 	}, [newsLetterDiscount, couponDiscount]);
 
@@ -120,9 +108,9 @@ const Checkout = () => {
 
 		let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
 		if (checkNewsLetter && newsLetterDiscount === 0) {
-			dispatch(addNewsLetterDiscount(discount, userID));
+			dispatch(userAction.addNewsLetterDiscount(discount, userID));
 		} else if (checkNewsLetter == false && newsLetterDiscount > 0) {
-			dispatch(removeNewsLetterDiscount(discount, userID));
+			dispatch(userAction.removeNewsLetterDiscount(discount, userID));
 		}
 	}, [checkNewsLetter]);
 
@@ -130,7 +118,7 @@ const Checkout = () => {
 		if (validCouponCode && couponDiscount === 0) {
 			let discount =
 				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
-			dispatch(addCouponDiscount(discount, userID));
+			dispatch(userAction.addCouponDiscount(discount, userID));
 		}
 	}, [validCouponCode]);
 
@@ -149,21 +137,11 @@ const Checkout = () => {
 	})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 	const handleCountryChange = (value: any) => {
-		setUserData((prevData) => {
-			return {
-				...prevData,
-				country: value,
-			};
-		});
+		dispatch(userAction.updateCountry(value));
 	};
 
 	const handleRegionChange = (value: any) => {
-		setUserData((prevData) => {
-			return {
-				...prevData,
-				region: value,
-			};
-		});
+		dispatch(userAction.updateRegion(value));
 	};
 
 	const dropDownStyle = {
@@ -178,7 +156,7 @@ const Checkout = () => {
 	};
 
 	const countryProps = {
-		value: userData.country,
+		value: country,
 		name: "rcrs-country",
 		id: "",
 		classes: "",
@@ -197,17 +175,14 @@ const Checkout = () => {
 		blacklist: [],
 		disabled: false,
 	};
-	useEffect(() => {
-		console.log(userData);
-	}, [userData]);
+
 	const regionProps = {
-		// make sure all required component's inputs/Props keys&types match
-		value: userData.region,
-		country: userData.country,
+		value: region,
 		name: "rcrs-region",
 		id: "",
 		classes: "",
 		required: true,
+		country: country,
 		showDefaultOption: undefined,
 		priorityOptions: [],
 		defaultOptionLabel: "Select Region",
@@ -220,7 +195,7 @@ const Checkout = () => {
 		onBlur: () => {},
 		style: dropDownStyle,
 		blacklist: [],
-		disabled: false,
+		disableWhenEmpty: true,
 	};
 
 	const handleBackToCart = () => {
@@ -231,15 +206,17 @@ const Checkout = () => {
 		e.preventDefault();
 
 		let userDetails: UserSubmitDetails = {
-			userEmail: userData.email,
-			userPostalCode: userData.postalCode,
-			userCountry: userData.country,
-			userRegion: userData.region,
-			userAddress: userData.address,
-			userCity: userData.city,
+			userEmail: reduxUser.email,
+			userFirstName: reduxUser.firstName,
+			userLastName: reduxUser.lastName,
+			userPostalCode: reduxUser.postalCode,
+			userCountry: reduxUser.country,
+			userRegion: reduxUser.region,
+			userAddress: reduxUser.address,
+			userCity: reduxUser.city,
 		};
 
-		dispatch(userSubmitDetails(userID, userDetails));
+		dispatch(userAction.userSubmitDetails(userID, userDetails));
 		history.push("/shipping");
 	};
 
@@ -286,11 +263,10 @@ const Checkout = () => {
 					<InputField
 						placeholder="Email"
 						type="email"
-						value={userData.email}
+						defaultValue={user?.email}
+						value={reduxUser.email}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, email: e.target.value };
-							});
+							dispatch(userAction.updateEmail(e.target.value));
 						}}
 						required
 					/>
@@ -309,11 +285,9 @@ const Checkout = () => {
 						name="First Name"
 						placeholder="First Name"
 						type="text"
-						value={userData.firstName}
+						value={reduxUser.firstName}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, firstName: e.target.value };
-							});
+							dispatch(userAction.updateFirstName(e.target.value));
 						}}
 						required
 					/>
@@ -322,54 +296,44 @@ const Checkout = () => {
 						placeholder="Last Name"
 						required
 						type="text"
-						value={userData.lastName}
+						value={reduxUser.lastName}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, lastName: e.target.value };
-							});
+							dispatch(userAction.updateLastName(e.target.value));
 						}}
 					/>
 					<InputField
 						placeholder="Address"
 						type="text"
 						required
-						value={userData.address}
+						value={reduxUser.address}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, address: e.target.value };
-							});
+							dispatch(userAction.updateAddress(e.target.value));
 						}}
 					/>
 					<InputField
 						placeholder="Shipping note (optional)"
 						type="text"
-						value={userData.shippingNote}
+						value={shippingNote}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, shippingNote: e.target.value };
-							});
+							setShippingNote(e.target.value);
 						}}
 					/>
 					<InputField
 						placeholder="City"
 						type="text"
 						required
-						value={userData.city}
+						value={reduxUser.city}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, city: e.target.value };
-							});
+							dispatch(userAction.updateCity(e.target.value));
 						}}
 					/>
 					<InputField
 						placeholder="Postal Code"
 						type="text"
 						required
-						value={userData.postalCode}
+						value={reduxUser.postalCode}
 						onChange={(e) => {
-							setUserData((prevState) => {
-								return { ...prevState, postalCode: e.target.value };
-							});
+							dispatch(userAction.updatePostalCode(e.target.value));
 						}}
 					/>
 					<LocationWrapper>

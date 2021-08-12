@@ -17,6 +17,12 @@ import { useEffect } from "react";
 import { FC } from "react";
 
 const Header: FC = () => {
+	interface NewUserSchema {
+		firstName: string;
+		lastName: string;
+		auth0ID: string;
+	}
+
 	const { loginWithRedirect } = useAuth0();
 	const reduxUser = useSelector((state: State) => state.user);
 	const { logout } = useAuth0();
@@ -45,8 +51,9 @@ const Header: FC = () => {
 	useEffect(() => {
 		if (isAuthenticated) {
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
-			let newUser = {
-				name: user?.name!,
+			let newUser: NewUserSchema = {
+				firstName: user?.given_name!,
+				lastName: user?.family_name!,
 				auth0ID: user?.sub!,
 			};
 

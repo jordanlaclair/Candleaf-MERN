@@ -4,7 +4,8 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../images/leaf.svg";
 import { PurchaseOption } from "./ProductDetails";
 import Radio from "@material-ui/core/Radio";
-
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -21,14 +22,27 @@ import {
 	LocationWrapper,
 	NextBreadCrumb,
 } from "./Checkout";
+import { Button, makeStyles } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const Shipping = () => {
 	const [shippingMethod, setShippingMethod] = useState("");
+	const history = useHistory();
 
+	const useStyles = makeStyles((theme) => ({
+		button: {
+			backgroundColor: "#49A010",
+			textTransform: "inherit",
+			fontFamily: "inherit",
+		},
+	}));
+	const classes = useStyles();
+	const handleBackTotDetails = () => {
+		history.push("/checkout");
+	};
 	const handleShippingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setShippingMethod(event.target.value);
 	};
-
 	return (
 		<ShippingWrapper>
 			<FirstHalf>
@@ -102,14 +116,33 @@ const Shipping = () => {
 					</PurchaseOption>
 					<h3>$5.99</h3>
 				</OptionWrapper>
+				<ButtonWrapper>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<FormatListBulletedIcon />}
+						onClick={handleBackTotDetails}
+					>
+						<h3>Back to Details</h3>
+					</Button>
+
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<MonetizationOnIcon />}
+					>
+						<h3>Continue to Payment</h3>
+					</Button>
+				</ButtonWrapper>
 			</FirstHalf>
+			<SecondHalf>&nbsp;</SecondHalf>
 		</ShippingWrapper>
 	);
 };
 
 export default Shipping;
 
-const ShippingWrapper = styled(HeaderWrapper)``;
+const ShippingWrapper = styled(CheckoutWrapper)``;
 
 const InputFieldShipping = styled(InputField)``;
 
@@ -139,4 +172,9 @@ const OptionWrapper = styled.div`
 		font-weight: bold;
 		color: ${(props) => props.theme.brand};
 	}
+`;
+const ButtonWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;

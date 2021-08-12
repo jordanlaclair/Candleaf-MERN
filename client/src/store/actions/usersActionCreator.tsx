@@ -5,7 +5,8 @@ import * as api from "../../apis/users";
 import * as productApi from "../../apis/products";
 
 interface UsersSchema {
-	name: string;
+	firstName: string;
+	lastName: string;
 	auth0ID: string;
 	couponDiscount: number;
 	newsLetterDiscount: number;
@@ -25,7 +26,8 @@ interface UsersSchema {
 	cartTotal: number;
 }
 interface NewUserSchema {
-	name: string;
+	firstName: string;
+	lastName: string;
 	auth0ID: string;
 }
 interface CartSchema {
@@ -45,6 +47,8 @@ interface ProductSchema {
 
 interface UserSubmitDetails {
 	userEmail: string;
+	userFirstName: string;
+	userLastName: string;
 	userPostalCode: string;
 	userCountry: string;
 	userRegion: string;
@@ -102,7 +106,8 @@ export const addToCart =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -135,7 +140,8 @@ export const addToCart =
 				newData = {
 					orders,
 					cart,
-					name,
+					firstName,
+					lastName,
 					createdAt,
 					auth0ID,
 					_id,
@@ -171,7 +177,8 @@ export const addToCart =
 				newData = {
 					orders,
 					cart,
-					name,
+					firstName,
+					lastName,
 					createdAt,
 					auth0ID,
 					_id,
@@ -218,7 +225,8 @@ export const addToCart =
 				newData = {
 					orders,
 					cart,
-					name,
+					firstName,
+					lastName,
 					createdAt,
 					auth0ID,
 					_id,
@@ -252,7 +260,8 @@ export const removeFromCart =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -282,7 +291,8 @@ export const removeFromCart =
 			const newData = {
 				orders,
 				cart: filtered,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -316,7 +326,8 @@ export const lowerQuantity =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -349,7 +360,8 @@ export const lowerQuantity =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -383,7 +395,8 @@ export const addSpecificAmount =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -441,7 +454,8 @@ export const addSpecificAmount =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -474,7 +488,8 @@ export const addCouponDiscount =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -493,7 +508,8 @@ export const addCouponDiscount =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -528,7 +544,8 @@ export const addNewsLetterDiscount =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -547,7 +564,8 @@ export const addNewsLetterDiscount =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -585,7 +603,8 @@ export const removeNewsLetterDiscount =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -604,7 +623,8 @@ export const removeNewsLetterDiscount =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -641,7 +661,8 @@ export const updateTotalDiscounts =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -662,7 +683,8 @@ export const updateTotalDiscounts =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -695,6 +717,8 @@ export const userSubmitDetails =
 
 			let {
 				userEmail,
+				userFirstName,
+				userLastName,
 				userPostalCode,
 				userCountry,
 				userRegion,
@@ -705,7 +729,8 @@ export const userSubmitDetails =
 			let {
 				orders,
 				cart,
-				name,
+				firstName,
+				lastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -720,7 +745,8 @@ export const userSubmitDetails =
 			const newData = {
 				orders,
 				cart,
-				name,
+				firstName: userFirstName,
+				lastName: userLastName,
 				createdAt,
 				auth0ID,
 				_id,
@@ -738,8 +764,46 @@ export const userSubmitDetails =
 				newsLetterDiscount,
 			};
 			await api.updateUser(userID, newData);
-			dispatch({ type: ActionType.USER_SUBMIT_DETAILS, payload: newData });
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+export const updateAddress =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_ADDRESS, payload: value });
+	};
+
+export const updateCity =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_CITY, payload: value });
+	};
+
+export const updatePostalCode =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_ADDRESS, payload: value });
+	};
+
+export const updateCountry =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_COUNTRY, payload: value });
+	};
+
+export const updateRegion =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_REGION, payload: value });
+	};
+export const updateEmail =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_EMAIL, payload: value });
+	};
+
+export const updateFirstName =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_FIRST_NAME, payload: value });
+	};
+
+export const updateLastName =
+	(value: string) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_LAST_NAME, payload: value });
 	};

@@ -12,7 +12,8 @@ interface CartSchema {
 }
 
 interface UserSchema {
-	name: string;
+	firstName: string;
+	lastName: string;
 	auth0ID: string;
 	couponDiscount: number;
 	newsLetterDiscount: number;
@@ -35,7 +36,8 @@ interface UserSchema {
 type CartsArray = Array<CartSchema>;
 
 let initialState: UserSchema = {
-	name: "Guest",
+	firstName: "Guest",
+	lastName: "",
 	auth0ID: "GuestID",
 	orders: [],
 	couponDiscount: 0,
@@ -97,7 +99,30 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			user.totalDiscounts = user.couponDiscount + user.newsLetterDiscount;
 			return user;
 		case ActionType.USER_SUBMIT_DETAILS:
-			user = action.payload;
+			return user;
+		case ActionType.UPDATE_ADDRESS:
+			user.address = action.payload;
+			return user;
+		case ActionType.UPDATE_CITY:
+			user.city = action.payload;
+			return user;
+		case ActionType.UPDATE_COUNTRY:
+			user.country = action.payload;
+			return user;
+		case ActionType.UPDATE_REGION:
+			user.region = action.payload;
+			return user;
+		case ActionType.UPDATE_POSTAL_CODE:
+			user.postalCode = action.payload;
+			return user;
+		case ActionType.UPDATE_EMAIL:
+			user.email = action.payload;
+			return user;
+		case ActionType.UPDATE_LAST_NAME:
+			user.lastName = action.payload;
+			return user;
+		case ActionType.UPDATE_FIRST_NAME:
+			user.firstName = action.payload;
 			return user;
 
 		default:

@@ -25,34 +25,15 @@ const userSchema = mongoose.Schema({
 			},
 		},
 	],
-	name: {
-		default: "Guest",
-		type: String,
-	},
-	address: {
-		default: "None",
-		type: String,
-	},
-	postalCode: {
-		default: "None",
-		type: String,
-	},
-	city: {
-		default: "None",
-		type: String,
-	},
-	country: {
-		default: "None",
-		type: String,
-	},
-	region: {
-		default: "None",
-		type: String,
-	},
-	email: {
-		default: "None",
-		type: String,
-	},
+	firstName: String,
+	lastName: String,
+
+	address: String,
+	postalCode: String,
+	city: String,
+	country: String,
+	region: String,
+	email: String,
 	couponDiscount: {
 		default: 0,
 		type: Number,

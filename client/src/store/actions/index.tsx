@@ -18,6 +18,13 @@ export {
 	removeFromCart,
 	addSpecificAmount,
 	userSubmitDetails,
+	updateAddress,
+	updateCity,
+	updateFirstName,
+	updateLastName,
+	updatePostalCode,
+	updateRegion,
+	updateCountry,
 } from "./usersActionCreator";
 
 export { toggleTheme } from "./appActionCreator";
@@ -111,7 +118,8 @@ interface productSchema {
 }
 
 interface UsersSchema {
-	name: string;
+	firstName: string;
+	lastName: string;
 	auth0ID: string;
 	couponDiscount: number;
 	newsLetterDiscount: number;
@@ -199,8 +207,48 @@ interface UpdateTotal {
 
 interface UserSubmitDetails {
 	type: ActionType.USER_SUBMIT_DETAILS;
-	payload: UsersSchema;
 }
+
+interface UpdateUserAddress {
+	type: ActionType.UPDATE_ADDRESS;
+	payload: string;
+}
+
+interface UpdateUserCity {
+	type: ActionType.UPDATE_CITY;
+	payload: string;
+}
+
+interface UpdateUserPostalCode {
+	type: ActionType.UPDATE_POSTAL_CODE;
+	payload: string;
+}
+
+interface UpdateUserCountry {
+	type: ActionType.UPDATE_COUNTRY;
+	payload: string;
+}
+
+interface UpdateUserRegion {
+	type: ActionType.UPDATE_REGION;
+	payload: string;
+}
+
+interface UpdateUserEmail {
+	type: ActionType.UPDATE_EMAIL;
+	payload: string;
+}
+
+interface UpdateFirstName {
+	type: ActionType.UPDATE_FIRST_NAME;
+	payload: string;
+}
+
+interface UpdateLastName {
+	type: ActionType.UPDATE_LAST_NAME;
+	payload: string;
+}
+
 export type UserActions =
 	| GetUserAction
 	| UpdateUserAction
@@ -216,4 +264,12 @@ export type UserActions =
 	| RemoveCouponDiscount
 	| AddNewsLetterDiscount
 	| UserSubmitDetails
+	| UpdateUserCountry
+	| UpdateUserCity
+	| UpdateUserPostalCode
+	| UpdateUserAddress
+	| UpdateFirstName
+	| UpdateLastName
+	| UpdateUserRegion
+	| UpdateUserEmail
 	| CreateUserAction;
