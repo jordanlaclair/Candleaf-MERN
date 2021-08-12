@@ -17,6 +17,7 @@ export {
 	createUser,
 	removeFromCart,
 	addSpecificAmount,
+	userSubmitDetails,
 } from "./usersActionCreator";
 
 export { toggleTheme } from "./appActionCreator";
@@ -195,6 +196,11 @@ interface UpdateTotal {
 	type: ActionType.UPDATE_TOTAL;
 	payload: number;
 }
+
+interface UserSubmitDetails {
+	type: ActionType.USER_SUBMIT_DETAILS;
+	payload: UsersSchema;
+}
 export type UserActions =
 	| GetUserAction
 	| UpdateUserAction
@@ -209,4 +215,5 @@ export type UserActions =
 	| AddCouponDiscount
 	| RemoveCouponDiscount
 	| AddNewsLetterDiscount
+	| UserSubmitDetails
 	| CreateUserAction;

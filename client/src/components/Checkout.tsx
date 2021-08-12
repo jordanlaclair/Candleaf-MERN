@@ -26,6 +26,7 @@ import {
 	removeNewsLetterDiscount,
 	addCouponDiscount,
 	updateTotalDiscounts,
+	userSubmitDetails,
 } from "../store/actions/usersActionCreator";
 const Checkout = () => {
 	const { user, isAuthenticated } = useAuth0();
@@ -40,6 +41,15 @@ const Checkout = () => {
 		email: string;
 		country: string;
 		region: string;
+	}
+
+	interface UserSubmitDetails {
+		userEmail: string;
+		userPostalCode: string;
+		userCountry: string;
+		userRegion: string;
+		userAddress: string;
+		userCity: string;
 	}
 
 	const initialUserState = {
@@ -63,7 +73,6 @@ const Checkout = () => {
 		}
 		return initialValue || false;
 	});
-	const [country, setCountry] = useState("");
 	const [couponCode, setCouponCode] = useState("");
 	const [validCouponCode, setValidCouponCode] = useState(false);
 
@@ -82,7 +91,6 @@ const Checkout = () => {
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
-	const [region, setRegion] = useState("");
 	const history = useHistory();
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -119,10 +127,6 @@ const Checkout = () => {
 	}, [checkNewsLetter]);
 
 	useEffect(() => {
-		console.log(cart);
-	}, [cart]);
-
-	useEffect(() => {
 		if (validCouponCode && couponDiscount === 0) {
 			let discount =
 				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
@@ -145,11 +149,21 @@ const Checkout = () => {
 	})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 	const handleCountryChange = (value: any) => {
-		setCountry(value);
+		setUserData((prevData) => {
+			return {
+				...prevData,
+				country: value,
+			};
+		});
 	};
 
 	const handleRegionChange = (value: any) => {
-		setRegion(value);
+		setUserData((prevData) => {
+			return {
+				...prevData,
+				region: value,
+			};
+		});
 	};
 
 	const dropDownStyle = {
@@ -164,8 +178,7 @@ const Checkout = () => {
 	};
 
 	const countryProps = {
-		// make sure all required component's inputs/Props keys&types match
-		value: country,
+		value: userData.country,
 		name: "rcrs-country",
 		id: "",
 		classes: "",
@@ -184,11 +197,13 @@ const Checkout = () => {
 		blacklist: [],
 		disabled: false,
 	};
-
+	useEffect(() => {
+		console.log(userData);
+	}, [userData]);
 	const regionProps = {
 		// make sure all required component's inputs/Props keys&types match
-		value: region,
-		country: country,
+		value: userData.region,
+		country: userData.country,
 		name: "rcrs-region",
 		id: "",
 		classes: "",
@@ -214,6 +229,17 @@ const Checkout = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		let userDetails: UserSubmitDetails = {
+			userEmail: userData.email,
+			userPostalCode: userData.postalCode,
+			userCountry: userData.country,
+			userRegion: userData.region,
+			userAddress: userData.address,
+			userCity: userData.city,
+		};
+
+		dispatch(userSubmitDetails(userID, userDetails));
 		history.push("/shipping");
 	};
 
