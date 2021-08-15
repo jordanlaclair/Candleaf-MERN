@@ -41,6 +41,10 @@ const Products: FC = () => {
 		console.log(candles);
 	}, [candles]);
 
+	const stringWeightToInt = (weight: string) => {
+		return parseInt(weight.replace("g", ""), 10);
+	};
+
 	return (
 		<ProductsWrapper id="products">
 			<Header>
@@ -58,6 +62,7 @@ const Products: FC = () => {
 							productQuantity={candle.purchaseCount}
 							showQuantity={false}
 							showAddToCart={true}
+							productWeight={stringWeightToInt(candle.weight)}
 						/>
 					);
 				})}

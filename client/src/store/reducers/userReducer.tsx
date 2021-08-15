@@ -4,6 +4,7 @@ import { Reducer } from "redux";
 
 interface CartSchema {
 	productName: string;
+	productWeight: number;
 	productId: string;
 	totalPrice: number;
 	productQuantity: number;
@@ -24,7 +25,7 @@ interface UserSchema {
 	email: string;
 	address: string;
 	city: string;
-	postalCode: string;
+	postalCode: number;
 	country: string;
 	region: string;
 	orders: CartsArray;
@@ -44,7 +45,7 @@ let initialState: UserSchema = {
 	email: "",
 	address: "",
 	city: "",
-	postalCode: "",
+	postalCode: 0,
 	country: "",
 	createdAt: "",
 	region: "",
@@ -58,6 +59,7 @@ let initialState: UserSchema = {
 			productName: "none",
 			productQuantity: 0,
 			productId: "none",
+			productWeight: 0,
 			totalPrice: 0,
 			_id: "none",
 			price: 0,
@@ -107,8 +109,10 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			user.city = action.payload;
 			return user;
 		case ActionType.UPDATE_COUNTRY:
-			user.country = action.payload;
-			return user;
+			return {
+				...user,
+				country: action.payload,
+			};
 		case ActionType.UPDATE_REGION:
 			user.region = action.payload;
 			return user;
@@ -123,6 +127,9 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			return user;
 		case ActionType.UPDATE_FIRST_NAME:
 			user.firstName = action.payload;
+			return user;
+		case ActionType.UPDATE_SHIPPING:
+			user.shippingCost = action.payload;
 			return user;
 
 		default:

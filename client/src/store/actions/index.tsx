@@ -19,6 +19,7 @@ export {
 	addSpecificAmount,
 	userSubmitDetails,
 	updateAddress,
+	updateShippingCost,
 	updateCity,
 	updateFirstName,
 	updateLastName,
@@ -101,6 +102,7 @@ export type CandleActions =
 
 interface CartSchema {
 	productName: string;
+	productWeight: number;
 	productId: string;
 	totalPrice: number;
 	price: number;
@@ -109,13 +111,6 @@ interface CartSchema {
 }
 
 type CartsArray = Array<CartSchema>;
-
-interface productSchema {
-	productName: string;
-	productId: string;
-	price: number;
-	productQuantity: number;
-}
 
 interface UsersSchema {
 	firstName: string;
@@ -130,14 +125,16 @@ interface UsersSchema {
 	address: string;
 	createdAt: string;
 	city: string;
-	postalCode: string;
+	postalCode: number;
 	country: string;
 	region: string;
 	orders: CartsArray;
 	_id: string;
 	cart: CartsArray;
 	cartTotal: number;
+	cartWeight: number;
 }
+
 interface CreateUserAction {
 	type: ActionType.CREATE_USER;
 	payload: UsersSchema;
@@ -221,7 +218,7 @@ interface UpdateUserCity {
 
 interface UpdateUserPostalCode {
 	type: ActionType.UPDATE_POSTAL_CODE;
-	payload: string;
+	payload: number;
 }
 
 interface UpdateUserCountry {
@@ -248,6 +245,10 @@ interface UpdateLastName {
 	type: ActionType.UPDATE_LAST_NAME;
 	payload: string;
 }
+interface UpdateShipping {
+	type: ActionType.UPDATE_SHIPPING;
+	payload: number;
+}
 
 export type UserActions =
 	| GetUserAction
@@ -269,6 +270,7 @@ export type UserActions =
 	| UpdateUserPostalCode
 	| UpdateUserAddress
 	| UpdateFirstName
+	| UpdateShipping
 	| UpdateLastName
 	| UpdateUserRegion
 	| UpdateUserEmail

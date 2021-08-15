@@ -47,6 +47,7 @@ const Cart: FC = () => {
 						<CartItem
 							productId={item.productId}
 							productName={item.productName}
+							productWeight={item.productWeight}
 							totalPrice={item.totalPrice}
 							productQuantity={item.productQuantity}
 							price={item.price}

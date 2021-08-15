@@ -32,7 +32,7 @@ const Checkout = () => {
 		address: string;
 		shippingNote?: string;
 		city: string;
-		postalCode: string;
+		postalCode: number;
 		email: string;
 		country: string;
 		region: string;
@@ -42,7 +42,7 @@ const Checkout = () => {
 		userEmail: string;
 		userFirstName: string;
 		userLastName: string;
-		userPostalCode: string;
+		userPostalCode: number;
 		userCountry: string;
 		userRegion: string;
 		userAddress: string;
@@ -62,6 +62,13 @@ const Checkout = () => {
 	const [validCouponCode, setValidCouponCode] = useState(false);
 	const [shippingNote, setShippingNote] = useState("");
 	const cart = useSelector((state: State) => state.user.cart);
+	const city = useSelector((state: State) => state.user.city);
+	const address = useSelector((state: State) => state.user.address);
+	const email = useSelector((state: State) => state.user.email);
+	const postalCode = useSelector((state: State) => state.user.postalCode);
+
+	const lastName = useSelector((state: State) => state.user.lastName);
+	const firstName = useSelector((state: State) => state.user.firstName);
 
 	const country = useSelector((state: State) => state.user.country);
 	const region = useSelector((state: State) => state.user.region);
@@ -90,7 +97,6 @@ const Checkout = () => {
 	const classes = useStyles();
 	const handleCoupon = () => {
 		if (couponCode.length > 1) {
-			setCouponCode("");
 			setValidCouponCode(true);
 		} else {
 			setValidCouponCode(false);
@@ -264,7 +270,7 @@ const Checkout = () => {
 						placeholder="Email"
 						type="email"
 						defaultValue={user?.email}
-						value={reduxUser.email}
+						value={email}
 						onChange={(e) => {
 							dispatch(userAction.updateEmail(e.target.value));
 						}}
@@ -285,7 +291,7 @@ const Checkout = () => {
 						name="First Name"
 						placeholder="First Name"
 						type="text"
-						value={reduxUser.firstName}
+						value={firstName}
 						onChange={(e) => {
 							dispatch(userAction.updateFirstName(e.target.value));
 						}}
@@ -296,7 +302,7 @@ const Checkout = () => {
 						placeholder="Last Name"
 						required
 						type="text"
-						value={reduxUser.lastName}
+						value={lastName}
 						onChange={(e) => {
 							dispatch(userAction.updateLastName(e.target.value));
 						}}
@@ -305,11 +311,12 @@ const Checkout = () => {
 						placeholder="Address"
 						type="text"
 						required
-						value={reduxUser.address}
+						value={address}
 						onChange={(e) => {
 							dispatch(userAction.updateAddress(e.target.value));
 						}}
 					/>
+
 					<InputField
 						placeholder="Shipping note (optional)"
 						type="text"
@@ -322,24 +329,26 @@ const Checkout = () => {
 						placeholder="City"
 						type="text"
 						required
-						value={reduxUser.city}
+						value={city}
 						onChange={(e) => {
 							dispatch(userAction.updateCity(e.target.value));
 						}}
 					/>
 					<InputField
 						placeholder="Postal Code"
-						type="text"
+						type="number"
 						required
-						value={reduxUser.postalCode}
+						value={postalCode}
 						onChange={(e) => {
-							dispatch(userAction.updatePostalCode(e.target.value));
+							let number = e.target.value as unknown as number;
+							dispatch(userAction.updatePostalCode(number));
 						}}
 					/>
 					<LocationWrapper>
 						<CountryDropdown {...countryProps} />
 						<RegionDropdown {...regionProps} />
 					</LocationWrapper>
+
 					<ShippingWrapper>
 						<Button
 							variant="contained"
@@ -415,7 +424,7 @@ const Checkout = () => {
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Shipping</h3>
-						<Shipping>Calculated at the next step</Shipping>
+						<ShippingText>Calculated at the next step</ShippingText>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
 				<HorizontalLine />
@@ -545,7 +554,7 @@ const ShippingWrapper = styled.div`
 	align-items: center;
 `;
 
-const ProductsWrapper = styled.div`
+export const ProductsWrapper = styled.div`
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -555,7 +564,7 @@ const ProductsWrapper = styled.div`
 export const HorizontalLine = styled.hr`
 	width: 100%;
 `;
-const CouponWrapper = styled.div`
+export const CouponWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -564,7 +573,7 @@ const CouponWrapper = styled.div`
 		margin-right: 10px;
 	}
 `;
-const DetailsOuterWrapper = styled.div`
+export const DetailsOuterWrapper = styled.div`
 	width: 80%;
 	display: flex;
 	flex-direction: column;
@@ -572,17 +581,17 @@ const DetailsOuterWrapper = styled.div`
 	align-items: center;
 `;
 
-const DetailsWrapper = styled.div`
+export const DetailsWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 `;
 
-const TotalWrapper = styled(DetailsWrapper)`
+export const TotalWrapper = styled(DetailsWrapper)`
 	width: 80%;
 `;
 
-const Shipping = styled.h3`
+export const ShippingText = styled.h3`
 	opacity: 0.8;
 `;

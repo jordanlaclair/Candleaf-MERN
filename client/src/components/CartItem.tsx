@@ -11,12 +11,14 @@ type PropTypes = {
 	productName: string;
 	productId: string;
 	totalPrice: number;
+	productWeight: number;
 	productQuantity: number;
 	price: number;
 };
 interface ProductSchema {
 	productName: string;
 	price: number;
+	productWeight: number;
 	productId: string;
 }
 
@@ -24,6 +26,7 @@ const CartItem: FC<PropTypes> = ({
 	productName,
 	productId,
 	totalPrice,
+	productWeight = 0,
 	productQuantity,
 	price,
 }) => {
@@ -34,11 +37,13 @@ const CartItem: FC<PropTypes> = ({
 	const handleAddToCart = (
 		productName: string,
 		price: number,
-		productId: string
+		productId: string,
+		productWeight: number
 	) => {
 		let order: ProductSchema = {
 			productName,
 			price,
+			productWeight,
 			productId,
 		};
 
@@ -94,7 +99,7 @@ const CartItem: FC<PropTypes> = ({
 					<h3>{productQuantity}</h3>
 					<AddBoxIcon
 						onClick={() => {
-							handleAddToCart(productName, price, productId);
+							handleAddToCart(productName, price, productId, productWeight);
 						}}
 					/>
 				</QuantityWrapper>

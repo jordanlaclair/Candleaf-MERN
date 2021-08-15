@@ -17,14 +17,21 @@ interface UsersSchema {
 	address: string;
 	createdAt: string;
 	city: string;
-	postalCode: string;
+	postalCode: number;
 	country: string;
 	region: string;
 	orders: Array<CartSchema>;
 	_id: string;
 	cart: Array<CartSchema>;
 	cartTotal: number;
+	cartWeight: number;
 }
+
+export enum ShippingMethod {
+	STANDARD = "STANDARD",
+	EXPEDITED = "EXPEDITED",
+}
+
 interface NewUserSchema {
 	firstName: string;
 	lastName: string;
@@ -33,6 +40,7 @@ interface NewUserSchema {
 interface CartSchema {
 	productName: string;
 	productId: string;
+	productWeight: number;
 	totalPrice: number;
 	price: number;
 	productQuantity: number;
@@ -43,13 +51,14 @@ interface ProductSchema {
 	productName: string;
 	price: number;
 	productId: string;
+	productWeight: number;
 }
 
 interface UserSubmitDetails {
 	userEmail: string;
 	userFirstName: string;
 	userLastName: string;
-	userPostalCode: string;
+	userPostalCode: number;
 	userCountry: string;
 	userRegion: string;
 	userAddress: string;
@@ -119,6 +128,7 @@ export const addToCart =
 				region,
 				address,
 				city,
+				cartWeight,
 				total,
 				couponDiscount,
 				totalDiscounts,
@@ -133,6 +143,7 @@ export const addToCart =
 					productName: candleData.productName,
 					productId: candleData.productId,
 					totalPrice: candleData.price,
+					productWeight: candleData.productWeight,
 					price: candleData.price,
 					productQuantity: 1,
 				};
@@ -146,6 +157,7 @@ export const addToCart =
 					auth0ID,
 					_id,
 					cartTotal: candleData.price,
+					cartWeight: candleData.productWeight,
 					email,
 					postalCode,
 					shippingCost,
@@ -166,10 +178,9 @@ export const addToCart =
 				cart[0].productName == "None" &&
 				cart.length == 1
 			) {
-				cartTotal = candleData.price;
-				total = candleData.price;
 				cart[0].productName = candleData.productName;
 				cart[0].productId = candleData.productId;
+				cart[0].productWeight = candleData.productWeight;
 				cart[0].totalPrice = candleData.price;
 				cart[0].price = candleData.price;
 				cart[0].productQuantity = 1;
@@ -180,9 +191,11 @@ export const addToCart =
 					firstName,
 					lastName,
 					createdAt,
+
 					auth0ID,
 					_id,
-					cartTotal,
+					cartTotal: candleData.price,
+					cartWeight: candleData.productWeight,
 					email,
 					postalCode,
 					shippingCost,
@@ -190,7 +203,7 @@ export const addToCart =
 					region,
 					address,
 					city,
-					total,
+					total: candleData.price,
 					couponDiscount,
 					totalDiscounts,
 					newsLetterDiscount,
@@ -205,6 +218,7 @@ export const addToCart =
 						cart[i].totalPrice += candleData.price;
 						cartTotal += candleData.price;
 						total += candleData.price;
+						cartWeight += candleData.productWeight;
 						break;
 					}
 				}
@@ -214,12 +228,14 @@ export const addToCart =
 						productName: candleData.productName,
 						productId: candleData.productId,
 						totalPrice: candleData.price,
+						productWeight: candleData.productWeight,
 						productQuantity: 1,
 						_id: _id,
 						price: candleData.price,
 					};
 					cart.push(newProduct);
 					cartTotal += candleData.price;
+					cartWeight += candleData.productWeight;
 					total += candleData.price;
 				}
 				newData = {
@@ -238,6 +254,7 @@ export const addToCart =
 					region,
 					address,
 					city,
+					cartWeight,
 					total,
 					couponDiscount,
 					totalDiscounts,
@@ -266,6 +283,7 @@ export const removeFromCart =
 				auth0ID,
 				_id,
 				cartTotal,
+				cartWeight,
 				email,
 				postalCode,
 				shippingCost,
@@ -281,6 +299,7 @@ export const removeFromCart =
 			for (const product of cart) {
 				if (product.productId == productID) {
 					cartTotal -= product.totalPrice;
+					cartWeight -= product.productWeight;
 					total -= product.totalPrice;
 				}
 			}
@@ -302,6 +321,7 @@ export const removeFromCart =
 				shippingCost,
 				country,
 				region,
+				cartWeight,
 				address,
 				city,
 				total,
@@ -336,6 +356,7 @@ export const lowerQuantity =
 				postalCode,
 				shippingCost,
 				country,
+				cartWeight,
 				region,
 				address,
 				city,
@@ -350,6 +371,7 @@ export const lowerQuantity =
 					if (cart[i].productQuantity > 1) {
 						cart[i].totalPrice -= cart[i].price;
 						cartTotal -= cart[i].price;
+						cartWeight -= cart[i].productWeight;
 						total -= cart[i].price;
 						cart[i].productQuantity -= 1;
 						break;
@@ -373,6 +395,7 @@ export const lowerQuantity =
 				region,
 				address,
 				city,
+				cartWeight,
 				total,
 				couponDiscount,
 				totalDiscounts,
@@ -403,6 +426,7 @@ export const addSpecificAmount =
 				cartTotal,
 				email,
 				postalCode,
+				cartWeight,
 				shippingCost,
 				country,
 				region,
@@ -421,28 +445,33 @@ export const addSpecificAmount =
 				let newData = {
 					productName: productData.productName,
 					productId: productData.productId,
+					productWeight: productData.productWeight,
 					totalPrice: productData.price * quantity,
 					price: productData.price,
 					productQuantity: quantity,
 				};
 				cart[0] = newData;
 				cartTotal = productData.price * quantity;
+				cartWeight = productData.productWeight * quantity;
 				total = productData.price * quantity;
 			} else if (!hasProduct) {
 				let newData = {
 					productName: productData.productName,
+					productWeight: productData.productWeight,
 					productId: productData.productId,
 					totalPrice: productData.price * quantity,
 					price: productData.price,
 					productQuantity: quantity,
 				};
 				cart.push(newData);
-				cartTotal = productData.price * quantity;
-				total = productData.price * quantity;
+				cartTotal += productData.price * quantity;
+				cartWeight += productData.productWeight * quantity;
+				total += productData.price * quantity;
 			} else {
 				for (var i in cart) {
 					if (cart[i].productId == productData.productId) {
 						cartTotal += productData.price * quantity;
+						cartWeight += productData.productWeight * quantity;
 						total += productData.price * quantity;
 						cart[i].totalPrice += productData.price * quantity;
 						cart[i].productQuantity += quantity;
@@ -466,6 +495,7 @@ export const addSpecificAmount =
 				country,
 				region,
 				address,
+				cartWeight,
 				city,
 				total,
 				couponDiscount,
@@ -496,6 +526,7 @@ export const addCouponDiscount =
 				cartTotal,
 				email,
 				postalCode,
+				cartWeight,
 				shippingCost,
 				country,
 				region,
@@ -516,6 +547,7 @@ export const addCouponDiscount =
 				cartTotal,
 				email,
 				postalCode,
+				cartWeight,
 				shippingCost,
 				country,
 				region,
@@ -556,6 +588,7 @@ export const addNewsLetterDiscount =
 				country,
 				region,
 				address,
+				cartWeight,
 				city,
 				total,
 				couponDiscount,
@@ -566,6 +599,7 @@ export const addNewsLetterDiscount =
 				cart,
 				firstName,
 				lastName,
+				cartWeight,
 				createdAt,
 				auth0ID,
 				_id,
@@ -616,6 +650,7 @@ export const removeNewsLetterDiscount =
 				region,
 				address,
 				city,
+				cartWeight,
 				total,
 				couponDiscount,
 				totalDiscounts,
@@ -636,6 +671,7 @@ export const removeNewsLetterDiscount =
 				region,
 				address,
 				city,
+				cartWeight,
 				total: total + value,
 				couponDiscount,
 				totalDiscounts: totalDiscounts,
@@ -671,6 +707,7 @@ export const updateTotalDiscounts =
 				postalCode,
 				shippingCost,
 				country,
+				cartWeight,
 				region,
 				address,
 				city,
@@ -691,6 +728,7 @@ export const updateTotalDiscounts =
 				cartTotal,
 				email,
 				postalCode,
+				cartWeight,
 				shippingCost,
 				country,
 				region,
@@ -729,12 +767,11 @@ export const userSubmitDetails =
 			let {
 				orders,
 				cart,
-				firstName,
-				lastName,
 				createdAt,
 				auth0ID,
 				_id,
 				cartTotal,
+				cartWeight,
 				totalDiscounts,
 				shippingCost,
 				total,
@@ -755,6 +792,7 @@ export const userSubmitDetails =
 				postalCode: userPostalCode,
 				shippingCost,
 				country: userCountry,
+				cartWeight,
 				region: userRegion,
 				address: userAddress,
 				city: userCity,
@@ -780,8 +818,8 @@ export const updateCity =
 	};
 
 export const updatePostalCode =
-	(value: string) => (dispatch: Dispatch<UserActions>) => {
-		dispatch({ type: ActionType.UPDATE_ADDRESS, payload: value });
+	(value: number) => (dispatch: Dispatch<UserActions>) => {
+		dispatch({ type: ActionType.UPDATE_POSTAL_CODE, payload: value });
 	};
 
 export const updateCountry =
@@ -806,4 +844,76 @@ export const updateFirstName =
 export const updateLastName =
 	(value: string) => (dispatch: Dispatch<UserActions>) => {
 		dispatch({ type: ActionType.UPDATE_LAST_NAME, payload: value });
+	};
+
+export const updateShippingCost =
+	(shippingMethod: string, userID: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+			let {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				createdAt,
+				cartWeight,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				newsLetterDiscount,
+				totalDiscounts,
+			} = data;
+
+			let price = 0;
+
+			//every 500grams is $1
+			switch (shippingMethod) {
+				case ShippingMethod.STANDARD:
+					price = cartWeight / 500 + 5;
+					break;
+				case ShippingMethod.EXPEDITED:
+					price = cartWeight / 500 + 7;
+					break;
+
+				default:
+					price = 0;
+					break;
+			}
+
+			const newData = {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				cartWeight,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				shippingCost: price,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
+			};
+			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.UPDATE_SHIPPING, payload: price });
+		} catch (error) {
+			console.log(error);
+		}
 	};

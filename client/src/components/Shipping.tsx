@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../images/leaf.svg";
@@ -6,6 +6,9 @@ import { PurchaseOption } from "./ProductDetails";
 import Radio from "@material-ui/core/Radio";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import Product from "./Product";
+import LoyaltyIcon from "@material-ui/icons/Loyalty";
+
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -13,10 +16,16 @@ import {
 	SecondHalf,
 	Header,
 	LogoWrapper,
+	TotalWrapper,
+	CouponWrapper,
+	ShippingText,
 	ImageWrapper,
 	InputField,
+	ProductsWrapper,
 	BreadCrumbs,
 	PastBreadCrumb,
+	DetailsWrapper,
+	DetailsOuterWrapper,
 	HorizontalLine,
 	CurrentBreadCrumb,
 	LocationWrapper,
@@ -24,10 +33,39 @@ import {
 } from "./Checkout";
 import { Button, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import {
+	updateEmail,
+	updateShippingCost,
+} from "../store/actions/usersActionCreator";
+import { ShippingMethod } from "../store/actions/usersActionCreator";
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../store/reducers";
 
 const Shipping = () => {
 	const [shippingMethod, setShippingMethod] = useState("");
 	const history = useHistory();
+	const couponDiscount = useSelector(
+		(state: State) => state.user.couponDiscount
+	);
+	const newsLetterDiscount = useSelector(
+		(state: State) => state.user.newsLetterDiscount
+	);
+	const totalDiscounts = useSelector(
+		(state: State) => state.user.totalDiscounts
+	);
+	const shippingCost = useSelector((state: State) => state.user.shippingCost);
+	const [couponCode, setCouponCode] = useState("");
+	const userID = useSelector((state: State) => state.user._id);
+	const total = useSelector((state: State) => state.user.total);
+	const email = useSelector((state: State) => state.user.email);
+	const address = useSelector((state: State) => state.user.address);
+	const cartTotal = useSelector((state: State) => state.user.cartTotal);
+	const candles = useSelector((state: State) => state.candles);
+	const cart = useSelector((state: State) => state.user.cart);
+	const postalCode = useSelector((state: State) => state.user.postalCode);
+	const city = useSelector((state: State) => state.user.city);
+	const region = useSelector((state: State) => state.user.region);
+	const dispatch = useDispatch();
 
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -43,6 +81,37 @@ const Shipping = () => {
 	const handleShippingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setShippingMethod(event.target.value);
 	};
+
+	const formatAddress = () => {
+		if (
+			address != "" &&
+			postalCode != 0 &&
+			city != "" &&
+			region != null &&
+			region != ""
+		) {
+			return `${address} ${city}, ${region}, ${postalCode}`;
+		} else {
+			return "None";
+		}
+	};
+
+	const handleGetImageSrc = (id: string) => {
+		let result: string = "";
+		candles.forEach((candle) => {
+			if (candle._id == id) {
+				result = candle.image;
+			}
+		});
+
+		return result;
+	};
+
+	useEffect(() => {
+		if (shippingMethod !== "")
+			dispatch(updateShippingCost(shippingMethod, userID));
+	}, [shippingMethod]);
+
 	return (
 		<ShippingWrapper>
 			<FirstHalf>
@@ -68,53 +137,63 @@ const Shipping = () => {
 				</HeaderWrapper>
 				<InputFieldWrapper>
 					<h3>Contact</h3>
-					<InputFieldShipping />
+					<InputFieldShipping
+						placeholder="Email"
+						value={email}
+						defaultValue={email}
+						onChange={(e) => {
+							dispatch(updateEmail(e.target.value));
+						}}
+					/>
 				</InputFieldWrapper>
 				<InputFieldWrapper>
 					<h3>Ship To</h3>
-					<InputFieldShipping />
+					<InputFieldShipping
+						placeholder="Address"
+						defaultValue={formatAddress()}
+					/>
 				</InputFieldWrapper>
 				<HorizontalLineShipping />
 				<h2>Shipping Method</h2>
 				<OptionWrapper>
 					<PurchaseOption>
 						<Radio
-							checked={shippingMethod === "Standard"}
+							checked={shippingMethod === ShippingMethod.STANDARD}
 							onChange={handleShippingChange}
-							value="Standard"
+							value={ShippingMethod.STANDARD}
 							color="default"
 							name="radio-button-demo"
 							inputProps={{ "aria-label": "Standard Shipping" }}
 						/>
 						<h4
 							onClick={() => {
-								setShippingMethod("Standard");
+								setShippingMethod(ShippingMethod.STANDARD);
 							}}
 						>
 							Standard Shipping
 						</h4>
 					</PurchaseOption>
-					<h3>Free</h3>
+					<h3>$4.99</h3>
 				</OptionWrapper>
 				<OptionWrapper>
 					<PurchaseOption>
 						<Radio
-							checked={shippingMethod === "Expedited"}
+							checked={shippingMethod === ShippingMethod.EXPEDITED}
 							onChange={handleShippingChange}
-							value="Expedited"
+							value={ShippingMethod.EXPEDITED}
 							color="default"
 							name="radio-button-demo"
 							inputProps={{ "aria-label": "Expedited Shipping" }}
 						/>
 						<h4
 							onClick={() => {
-								setShippingMethod("Expedited");
+								setShippingMethod(ShippingMethod.EXPEDITED);
 							}}
 						>
 							Expedited Shipping
 						</h4>
 					</PurchaseOption>
-					<h3>$5.99</h3>
+					<h3>$7.99</h3>
 				</OptionWrapper>
 				<ButtonWrapper>
 					<Button
@@ -135,7 +214,74 @@ const Shipping = () => {
 					</Button>
 				</ButtonWrapper>
 			</FirstHalf>
-			<SecondHalf>&nbsp;</SecondHalf>
+			<SecondHalf>
+				<ProductsWrapper>
+					{cart.map((product) => {
+						let result = handleGetImageSrc(product.productId);
+						return (
+							<Product
+								title={product.productName}
+								price={product.price}
+								image={result}
+								productId={product.productId}
+								productQuantity={product.productQuantity}
+								showQuantity={true}
+								showAddToCart={false}
+							/>
+						);
+					})}
+				</ProductsWrapper>
+				<HorizontalLine />
+				<CouponWrapper>
+					<InputField
+						placeholder="Coupon Code"
+						type="text"
+						value={couponCode}
+					/>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<LoyaltyIcon />}
+					>
+						<h3>Add Code</h3>
+					</Button>
+				</CouponWrapper>
+				<HorizontalLine />
+				<DetailsOuterWrapper>
+					<DetailsWrapper>
+						<h3>Subtotal</h3>
+						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
+					</DetailsWrapper>
+					<DetailsWrapper>
+						<h3>Coupon Code</h3>
+						<h3> {couponDiscount === 0 ? "None" : `-$${couponDiscount}`}</h3>
+					</DetailsWrapper>
+					<DetailsWrapper>
+						<h3>Discount</h3>
+						<h3>
+							{newsLetterDiscount === 0 ? "None" : `-$${newsLetterDiscount}`}
+						</h3>
+					</DetailsWrapper>
+					<DetailsWrapper>
+						<h3>Shipping</h3>
+						<ShippingText>
+							{shippingCost === 0
+								? "Please select shipping"
+								: `$${shippingCost}`}
+						</ShippingText>
+					</DetailsWrapper>
+				</DetailsOuterWrapper>
+				<HorizontalLine />
+				<TotalWrapper>
+					<h3>Total</h3>
+
+					{totalDiscounts === 0 ? (
+						<h3>None</h3>
+					) : (
+						<h2>{`$${Math.round((total + Number.EPSILON) * 100) / 100}`}</h2>
+					)}
+				</TotalWrapper>
+			</SecondHalf>
 		</ShippingWrapper>
 	);
 };
@@ -175,6 +321,8 @@ const OptionWrapper = styled.div`
 `;
 const ButtonWrapper = styled.div`
 	display: flex;
+	width: 80%;
+	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
 `;

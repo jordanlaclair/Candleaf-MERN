@@ -13,6 +13,7 @@ type PropTypes = {
 	price: number;
 	image: string;
 	productId: string;
+	productWeight?: number;
 	productQuantity: number;
 	showQuantity: boolean;
 	showAddToCart: boolean;
@@ -21,6 +22,7 @@ interface ProductSchema {
 	productName: string;
 	price: number;
 	productId: string;
+	productWeight: number;
 }
 
 const Product: FC<PropTypes> = ({
@@ -29,6 +31,7 @@ const Product: FC<PropTypes> = ({
 	image,
 	productId,
 	productQuantity,
+	productWeight = 0,
 	showQuantity,
 	showAddToCart,
 }) => {
@@ -53,14 +56,18 @@ const Product: FC<PropTypes> = ({
 		userID: string,
 		productName: string,
 		price: number,
-		productId: string
+		productId: string,
+		productWeight: number
 	) => {
-		let order: ProductSchema = {
-			productName,
-			productId,
-			price,
-		};
-		dispatch(action.addToCart(userID, order));
+		if (productWeight !== undefined) {
+			let order: ProductSchema = {
+				productName,
+				productId,
+				productWeight,
+				price,
+			};
+			dispatch(action.addToCart(userID, order));
+		}
 	};
 
 	return (
@@ -92,7 +99,8 @@ const Product: FC<PropTypes> = ({
 						startIcon={<ShoppingCartIcon />}
 						onClick={(e) => {
 							e.stopPropagation();
-							addToCart(user._id, title, price, productId);
+							if (productWeight !== undefined)
+								addToCart(user._id, title, price, productId, productWeight);
 						}}
 					>
 						<h4>Add to Cart</h4>

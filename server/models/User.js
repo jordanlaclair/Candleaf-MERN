@@ -88,9 +88,17 @@ const userSchema = mongoose.Schema({
 				type: Number,
 				default: 0,
 			},
+			productWeight: {
+				type: Number,
+				default: 0,
+			},
 		},
 	],
 	cartTotal: {
+		type: Number,
+		default: 0,
+	},
+	cartWeight: {
 		type: Number,
 		default: 0,
 	},

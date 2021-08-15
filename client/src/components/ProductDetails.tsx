@@ -67,6 +67,7 @@ const ProductDetails: FC = () => {
 		productName: string;
 		price: number;
 		productId: string;
+		productWeight: number;
 	}
 
 	const { id }: DataTypes = useParams();
@@ -103,16 +104,24 @@ const ProductDetails: FC = () => {
 		setPurchase(event.target.value);
 	};
 
+	const stringWeightToInt = (weight: string) => {
+		return parseInt(weight.replace("g", ""), 10);
+	};
+
 	const handleAddToCart = (
 		productId: string,
+		productWeight: string,
 		productName: string,
 		price: number,
 		userId: string,
 		quantity: number
 	) => {
+		let intWeight = stringWeightToInt(productWeight);
+
 		let candleData: ProductSchema = {
 			productId,
 			price,
+			productWeight: intWeight,
 			productName,
 		};
 		dispatch(addSpecificAmount(userId, candleData, quantity));
@@ -159,6 +168,7 @@ const ProductDetails: FC = () => {
 									onClick={() => {
 										handleAddToCart(
 											id,
+											candleData.weight,
 											candleData.title,
 											candleData.price,
 											user._id,
