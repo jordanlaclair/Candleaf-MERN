@@ -55,6 +55,10 @@ interface CandleSchema {
 	weight: string;
 	price: number;
 }
+interface ShippingPayload {
+	newTotal: number;
+	newShippingCost: number;
+}
 
 type CandlesArray = Array<CandleSchema>;
 
@@ -182,7 +186,6 @@ interface AddCouponDiscount {
 
 interface RemoveCouponDiscount {
 	type: ActionType.REMOVE_COUPON_DISCOUNT;
-	payload: number;
 }
 
 interface AddNewsLetterDiscount {
@@ -245,9 +248,15 @@ interface UpdateLastName {
 	type: ActionType.UPDATE_LAST_NAME;
 	payload: string;
 }
+
+interface UpdateLastName {
+	type: ActionType.UPDATE_LAST_NAME;
+	payload: string;
+}
+
 interface UpdateShipping {
 	type: ActionType.UPDATE_SHIPPING;
-	payload: number;
+	payload: ShippingPayload;
 }
 
 export type UserActions =

@@ -96,6 +96,10 @@ const Shipping = () => {
 		}
 	};
 
+	const roundToNearestTenths = (value: number) => {
+		return `$${Math.round((value + Number.EPSILON) * 100) / 100}`;
+	};
+
 	const handleGetImageSrc = (id: string) => {
 		let result: string = "";
 		candles.forEach((candle) => {
@@ -250,7 +254,7 @@ const Shipping = () => {
 				<DetailsOuterWrapper>
 					<DetailsWrapper>
 						<h3>Subtotal</h3>
-						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
+						<h3>{roundToNearestTenths(cartTotal)}</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Coupon Code</h3>
@@ -267,7 +271,7 @@ const Shipping = () => {
 						<ShippingTextBright>
 							{shippingCost === 0
 								? "Please select shipping"
-								: `$${Math.round(shippingCost * 100 + Number.EPSILON) / 100}`}
+								: roundToNearestTenths(shippingCost)}
 						</ShippingTextBright>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
@@ -275,11 +279,7 @@ const Shipping = () => {
 				<TotalWrapper>
 					<h3>Total</h3>
 
-					{totalDiscounts === 0 ? (
-						<h3>None</h3>
-					) : (
-						<h2>{`$${Math.round((total + Number.EPSILON) * 100) / 100}`}</h2>
-					)}
+					<h2>{roundToNearestTenths(total)}</h2>
 				</TotalWrapper>
 			</SecondHalf>
 		</ShippingWrapper>

@@ -21,8 +21,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { State } from "../store/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
+import { ShippingMethod } from "../store/actions/usersActionCreator";
+
 import * as userAction from "../store/actions/usersActionCreator";
 import { updateUser } from "../apis/users";
+import { updateShippingCost } from "../store/actions";
 const Checkout = () => {
 	const { user, isAuthenticated } = useAuth0();
 
@@ -50,14 +53,7 @@ const Checkout = () => {
 	}
 
 	const dispatch = useDispatch();
-	const [checkNewsLetter, setCheckNewsLetter] = useState(() => {
-		let saved = localStorage.getItem("newsLetterChecked");
-		let initialValue;
-		if (saved != null) {
-			initialValue = JSON.parse(saved);
-		}
-		return initialValue || false;
-	});
+	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [couponCode, setCouponCode] = useState("");
 	const [validCouponCode, setValidCouponCode] = useState(false);
 	const [shippingNote, setShippingNote] = useState("");
@@ -66,10 +62,10 @@ const Checkout = () => {
 	const address = useSelector((state: State) => state.user.address);
 	const email = useSelector((state: State) => state.user.email);
 	const postalCode = useSelector((state: State) => state.user.postalCode);
-
+	const shippingCost = useSelector((state: State) => state.user.shippingCost);
+	const [couponCount, setCouponCount] = useState(0);
 	const lastName = useSelector((state: State) => state.user.lastName);
 	const firstName = useSelector((state: State) => state.user.firstName);
-
 	const country = useSelector((state: State) => state.user.country);
 	const region = useSelector((state: State) => state.user.region);
 	const reduxUser = useSelector((state: State) => state.user);
@@ -96,37 +92,36 @@ const Checkout = () => {
 	}));
 	const classes = useStyles();
 	const handleCoupon = () => {
-		if (couponCode.length > 1) {
-			setValidCouponCode(true);
-		} else {
-			setValidCouponCode(false);
-		}
+		setCouponCount((prevState) => {
+			return prevState + 1;
+		});
 	};
 
 	useEffect(() => {
-		if (newsLetterDiscount !== 0 || couponDiscount !== 0) {
-			dispatch(userAction.updateTotalDiscounts(userID));
-		}
-	}, [newsLetterDiscount, couponDiscount]);
-
-	useEffect(() => {
-		localStorage.setItem("newsLetterChecked", JSON.stringify(checkNewsLetter));
-
-		let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
-		if (checkNewsLetter && newsLetterDiscount === 0) {
-			dispatch(userAction.addNewsLetterDiscount(discount, userID));
-		} else if (checkNewsLetter == false && newsLetterDiscount > 0) {
-			dispatch(userAction.removeNewsLetterDiscount(discount, userID));
-		}
-	}, [checkNewsLetter]);
-
-	useEffect(() => {
-		if (validCouponCode && couponDiscount === 0) {
+		if (couponCount == 1) {
 			let discount =
 				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
 			dispatch(userAction.addCouponDiscount(discount, userID));
 		}
-	}, [validCouponCode]);
+	}, [couponCount]);
+	useEffect(() => {
+		return () => {
+			dispatch(userAction.removeCouponDiscount(userID));
+		};
+	}, []);
+
+	useEffect(() => {
+		dispatch(userAction.updateTotalDiscounts(userID));
+	}, [newsLetterDiscount, couponDiscount]);
+
+	useEffect(() => {
+		let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
+		if (checkNewsLetter) {
+			dispatch(userAction.addNewsLetterDiscount(discount, userID));
+		} else if (!checkNewsLetter && newsLetterDiscount > 0) {
+			dispatch(userAction.removeNewsLetterDiscount(discount, userID));
+		}
+	}, [checkNewsLetter]);
 
 	const handleNewsLetter = () => {
 		setCheckNewsLetter(!checkNewsLetter);
@@ -235,6 +230,10 @@ const Checkout = () => {
 		});
 
 		return result;
+	};
+
+	const roundToNearestTenths = (value: number) => {
+		return `$${Math.round((value + Number.EPSILON) * 100) / 100}`;
 	};
 
 	return (
@@ -410,7 +409,7 @@ const Checkout = () => {
 				<DetailsOuterWrapper>
 					<DetailsWrapper>
 						<h3>Subtotal</h3>
-						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
+						<h3>{roundToNearestTenths(cartTotal)}</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Coupon Code</h3>
@@ -419,7 +418,9 @@ const Checkout = () => {
 					<DetailsWrapper>
 						<h3>Discount</h3>
 						<h3>
-							{newsLetterDiscount === 0 ? "None" : `-$${newsLetterDiscount}`}
+							{newsLetterDiscount === 0 || !checkNewsLetter
+								? "None"
+								: `-$${newsLetterDiscount}`}
 						</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
@@ -431,11 +432,7 @@ const Checkout = () => {
 				<TotalWrapper>
 					<h3>Total</h3>
 
-					{totalDiscounts === 0 ? (
-						<h3>None</h3>
-					) : (
-						<h2>{`$${Math.round((total + Number.EPSILON) * 100) / 100}`}</h2>
-					)}
+					<h2>{roundToNearestTenths(total)}</h2>
 				</TotalWrapper>
 			</SecondHalf>
 		</CheckoutWrapper>
@@ -592,6 +589,4 @@ export const TotalWrapper = styled(DetailsWrapper)`
 	width: 80%;
 `;
 
-export const ShippingText = styled.h3`
-	opacity: 0.8;
-`;
+export const ShippingText = styled.h3``;

@@ -30,6 +30,7 @@ interface UsersSchema {
 export enum ShippingMethod {
 	STANDARD = "STANDARD",
 	EXPEDITED = "EXPEDITED",
+	NONE = "NONE",
 }
 
 interface NewUserSchema {
@@ -567,6 +568,65 @@ export const addCouponDiscount =
 		}
 	};
 
+export const removeCouponDiscount =
+	(userID: string) => async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+
+			let {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				cartWeight,
+				shippingCost,
+				country,
+				region,
+				address,
+				couponDiscount,
+				city,
+				total,
+				totalDiscounts,
+				newsLetterDiscount,
+			} = data;
+
+			const newData = {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				postalCode,
+				cartWeight,
+				shippingCost,
+				country,
+				region,
+				address,
+				city,
+				total: total + couponDiscount,
+				couponDiscount: 0,
+				totalDiscounts,
+				newsLetterDiscount,
+			};
+
+			await api.updateUser(userID, newData);
+
+			dispatch({ type: ActionType.REMOVE_COUPON_DISCOUNT });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 export const addNewsLetterDiscount =
 	(value: number, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
@@ -674,7 +734,7 @@ export const removeNewsLetterDiscount =
 				cartWeight,
 				total: total + value,
 				couponDiscount,
-				totalDiscounts: totalDiscounts,
+				totalDiscounts,
 				newsLetterDiscount: 0,
 			};
 
@@ -864,6 +924,7 @@ export const updateShippingCost =
 				email,
 				postalCode,
 				country,
+				shippingCost,
 				region,
 				address,
 				city,
@@ -874,7 +935,8 @@ export const updateShippingCost =
 			} = data;
 
 			let price = 0;
-
+			let shippingPayload;
+			total = cartTotal - totalDiscounts;
 			//every 800 grams is $1
 			switch (shippingMethod) {
 				case ShippingMethod.STANDARD:
@@ -883,11 +945,28 @@ export const updateShippingCost =
 				case ShippingMethod.EXPEDITED:
 					price = cartWeight / 800 + 7;
 					break;
+				case ShippingMethod.NONE:
+					price = 0;
+					break;
 				default:
 					price = 0;
 					break;
 			}
-
+			if (price != 0) {
+				shippingCost = price;
+				total = total + price;
+				shippingPayload = {
+					newShippingCost: price,
+					newTotal: total + price,
+				};
+			} else {
+				shippingCost = price;
+				total = total;
+				shippingPayload = {
+					newShippingCost: price,
+					newTotal: total,
+				};
+			}
 			const newData = {
 				orders,
 				cart,
@@ -900,7 +979,7 @@ export const updateShippingCost =
 				cartTotal,
 				email,
 				postalCode,
-				shippingCost: price,
+				shippingCost,
 				country,
 				region,
 				address,
@@ -911,7 +990,10 @@ export const updateShippingCost =
 				newsLetterDiscount,
 			};
 			await api.updateUser(userID, newData);
-			dispatch({ type: ActionType.UPDATE_SHIPPING, payload: price });
+			dispatch({
+				type: ActionType.UPDATE_SHIPPING,
+				payload: shippingPayload,
+			});
 		} catch (error) {
 			console.log(error);
 		}

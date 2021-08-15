@@ -1,5 +1,5 @@
 import { ActionType } from "../actions/actionTypes";
-import { UserActions } from "../actions";
+import { updateShippingCost, UserActions } from "../actions";
 import { Reducer } from "redux";
 
 interface CartSchema {
@@ -89,6 +89,12 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			user.couponDiscount = action.payload;
 			user.total -= user.couponDiscount;
 			return user;
+		case ActionType.REMOVE_COUPON_DISCOUNT:
+			return {
+				...user,
+				total: user.total + user.couponDiscount,
+				couponDiscount: 0,
+			};
 		case ActionType.ADD_NEWSLETTER_DISCOUNT:
 			user.newsLetterDiscount = action.payload;
 			user.total -= user.newsLetterDiscount;
@@ -129,7 +135,8 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			user.firstName = action.payload;
 			return user;
 		case ActionType.UPDATE_SHIPPING:
-			user.shippingCost = action.payload;
+			user.shippingCost = action.payload.newShippingCost;
+			user.total = action.payload.newTotal;
 			return user;
 
 		default:
