@@ -264,11 +264,11 @@ const Shipping = () => {
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Shipping</h3>
-						<ShippingText>
+						<ShippingTextBright>
 							{shippingCost === 0
 								? "Please select shipping"
-								: `$${shippingCost}`}
-						</ShippingText>
+								: `$${Math.round(shippingCost * 100 + Number.EPSILON) / 100}`}
+						</ShippingTextBright>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
 				<HorizontalLine />
@@ -325,4 +325,8 @@ const ButtonWrapper = styled.div`
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
+`;
+
+const ShippingTextBright = styled(ShippingText)`
+	opacity: 1;
 `;

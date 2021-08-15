@@ -875,15 +875,14 @@ export const updateShippingCost =
 
 			let price = 0;
 
-			//every 500grams is $1
+			//every 800 grams is $1
 			switch (shippingMethod) {
 				case ShippingMethod.STANDARD:
-					price = cartWeight / 500 + 5;
+					price = cartWeight / 800 + 5;
 					break;
 				case ShippingMethod.EXPEDITED:
-					price = cartWeight / 500 + 7;
+					price = cartWeight / 800 + 7;
 					break;
-
 				default:
 					price = 0;
 					break;
