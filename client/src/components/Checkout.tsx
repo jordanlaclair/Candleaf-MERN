@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "../images/leaf.svg";
+import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { Button, makeStyles, withStyles } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
@@ -12,7 +12,7 @@ import {
 
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import { OutlinedInput } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
@@ -22,11 +22,12 @@ import { State } from "../store/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
 import { ShippingMethod } from "../store/actions/usersActionCreator";
-
 import * as userAction from "../store/actions/usersActionCreator";
 import { updateUser } from "../apis/users";
 import { updateShippingCost } from "../store/actions";
-const Checkout = () => {
+import { FC } from "react";
+
+const Checkout: FC = () => {
 	const { user, isAuthenticated } = useAuth0();
 
 	interface UserData {
@@ -217,7 +218,7 @@ const Checkout = () => {
 		};
 
 		dispatch(userAction.userSubmitDetails(userID, userDetails));
-		history.push("/shipping");
+		history.push("/checkout/shipping");
 	};
 
 	const handleGetImageSrc = (id: string) => {
@@ -431,14 +432,14 @@ const Checkout = () => {
 				<TotalWrapper>
 					<h3>Total</h3>
 
-					<h2>{roundToNearestTenths(total)}</h2>
+					<h2>Calculated at the next step</h2>
 				</TotalWrapper>
 			</SecondHalf>
 		</CheckoutWrapper>
 	);
 };
 
-export default Checkout;
+export default withRouter(Checkout);
 
 export const CheckoutWrapper = styled.div`
 	display: flex;

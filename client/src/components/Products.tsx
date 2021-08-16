@@ -37,10 +37,6 @@ const Products: FC = () => {
 		dispatch(action.getCandles());
 	}, []);
 
-	useEffect(() => {
-		console.log(candles);
-	}, [candles]);
-
 	const stringWeightToInt = (weight: string) => {
 		return parseInt(weight.replace("g", ""), 10);
 	};

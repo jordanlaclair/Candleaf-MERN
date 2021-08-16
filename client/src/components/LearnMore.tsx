@@ -1,7 +1,7 @@
 import { Button, makeStyles } from "@material-ui/core";
 import React, { FC } from "react";
 import styled from "styled-components";
-import CandleGroup from "../images/CandleGroup1.jpg";
+import CandleGroup from "../assets/images/CandleGroup1.jpg";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import LearnMoreDetail from "./LearnMoreDetail";
 import devices from "../styles/devices";

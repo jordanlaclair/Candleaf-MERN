@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { css, keyframes } from "styled-components";
-import BackgroundSrcImage from "../images/homebackground1.jpg";
-import BackgroundImageWallpaper from "../images/background.jpg";
-import { ReactComponent as Leaf } from "../images/leaf2.svg";
+import BackgroundSrcImage from "../assets/images/homebackground1.jpg";
+import BackgroundImageWallpaper from "../assets/images/background.jpg";
+import { ReactComponent as Leaf } from "../assets/images/leaf2.svg";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import StorefrontIcon from "@material-ui/icons/Storefront";

@@ -1,7 +1,6 @@
 import React from "react";
 import { FC } from "react";
 import styled from "styled-components";
-import ProfilePicture from "../images/profilePicture.png";
 import Review from "./Review";
 const Reviews: FC = () => {
 	return (
@@ -17,12 +16,6 @@ const Reviews: FC = () => {
 					picture={
 						"https://avada.theme-fusion.com/wp-content/uploads/2019/07/person_sample_2.jpg"
 					}
-					description="I love it! No more Air fresheners!"
-				/>
-				<Review
-					rating={4}
-					name="Luisa"
-					picture={ProfilePicture}
 					description="I love it! No more Air fresheners!"
 				/>
 			</GridWrapper>

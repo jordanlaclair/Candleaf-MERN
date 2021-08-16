@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styled, { css, keyframes } from "styled-components";
-import { ReactComponent as Logo } from "../images/leaf.svg";
+import styled, { keyframes } from "styled-components";
+import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
@@ -14,7 +14,6 @@ import { useHistory } from "react-router-dom";
 import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
-import { fetchUser } from "../apis/users";
 import { FC } from "react";
 
 const Header: FC = () => {

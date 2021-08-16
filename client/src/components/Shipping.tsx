@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import { ReactComponent as Logo } from "../images/leaf.svg";
+import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import { PurchaseOption } from "./ProductDetails";
 import Radio from "@material-ui/core/Radio";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import Product from "./Product";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
-
+import Lottie from "react-lottie";
+import DarkModePlane from "../assets/lotties/darkModePlane.json";
+import LightModePlane from "../assets/lotties/lightModePlane.json";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -32,7 +34,7 @@ import {
 	NextBreadCrumb,
 } from "./Checkout";
 import { Button, makeStyles } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import {
 	updateEmail,
 	updateShippingCost,
@@ -40,8 +42,9 @@ import {
 import { ShippingMethod } from "../store/actions/usersActionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
+import { FC } from "react";
 
-const Shipping = () => {
+const Shipping: FC = () => {
 	const [shippingMethod, setShippingMethod] = useState("STANDARD");
 	const history = useHistory();
 	const couponDiscount = useSelector(
@@ -66,7 +69,10 @@ const Shipping = () => {
 	const postalCode = useSelector((state: State) => state.user.postalCode);
 	const city = useSelector((state: State) => state.user.city);
 	const region = useSelector((state: State) => state.user.region);
+	const theme = useSelector((state: State) => state.global.theme);
 	const dispatch = useDispatch();
+	const [isStopped, setIsStopped] = useState(false);
+	const [isPaused, setIsPaused] = useState(false);
 
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -76,6 +82,15 @@ const Shipping = () => {
 		},
 	}));
 	const classes = useStyles();
+	const defaultOptions = {
+		loop: false,
+		autoplay: true,
+		animationData: theme == "light" ? LightModePlane : DarkModePlane,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
+
 	const handleBackTotDetails = () => {
 		history.push("/checkout");
 	};
@@ -100,7 +115,7 @@ const Shipping = () => {
 				break;
 		}
 
-		return `$${price}`;
+		return roundToNearestTenths(price);
 	};
 
 	const formatAddress = () => {
@@ -258,20 +273,13 @@ const Shipping = () => {
 					})}
 				</ProductsWrapper>
 				<HorizontalLine />
-				<CouponWrapper>
-					<InputField
-						placeholder="Coupon Code"
-						type="text"
-						value={couponCode}
+				<PlaneWrapper>
+					<Lottie
+						options={defaultOptions}
+						isStopped={isStopped}
+						isPaused={isPaused}
 					/>
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<LoyaltyIcon />}
-					>
-						<h3>Add Code</h3>
-					</Button>
-				</CouponWrapper>
+				</PlaneWrapper>
 				<HorizontalLine />
 				<DetailsOuterWrapper>
 					<DetailsWrapper>
@@ -308,7 +316,7 @@ const Shipping = () => {
 	);
 };
 
-export default Shipping;
+export default withRouter(Shipping);
 
 const ShippingWrapper = styled(CheckoutWrapper)``;
 
@@ -347,4 +355,11 @@ const ButtonWrapper = styled.div`
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
+`;
+
+const PlaneWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 600px;
 `;
