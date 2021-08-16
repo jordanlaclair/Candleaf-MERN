@@ -1,11 +1,14 @@
 import { Button, makeStyles } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { State } from "../store/reducers";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import HomeIcon from "@material-ui/icons/Home";
+import CartLottie from "../assets/lotties/cart.json";
 import CartItem from "./CartItem";
+import Lottie from "react-lottie";
 
 const Cart: FC = () => {
 	const history = useHistory();
@@ -15,7 +18,9 @@ const Cart: FC = () => {
 
 	const dispatch = useDispatch();
 	const cart = useSelector((state: State) => state.user.cart);
+	const theme = useSelector((state: State) => state.global.theme);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
+	const CartLottieRef = useRef(null);
 	const getSubTotal = () => {
 		let subTotal = 0;
 		cart.forEach((product) => {
@@ -30,7 +35,14 @@ const Cart: FC = () => {
 			fontFamily: "inherit",
 		},
 	}));
-
+	const defaultOptions = {
+		loop: true,
+		autoplay: true,
+		animationData: CartLottie,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
 	const handleProceedCheckout = () => {
 		history.push("/checkout");
 	};
@@ -39,6 +51,13 @@ const Cart: FC = () => {
 	return (
 		<CheckoutWrapper>
 			<Title>Your Cart Items</Title>
+			<LottieWrapper>
+				<Lottie
+					ref={CartLottieRef}
+					options={defaultOptions}
+					isClickToPauseDisabled={true}
+				/>
+			</LottieWrapper>
 
 			<SubTitle onClick={handleBackToHome}>Back To Shopping</SubTitle>
 			<CartItemWrapper>
@@ -57,19 +76,31 @@ const Cart: FC = () => {
 			</CartItemWrapper>
 
 			<ProceedCheckoutWrapper>
-				<SubTotalWrapper>
-					<h3>Sub-Total</h3>
-					<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
-				</SubTotalWrapper>
+				<ProceedCheckoutLeft>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<HomeIcon />}
+						onClick={handleBackToHome}
+					>
+						<h3>Back to Home</h3>
+					</Button>
+				</ProceedCheckoutLeft>
+				<ProceedCheckoutRight>
+					<SubTotalWrapper>
+						<h3>Sub-Total</h3>
+						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
+					</SubTotalWrapper>
 
-				<Button
-					variant="contained"
-					className={classes.button}
-					startIcon={<ShoppingCartIcon />}
-					onClick={handleProceedCheckout}
-				>
-					<h3>Proceed to Checkout</h3>
-				</Button>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<ShoppingCartIcon />}
+						onClick={handleProceedCheckout}
+					>
+						<h3>Proceed to Checkout</h3>
+					</Button>
+				</ProceedCheckoutRight>
 			</ProceedCheckoutWrapper>
 		</CheckoutWrapper>
 	);
@@ -102,8 +133,8 @@ const SubTitle = styled.h2`
 
 const ProceedCheckoutWrapper = styled.div`
 	display: flex;
-	align-self: flex-end;
-	justify-content: center;
+	width: 90%;
+	justify-content: space-between;
 	align-items: center;
 `;
 
@@ -116,3 +147,16 @@ const SubTotalWrapper = styled.div`
 		padding: 0px 10px;
 	}
 `;
+const LottieWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 200px;
+`;
+const ProceedCheckoutRight = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const ProceedCheckoutLeft = styled.div``;

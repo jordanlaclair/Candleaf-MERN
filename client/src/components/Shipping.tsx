@@ -71,8 +71,6 @@ const Shipping: FC = () => {
 	const region = useSelector((state: State) => state.user.region);
 	const theme = useSelector((state: State) => state.global.theme);
 	const dispatch = useDispatch();
-	const [isStopped, setIsStopped] = useState(false);
-	const [isPaused, setIsPaused] = useState(false);
 
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -274,11 +272,7 @@ const Shipping: FC = () => {
 				</ProductsWrapper>
 				<HorizontalLine />
 				<PlaneWrapper>
-					<Lottie
-						options={defaultOptions}
-						isStopped={isStopped}
-						isPaused={isPaused}
-					/>
+					<Lottie options={defaultOptions} isClickToPauseDisabled={true} />
 				</PlaneWrapper>
 				<HorizontalLine />
 				<DetailsOuterWrapper>

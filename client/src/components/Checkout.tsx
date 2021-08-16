@@ -9,7 +9,6 @@ import {
 	RegionDropdown,
 	CountryRegionData,
 } from "react-country-region-selector";
-
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import { OutlinedInput } from "@material-ui/core";
 import { useHistory, withRouter } from "react-router-dom";
@@ -91,6 +90,7 @@ const Checkout: FC = () => {
 			fontFamily: "inherit",
 		},
 	}));
+
 	const classes = useStyles();
 	const handleCoupon = () => {
 		setCouponCount((prevState) => {
