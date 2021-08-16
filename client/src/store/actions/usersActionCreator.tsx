@@ -556,7 +556,7 @@ export const addCouponDiscount =
 				city,
 				total: total - value,
 				couponDiscount: value,
-				totalDiscounts,
+				totalDiscounts: totalDiscounts + value,
 				newsLetterDiscount,
 			};
 
@@ -613,9 +613,9 @@ export const removeCouponDiscount =
 				region,
 				address,
 				city,
-				total: total + couponDiscount,
+				total: cartTotal,
 				couponDiscount: 0,
-				totalDiscounts,
+				totalDiscounts: 0,
 				newsLetterDiscount,
 			};
 
@@ -673,7 +673,7 @@ export const addNewsLetterDiscount =
 				city,
 				total: total - value,
 				couponDiscount,
-				totalDiscounts,
+				totalDiscounts: totalDiscounts + value,
 				newsLetterDiscount: value,
 			};
 
@@ -734,7 +734,7 @@ export const removeNewsLetterDiscount =
 				cartWeight,
 				total: total + value,
 				couponDiscount,
-				totalDiscounts,
+				totalDiscounts: totalDiscounts - value,
 				newsLetterDiscount: 0,
 			};
 
@@ -952,21 +952,14 @@ export const updateShippingCost =
 					price = 0;
 					break;
 			}
-			if (price != 0) {
-				shippingCost = price;
-				total = total + price;
-				shippingPayload = {
-					newShippingCost: price,
-					newTotal: total + price,
-				};
-			} else {
-				shippingCost = price;
-				total = total;
-				shippingPayload = {
-					newShippingCost: price,
-					newTotal: total,
-				};
-			}
+
+			shippingCost = price;
+			total = total + price;
+			shippingPayload = {
+				newShippingCost: price,
+				newTotal: total,
+			};
+
 			const newData = {
 				orders,
 				cart,

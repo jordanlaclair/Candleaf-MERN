@@ -42,7 +42,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 
 const Shipping = () => {
-	const [shippingMethod, setShippingMethod] = useState("");
+	const [shippingMethod, setShippingMethod] = useState("STANDARD");
 	const history = useHistory();
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
@@ -58,6 +58,7 @@ const Shipping = () => {
 	const userID = useSelector((state: State) => state.user._id);
 	const total = useSelector((state: State) => state.user.total);
 	const email = useSelector((state: State) => state.user.email);
+	const cartWeight = useSelector((state: State) => state.user.cartWeight);
 	const address = useSelector((state: State) => state.user.address);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
@@ -80,6 +81,26 @@ const Shipping = () => {
 	};
 	const handleShippingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setShippingMethod(event.target.value);
+	};
+
+	const calculateShippingCost = (value: string) => {
+		let price = 0;
+		switch (value) {
+			case ShippingMethod.STANDARD:
+				price = cartWeight / 800 + 5;
+				break;
+			case ShippingMethod.EXPEDITED:
+				price = cartWeight / 800 + 7;
+				break;
+			case ShippingMethod.NONE:
+				price = 0;
+				break;
+			default:
+				price = 0;
+				break;
+		}
+
+		return `$${price}`;
 	};
 
 	const formatAddress = () => {
@@ -112,8 +133,9 @@ const Shipping = () => {
 	};
 
 	useEffect(() => {
-		if (shippingMethod !== "")
+		if (shippingMethod !== "") {
 			dispatch(updateShippingCost(shippingMethod, userID));
+		}
 	}, [shippingMethod]);
 
 	return (
@@ -177,7 +199,7 @@ const Shipping = () => {
 							Standard Shipping
 						</h4>
 					</PurchaseOption>
-					<h3>$4.99</h3>
+					<h3>{calculateShippingCost(ShippingMethod.STANDARD)}</h3>
 				</OptionWrapper>
 				<OptionWrapper>
 					<PurchaseOption>
@@ -197,7 +219,7 @@ const Shipping = () => {
 							Expedited Shipping
 						</h4>
 					</PurchaseOption>
-					<h3>$7.99</h3>
+					<h3>{calculateShippingCost(ShippingMethod.EXPEDITED)}</h3>
 				</OptionWrapper>
 				<ButtonWrapper>
 					<Button
@@ -268,11 +290,11 @@ const Shipping = () => {
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Shipping</h3>
-						<ShippingTextBright>
+						<ShippingText>
 							{shippingCost === 0
 								? "Please select shipping"
 								: roundToNearestTenths(shippingCost)}
-						</ShippingTextBright>
+						</ShippingText>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
 				<HorizontalLine />
@@ -325,8 +347,4 @@ const ButtonWrapper = styled.div`
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
-`;
-
-const ShippingTextBright = styled(ShippingText)`
-	opacity: 1;
 `;

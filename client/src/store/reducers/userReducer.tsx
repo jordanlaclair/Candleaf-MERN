@@ -31,6 +31,7 @@ interface UserSchema {
 	orders: CartsArray;
 	_id: string;
 	cart: CartsArray;
+	cartWeight: number;
 	cartTotal: number;
 }
 
@@ -48,6 +49,7 @@ let initialState: UserSchema = {
 	postalCode: 0,
 	country: "",
 	createdAt: "",
+	cartWeight: 0,
 	region: "",
 	newsLetterDiscount: 0,
 	totalDiscounts: 0,
@@ -86,26 +88,28 @@ const reducer: Reducer<UserSchema, UserActions> = (
 		case ActionType.ADD_TO_CART_QUANTITY:
 			return action.payload;
 		case ActionType.ADD_COUPON_DISCOUNT:
+			user.totalDiscounts += action.payload;
 			user.couponDiscount = action.payload;
 			user.total -= user.couponDiscount;
 			return user;
 		case ActionType.REMOVE_COUPON_DISCOUNT:
 			return {
 				...user,
+				totalDiscounts: user.totalDiscounts - user.couponDiscount,
 				total: user.total + user.couponDiscount,
 				couponDiscount: 0,
 			};
 		case ActionType.ADD_NEWSLETTER_DISCOUNT:
+			user.totalDiscounts += action.payload;
 			user.newsLetterDiscount = action.payload;
 			user.total -= user.newsLetterDiscount;
 			return user;
 		case ActionType.REMOVE_NEWSLETTER_DISCOUNT:
 			user.total += user.newsLetterDiscount;
+			user.totalDiscounts -= user.newsLetterDiscount;
 			user.newsLetterDiscount = 0;
 			return user;
-		case ActionType.UPDATE_TOTAL_DISCOUNT:
-			user.totalDiscounts = user.couponDiscount + user.newsLetterDiscount;
-			return user;
+
 		case ActionType.USER_SUBMIT_DETAILS:
 			return user;
 		case ActionType.UPDATE_ADDRESS:

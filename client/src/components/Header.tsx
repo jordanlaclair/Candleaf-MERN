@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
+import { fetchUser } from "../apis/users";
 import { FC } from "react";
 
 const Header: FC = () => {
@@ -24,8 +25,8 @@ const Header: FC = () => {
 	}
 
 	const { loginWithRedirect } = useAuth0();
-	const reduxUser = useSelector((state: State) => state.user);
 	const { logout } = useAuth0();
+	const firstName = useSelector((state: State) => state.user.firstName);
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -49,7 +50,7 @@ const Header: FC = () => {
 	};
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		if (isAuthenticated && firstName == "Guest") {
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
 			let newUser: NewUserSchema = {
 				firstName: user?.given_name!,

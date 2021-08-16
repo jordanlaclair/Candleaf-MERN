@@ -105,15 +105,14 @@ const Checkout = () => {
 		}
 	}, [couponCount]);
 	useEffect(() => {
-		return () => {
-			dispatch(userAction.removeCouponDiscount(userID));
-		};
+		dispatch(userAction.removeCouponDiscount(userID));
+		return () => {};
 	}, []);
 
-	useEffect(() => {
+	/* useEffect(() => {
 		dispatch(userAction.updateTotalDiscounts(userID));
 	}, [newsLetterDiscount, couponDiscount]);
-
+ */
 	useEffect(() => {
 		let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
 		if (checkNewsLetter) {
