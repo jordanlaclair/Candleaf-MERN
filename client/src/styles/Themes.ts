@@ -8,6 +8,7 @@ export const lightTheme = {
 	},
 	hover: "",
 	brand: "#49a010",
+	lightBrand: "#5BC912",
 };
 export const darkTheme = {
 	text: "#F2F2F2",
@@ -19,4 +20,5 @@ export const darkTheme = {
 	},
 	hover: "",
 	brand: "#49a010",
+	lightBrand: "#5BC912",
 };

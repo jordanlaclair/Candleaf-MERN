@@ -13,5 +13,6 @@ declare module "styled-components" {
 		toggleBorder: string;
 		hover: string;
 		brand: string;
+		lightBrand: string;
 	}
 }

@@ -53,9 +53,7 @@ const Shipping: FC = () => {
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
-	const totalDiscounts = useSelector(
-		(state: State) => state.user.totalDiscounts
-	);
+
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
 	const [couponCode, setCouponCode] = useState("");
 	const userID = useSelector((state: State) => state.user._id);
@@ -92,6 +90,11 @@ const Shipping: FC = () => {
 	const handleBackTotDetails = () => {
 		history.push("/checkout");
 	};
+
+	const handleContinueToPayment = () => {
+		history.push("/checkout/payment");
+	};
+
 	const handleShippingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setShippingMethod(event.target.value);
 	};
@@ -248,6 +251,7 @@ const Shipping: FC = () => {
 						variant="contained"
 						className={classes.button}
 						startIcon={<MonetizationOnIcon />}
+						onClick={handleContinueToPayment}
 					>
 						<h3>Continue to Payment</h3>
 					</Button>
