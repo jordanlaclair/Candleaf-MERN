@@ -28,6 +28,7 @@ const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
 	const cart = useSelector((state: State) => state.user.cart);
+	const shippingCost = useSelector((state: State) => state.user.shippingCost);
 	const { isLoading, isAuthenticated } = useAuth0();
 
 	if (isLoading)
@@ -72,7 +73,11 @@ const App: FC = () => {
 							exact={true}
 							path="/checkout/payment"
 							component={Payment}
-							isAuth={cart.length > 0 && cart[0].productName != "None"}
+							isAuth={
+								cart.length > 0 &&
+								cart[0].productName != "None" &&
+								shippingCost != 0
+							}
 						/>
 
 						<Route exact path="/products/candles/:id">

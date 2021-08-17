@@ -27,7 +27,6 @@ const userSchema = mongoose.Schema({
 	],
 	firstName: String,
 	lastName: String,
-
 	address: String,
 	postalCode: Number,
 	city: String,
@@ -54,6 +53,8 @@ const userSchema = mongoose.Schema({
 		default: 0,
 		type: Number,
 	},
+	shippingMethod: String,
+
 	newsLetterDiscount: {
 		default: 0,
 		type: Number,

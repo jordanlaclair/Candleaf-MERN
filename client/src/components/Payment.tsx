@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
@@ -26,16 +26,23 @@ import {
 	NextBreadCrumb,
 } from "./Checkout";
 import Product from "./Product";
+import UserLottie from "../assets/lotties/userProfile.json";
 import { useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
 import UserInfoField from "./UserInfoField";
+import Lottie from "react-lottie";
+import { useState } from "react";
 const Payment: FC = () => {
 	const cart = useSelector((state: State) => state.user.cart);
 	const candles = useSelector((state: State) => state.candles);
 	const total = useSelector((state: State) => state.user.total);
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
+	const shippingMethod = useSelector(
+		(state: State) => state.user.shippingMethod
+	);
 	const userEmail = useSelector((state: State) => state.user.email);
+
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
 	);
@@ -43,7 +50,16 @@ const Payment: FC = () => {
 		(state: State) => state.user.newsLetterDiscount
 	);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
+	const [userIconIsStopped, setUserIconIsStopped] = useState(true);
 
+	const defaultOptions = {
+		loop: false,
+		autoplay: true,
+		animationData: UserLottie,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
 	const roundToNearestTenths = (value: number) => {
 		return `$${Math.round((value + Number.EPSILON) * 100) / 100}`;
 	};
@@ -58,6 +74,10 @@ const Payment: FC = () => {
 
 		return result;
 	};
+
+	useEffect(() => {
+		console.log(userIconIsStopped);
+	}, [userIconIsStopped]);
 
 	return (
 		<PaymentWrapper>
@@ -83,10 +103,30 @@ const Payment: FC = () => {
 					</BreadCrumbs>
 				</HeaderWrapper>
 
-				<UserInfoWrapper>
+				<UserInfoWrapper
+					onClick={() => {
+						if (userIconIsStopped) setUserIconIsStopped(!userIconIsStopped);
+					}}
+				>
+					<UserInfoHeader>
+						<LottieWrapper>
+							<Lottie
+								options={defaultOptions}
+								isClickToPauseDisabled={true}
+								isStopped={userIconIsStopped}
+							/>
+						</LottieWrapper>
+						<h2>Customer Information</h2>
+					</UserInfoHeader>
 					<UserInfoField fieldName={"Contact"} fieldData={userEmail} />
 					<HorizontalLineUserInfo />
 					<UserInfoField fieldName={"Ship To"} fieldData={userEmail} />
+					<HorizontalLineUserInfo />
+					<UserInfoField
+						fieldName={"Method"}
+						shipping
+						fieldData={shippingMethod}
+					/>
 				</UserInfoWrapper>
 			</FirstHalf>
 			<SecondHalf>
@@ -161,4 +201,18 @@ const UserInfoWrapper = styled.div`
 	padding: 25px;
 	border: 1px solid ${(props) => props.theme.lightBrand};
 	border-radius: 8px;
+`;
+const UserInfoHeader = styled.div`
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	align-self: flex-start;
+`;
+
+const LottieWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 70px;
+	margin-right: 20px;
 `;

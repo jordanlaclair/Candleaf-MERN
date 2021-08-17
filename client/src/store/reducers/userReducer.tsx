@@ -20,6 +20,7 @@ interface UserSchema {
 	newsLetterDiscount: number;
 	totalDiscounts: number;
 	shippingCost: number;
+	shippingMethod: string;
 	createdAt?: string;
 	total: number;
 	email: string;
@@ -54,6 +55,7 @@ let initialState: UserSchema = {
 	newsLetterDiscount: 0,
 	totalDiscounts: 0,
 	shippingCost: 0,
+	shippingMethod: "",
 	total: 0,
 	_id: "6109c4e2bf50d522609ed25f",
 	cart: [
@@ -141,6 +143,7 @@ const reducer: Reducer<UserSchema, UserActions> = (
 		case ActionType.UPDATE_SHIPPING:
 			user.shippingCost = action.payload.newShippingCost;
 			user.total = action.payload.newTotal;
+			user.shippingMethod = action.payload.newShippingMethod;
 			return user;
 
 		default:

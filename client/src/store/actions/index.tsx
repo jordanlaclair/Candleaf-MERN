@@ -58,6 +58,7 @@ interface CandleSchema {
 interface ShippingPayload {
 	newTotal: number;
 	newShippingCost: number;
+	newShippingMethod: string;
 }
 
 type CandlesArray = Array<CandleSchema>;
@@ -126,6 +127,7 @@ interface UsersSchema {
 	shippingCost: number;
 	total: number;
 	email: string;
+	shippingMethod: string;
 	address: string;
 	createdAt: string;
 	city: string;

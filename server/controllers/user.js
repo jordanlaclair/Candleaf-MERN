@@ -43,6 +43,7 @@ export const createUser = async (req, res) => {
 		email,
 		postalCode,
 		shippingCost,
+		shippingMethod,
 		address,
 		city,
 		total,
@@ -77,6 +78,7 @@ export const createUser = async (req, res) => {
 				cartWeight,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				address,
 				city,
 				total,
@@ -110,6 +112,7 @@ export const updateUser = async (req, res) => {
 		postalCode,
 		cartWeight,
 		shippingCost,
+		shippingMethod,
 		address,
 		city,
 		firstName,
@@ -138,6 +141,7 @@ export const updateUser = async (req, res) => {
 		cartWeight,
 		postalCode,
 		shippingCost,
+		shippingMethod,
 		address,
 		city,
 		country,
@@ -148,63 +152,6 @@ export const updateUser = async (req, res) => {
 		newsLetterDiscount,
 	};
 	await Users.findByIdAndUpdate(id, updatedUser, { new: true });
-
-	res.json(updatedUser);
-};
-
-export const addToCart = async (req, res) => {
-	const { id } = req.params;
-
-	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No post with id: ${id}`);
-
-	const {
-		orders,
-		cart,
-		firstName,
-		lastName,
-		createdAt,
-		auth0ID,
-		_id,
-		cartTotal,
-		email,
-		postalCode,
-		shippingCost,
-		country,
-		region,
-		cartWeight,
-		address,
-		city,
-		total,
-		couponDiscount,
-		totalDiscounts,
-		newsLetterDiscount,
-	} = req.body;
-
-	const updatedUser = {
-		orders,
-		cart,
-		firstName,
-		lastName,
-		cartWeight,
-		createdAt,
-		auth0ID,
-		_id,
-		cartTotal,
-		email,
-		postalCode,
-		shippingCost,
-		address,
-		country,
-		region,
-		city,
-		total,
-		couponDiscount,
-		totalDiscounts,
-		newsLetterDiscount,
-	};
-
-	await Users.findByIdAndUpdate(id, { cart: cart }, { new: true });
 
 	res.json(updatedUser);
 };

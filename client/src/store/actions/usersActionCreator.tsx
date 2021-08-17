@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { UserActions } from "./index";
 import * as api from "../../apis/users";
 import * as productApi from "../../apis/products";
+import { METHODS } from "http";
 
 interface UsersSchema {
 	firstName: string;
@@ -12,6 +13,7 @@ interface UsersSchema {
 	newsLetterDiscount: number;
 	totalDiscounts: number;
 	shippingCost: number;
+	shippingMethod: string;
 	total: number;
 	email: string;
 	address: string;
@@ -125,6 +127,7 @@ export const addToCart =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -162,6 +165,7 @@ export const addToCart =
 					email,
 					postalCode,
 					shippingCost,
+					shippingMethod,
 					country,
 					region,
 					address,
@@ -192,7 +196,7 @@ export const addToCart =
 					firstName,
 					lastName,
 					createdAt,
-
+					shippingMethod,
 					auth0ID,
 					_id,
 					cartTotal: candleData.price,
@@ -246,6 +250,7 @@ export const addToCart =
 					lastName,
 					createdAt,
 					auth0ID,
+					shippingMethod,
 					_id,
 					cartTotal,
 					email,
@@ -283,6 +288,7 @@ export const removeFromCart =
 				createdAt,
 				auth0ID,
 				_id,
+				shippingMethod,
 				cartTotal,
 				cartWeight,
 				email,
@@ -319,6 +325,7 @@ export const removeFromCart =
 				cartTotal,
 				email,
 				postalCode,
+				shippingMethod,
 				shippingCost,
 				country,
 				region,
@@ -360,6 +367,7 @@ export const lowerQuantity =
 				cartWeight,
 				region,
 				address,
+				shippingMethod,
 				city,
 				total,
 				couponDiscount,
@@ -393,6 +401,7 @@ export const lowerQuantity =
 				postalCode,
 				shippingCost,
 				country,
+				shippingMethod,
 				region,
 				address,
 				city,
@@ -429,6 +438,7 @@ export const addSpecificAmount =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -493,6 +503,7 @@ export const addSpecificAmount =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -529,6 +540,7 @@ export const addCouponDiscount =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -550,6 +562,7 @@ export const addCouponDiscount =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -586,6 +599,7 @@ export const removeCouponDiscount =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -609,6 +623,7 @@ export const removeCouponDiscount =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -645,6 +660,7 @@ export const addNewsLetterDiscount =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -667,6 +683,7 @@ export const addNewsLetterDiscount =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -706,6 +723,7 @@ export const removeNewsLetterDiscount =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -727,6 +745,7 @@ export const removeNewsLetterDiscount =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -766,6 +785,7 @@ export const updateTotalDiscounts =
 				email,
 				postalCode,
 				shippingCost,
+				shippingMethod,
 				country,
 				cartWeight,
 				region,
@@ -790,6 +810,7 @@ export const updateTotalDiscounts =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				shippingMethod,
 				country,
 				region,
 				address,
@@ -833,6 +854,7 @@ export const userSubmitDetails =
 				_id,
 				cartTotal,
 				shippingCost,
+				shippingMethod,
 				total,
 				couponDiscount,
 				newsLetterDiscount,
@@ -848,6 +870,7 @@ export const userSubmitDetails =
 				auth0ID,
 				_id,
 				cartTotal,
+				shippingMethod,
 				email: userEmail,
 				postalCode: userPostalCode,
 				shippingCost,
@@ -908,7 +931,7 @@ export const updateLastName =
 	};
 
 export const updateShippingCost =
-	(shippingMethod: string, userID: string) =>
+	(shippingMethodInput: string, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
 			const { data } = await api.fetchUser(userID);
@@ -924,6 +947,7 @@ export const updateShippingCost =
 				cartTotal,
 				email,
 				postalCode,
+				shippingMethod,
 				country,
 				shippingCost,
 				region,
@@ -936,15 +960,18 @@ export const updateShippingCost =
 			} = data;
 
 			let price = 0;
+			let method = "";
 			let shippingPayload;
 			total = cartTotal - totalDiscounts;
 			//every 800 grams is $1
-			switch (shippingMethod) {
+			switch (shippingMethodInput) {
 				case ShippingMethod.STANDARD:
 					price = cartWeight / 800 + 5;
+					method = "Standard";
 					break;
 				case ShippingMethod.EXPEDITED:
 					price = cartWeight / 800 + 7;
+					method = "Expedited";
 					break;
 				case ShippingMethod.NONE:
 					price = 0;
@@ -956,8 +983,11 @@ export const updateShippingCost =
 
 			shippingCost = price;
 			total = total + price;
+			shippingMethod = method;
+
 			shippingPayload = {
 				newShippingCost: price,
+				newShippingMethod: method,
 				newTotal: total,
 			};
 
@@ -970,6 +1000,7 @@ export const updateShippingCost =
 				createdAt,
 				auth0ID,
 				_id,
+				shippingMethod,
 				cartTotal,
 				email,
 				postalCode,

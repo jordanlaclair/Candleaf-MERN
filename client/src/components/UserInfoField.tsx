@@ -1,21 +1,35 @@
 import React, { useRef, useState } from "react";
 import { FC } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 interface PropTypes {
 	fieldName: string;
 	fieldData: string;
+	shipping?: boolean;
 }
-const UserInfoField: FC<PropTypes> = ({ fieldName, fieldData }) => {
+const UserInfoField: FC<PropTypes> = ({ fieldName, fieldData, shipping }) => {
+	const history = useHistory();
 	const [editClicked, setEditClicked] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const toggleEditClick = () => {
 		inputRef.current?.focus();
 		setEditClicked(true);
 	};
+	const toggleShippingEditClick = () => {
+		history.push("/checkout/shipping");
+	};
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setEditClicked(false);
+	};
+
+	const handleDefaultValue = () => {
+		if (shipping == true) {
+			return `${fieldData} Shipping`;
+		} else {
+			return fieldData;
+		}
 	};
 	return (
 		<UserInputField>
@@ -24,12 +38,14 @@ const UserInfoField: FC<PropTypes> = ({ fieldName, fieldData }) => {
 				<Form onSubmit={handleSubmit}>
 					<FieldInput
 						ref={inputRef}
-						defaultValue={fieldData}
+						defaultValue={handleDefaultValue()}
 						disabled={!editClicked}
 					/>
 				</Form>
 			</UserInputLeftFields>
-			<UserInputRightField onClick={toggleEditClick}>
+			<UserInputRightField
+				onClick={shipping ? toggleShippingEditClick : toggleEditClick}
+			>
 				<h4>Edit</h4>
 			</UserInputRightField>
 		</UserInputField>
@@ -39,7 +55,9 @@ const UserInfoField: FC<PropTypes> = ({ fieldName, fieldData }) => {
 export default UserInfoField;
 
 const FieldHeader = styled.h4`
-	margin-right: 10px;
+	text-align: start;
+	min-width: 80px;
+	opacity: 0.8;
 `;
 const FieldInput = styled.input`
 	outline: none;
