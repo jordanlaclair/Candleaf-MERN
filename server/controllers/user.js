@@ -102,7 +102,6 @@ export const updateUser = async (req, res) => {
 	const {
 		orders,
 		cart,
-
 		createdAt,
 		auth0ID,
 		_id,
@@ -122,7 +121,7 @@ export const updateUser = async (req, res) => {
 		totalDiscounts,
 		newsLetterDiscount,
 	} = req.body;
-
+	console.log(city);
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 
@@ -148,7 +147,6 @@ export const updateUser = async (req, res) => {
 		totalDiscounts,
 		newsLetterDiscount,
 	};
-
 	await Users.findByIdAndUpdate(id, updatedUser, { new: true });
 
 	res.json(updatedUser);

@@ -812,7 +812,7 @@ export const userSubmitDetails =
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
 			const { data } = await api.fetchUser(userID);
-
+			console.log(userDetails);
 			let {
 				userEmail,
 				userFirstName,
@@ -828,15 +828,15 @@ export const userSubmitDetails =
 				orders,
 				cart,
 				createdAt,
+				cartWeight,
 				auth0ID,
 				_id,
 				cartTotal,
-				cartWeight,
-				totalDiscounts,
 				shippingCost,
 				total,
 				couponDiscount,
 				newsLetterDiscount,
+				totalDiscounts,
 			} = data;
 
 			const newData = {
@@ -862,6 +862,7 @@ export const userSubmitDetails =
 				newsLetterDiscount,
 			};
 			await api.updateUser(userID, newData);
+			dispatch({ type: ActionType.USER_SUBMIT_DETAILS });
 		} catch (error) {
 			console.log(error);
 		}

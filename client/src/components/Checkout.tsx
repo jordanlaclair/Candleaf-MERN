@@ -55,7 +55,6 @@ const Checkout: FC = () => {
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [couponCode, setCouponCode] = useState("");
-	const [validCouponCode, setValidCouponCode] = useState(false);
 	const [shippingNote, setShippingNote] = useState("");
 	const cart = useSelector((state: State) => state.user.cart);
 	const city = useSelector((state: State) => state.user.city);
@@ -339,8 +338,7 @@ const Checkout: FC = () => {
 						required
 						value={postalCode}
 						onChange={(e) => {
-							let number = e.target.value as unknown as number;
-							dispatch(userAction.updatePostalCode(number));
+							dispatch(userAction.updatePostalCode(parseInt(e.target.value)));
 						}}
 					/>
 					<LocationWrapper>

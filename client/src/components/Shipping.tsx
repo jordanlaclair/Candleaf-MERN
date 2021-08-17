@@ -45,7 +45,7 @@ import { State } from "../store/reducers";
 import { FC } from "react";
 
 const Shipping: FC = () => {
-	const [shippingMethod, setShippingMethod] = useState("STANDARD");
+	const [shippingMethod, setShippingMethod] = useState("");
 	const history = useHistory();
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
@@ -92,7 +92,7 @@ const Shipping: FC = () => {
 	};
 
 	const handleContinueToPayment = () => {
-		history.push("/checkout/payment");
+		if (shippingMethod !== "") history.push("/checkout/payment");
 	};
 
 	const handleShippingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -297,7 +297,7 @@ const Shipping: FC = () => {
 					<DetailsWrapper>
 						<h3>Shipping</h3>
 						<ShippingText>
-							{shippingCost === 0
+							{shippingCost === 0 || shippingMethod == ""
 								? "Please select shipping"
 								: roundToNearestTenths(shippingCost)}
 						</ShippingText>
@@ -306,8 +306,11 @@ const Shipping: FC = () => {
 				<HorizontalLine />
 				<TotalWrapper>
 					<h3>Total</h3>
-
-					<h2>{roundToNearestTenths(total)}</h2>
+					<h2>
+						{shippingMethod !== ""
+							? roundToNearestTenths(total)
+							: "Please select shipping"}
+					</h2>
 				</TotalWrapper>
 			</SecondHalf>
 		</ShippingWrapper>
