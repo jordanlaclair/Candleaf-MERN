@@ -50,8 +50,9 @@ const Payment: FC = () => {
 		(state: State) => state.user.newsLetterDiscount
 	);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
-	const [userIconIsStopped, setUserIconIsStopped] = useState(true);
-
+	const [userIconIsStopped, setUserIconIsStopped] = useState(false);
+	const [userIconIsPaused, setUserIconIsPaused] = useState(false);
+	const userIconRef = useRef(null);
 	const defaultOptions = {
 		loop: false,
 		autoplay: true,
@@ -104,8 +105,11 @@ const Payment: FC = () => {
 				</HeaderWrapper>
 
 				<UserInfoWrapper
-					onClick={() => {
-						if (userIconIsStopped) setUserIconIsStopped(!userIconIsStopped);
+					onMouseOver={() => {
+						setUserIconIsStopped(true);
+						setTimeout(() => {
+							setUserIconIsStopped(false);
+						}, 350);
 					}}
 				>
 					<UserInfoHeader>
