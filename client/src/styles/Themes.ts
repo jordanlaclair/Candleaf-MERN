@@ -6,9 +6,7 @@ export const lightTheme = {
 		secondary: "whitesmoke",
 		opposite: "#2C2F33",
 	},
-	hover: "",
 	brand: "#49a010",
-	lightBrand: "#5BC912",
 };
 export const darkTheme = {
 	text: "#F2F2F2",
@@ -18,7 +16,5 @@ export const darkTheme = {
 		secondary: "#2C2F33",
 		opposite: "whitesmoke",
 	},
-	hover: "",
-	brand: "#49a010",
-	lightBrand: "#5BC912",
+	brand: "#62C024",
 };

@@ -92,7 +92,7 @@ const UserInputLeftFields = styled.div`
 `;
 
 const UserInputRightField = styled.div`
-	color: ${(props) => props.theme.lightBrand};
+	color: ${(props) => props.theme.brand};
 	cursor: pointer;
 	transition: all 1s step-start;
 	:hover {

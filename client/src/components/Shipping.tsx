@@ -9,8 +9,8 @@ import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import Product from "./Product";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import Lottie from "react-lottie";
-import DarkModePlane from "../assets/lotties/darkModePlane.json";
-import LightModePlane from "../assets/lotties/lightModePlane.json";
+import DarkModePlane from "../assets/lotties/darkTheme/plane.json";
+import LightModePlane from "../assets/lotties/lightTheme/plane.json";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,

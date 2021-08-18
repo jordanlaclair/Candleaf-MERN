@@ -11,8 +11,6 @@ declare module "styled-components" {
 		};
 		text: string;
 		toggleBorder: string;
-		hover: string;
 		brand: string;
-		lightBrand: string;
 	}
 }

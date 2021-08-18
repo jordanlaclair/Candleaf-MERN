@@ -7,6 +7,7 @@ import * as action from "../store/actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers/index";
 import { FC } from "react";
+import { lightTheme } from "../styles/Themes";
 
 type PropTypes = {
 	title: string;
@@ -145,6 +146,7 @@ const ProductQuanityWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	color: ${(props) => (props.theme == lightTheme ? "white" : "black")};
 	border-radius: 50%;
 	background: ${(props) => props.theme.brand};
 `;

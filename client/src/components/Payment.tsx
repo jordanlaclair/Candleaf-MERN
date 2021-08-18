@@ -26,13 +26,15 @@ import {
 	NextBreadCrumb,
 } from "./Checkout";
 import Product from "./Product";
-import UserLottie from "../assets/lotties/userProfile.json";
+import DarkThemeUserLottie from "../assets/lotties/darkTheme/userIcon.json";
+import LightThemeUserLottie from "../assets/lotties/lightTheme/userIcon.json";
 import { useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
 import UserInfoField from "./UserInfoField";
 import Lottie from "react-lottie";
 import { useState } from "react";
+import { lightTheme } from "../styles/Themes";
 const Payment: FC = () => {
 	const cart = useSelector((state: State) => state.user.cart);
 	const candles = useSelector((state: State) => state.candles);
@@ -49,6 +51,7 @@ const Payment: FC = () => {
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
+	const theme = useSelector((state: State) => state.global.theme);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const [userIconIsStopped, setUserIconIsStopped] = useState(false);
 	const [userIconIsPaused, setUserIconIsPaused] = useState(false);
@@ -56,7 +59,8 @@ const Payment: FC = () => {
 	const defaultOptions = {
 		loop: false,
 		autoplay: true,
-		animationData: UserLottie,
+		animationData:
+			theme == "light" ? LightThemeUserLottie : DarkThemeUserLottie,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -105,11 +109,11 @@ const Payment: FC = () => {
 				</HeaderWrapper>
 
 				<UserInfoWrapper
-					onMouseOver={() => {
+					onMouseEnter={() => {
 						setUserIconIsStopped(true);
 						setTimeout(() => {
 							setUserIconIsStopped(false);
-						}, 350);
+						}, 150);
 					}}
 				>
 					<UserInfoHeader>
@@ -203,14 +207,27 @@ const UserInfoWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	padding: 25px;
-	border: 1px solid ${(props) => props.theme.lightBrand};
+	padding-top: 0;
+	position: relative;
+	border: 3px solid
+		${(props) => (props.theme == lightTheme ? props.theme.brand : "#383838")};
 	border-radius: 8px;
+	overflow: visible;
 `;
 const UserInfoHeader = styled.div`
 	display: flex;
+	width: 100%;
+	padding: 15px 25px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 	justify-content: flex-start;
 	align-items: center;
-	align-self: flex-start;
+	align-self: center;
+	color: ${(props) =>
+		props.theme == lightTheme ? props.theme.text : props.theme.brand};
+	background: ${(props) =>
+		props.theme == lightTheme ? props.theme.brand : "#383838"};
+	margin-bottom: 15px;
 `;
 
 const LottieWrapper = styled.div`
