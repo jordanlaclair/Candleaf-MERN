@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
-
+import PaymentIcon from "@material-ui/icons/Payment";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -27,7 +27,10 @@ import {
 } from "./Checkout";
 import Product from "./Product";
 import DarkThemeUserLottie from "../assets/lotties/darkTheme/userIcon.json";
+import DarkThemeCardLottie from "../assets/lotties/darkTheme/card.json";
 import LightThemeUserLottie from "../assets/lotties/lightTheme/userIcon.json";
+import LightThemeCardLottie from "../assets/lotties/lightTheme/card.json";
+
 import { useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
@@ -54,13 +57,21 @@ const Payment: FC = () => {
 	const theme = useSelector((state: State) => state.global.theme);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const [userIconIsStopped, setUserIconIsStopped] = useState(false);
-	const [userIconIsPaused, setUserIconIsPaused] = useState(false);
-	const userIconRef = useRef(null);
-	const defaultOptions = {
+	const [cardLottieIsStopped, setCardLottieIsStopped] = useState(false);
+	const userLottieOptions = {
 		loop: false,
 		autoplay: true,
 		animationData:
 			theme == "light" ? LightThemeUserLottie : DarkThemeUserLottie,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
+	const cardLottieOptions = {
+		loop: false,
+		autoplay: true,
+		animationData:
+			theme == "light" ? LightThemeCardLottie : DarkThemeCardLottie,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -79,10 +90,6 @@ const Payment: FC = () => {
 
 		return result;
 	};
-
-	useEffect(() => {
-		console.log(userIconIsStopped);
-	}, [userIconIsStopped]);
 
 	return (
 		<PaymentWrapper>
@@ -119,7 +126,71 @@ const Payment: FC = () => {
 					<UserInfoHeader>
 						<LottieWrapper>
 							<Lottie
-								options={defaultOptions}
+								options={userLottieOptions}
+								isClickToPauseDisabled={true}
+								isStopped={userIconIsStopped}
+							/>
+						</LottieWrapper>
+						<h2>Customer Information</h2>
+					</UserInfoHeader>
+					<UserInfoField fieldName={"Contact"} fieldData={userEmail} />
+					<HorizontalLineUserInfo />
+					<UserInfoField fieldName={"Ship To"} fieldData={userEmail} />
+					<HorizontalLineUserInfo />
+					<UserInfoField
+						fieldName={"Method"}
+						shipping
+						fieldData={shippingMethod}
+					/>
+				</UserInfoWrapper>
+				<UserInfoWrapper
+					onMouseEnter={() => {
+						setCardLottieIsStopped(true);
+						setTimeout(() => {
+							setCardLottieIsStopped(false);
+						}, 150);
+					}}
+				>
+					<UserInfoHeader>
+						<LottieWrapper>
+							<Lottie
+								options={cardLottieOptions}
+								isClickToPauseDisabled={true}
+								isStopped={cardLottieIsStopped}
+							/>
+						</LottieWrapper>
+						<h2>Payment Information</h2>
+					</UserInfoHeader>
+					<PaymentInfoFieldWrapper>
+						<PaymentInfoField placeholder="Card Holder Name" />
+
+						<PaymentIcon />
+					</PaymentInfoFieldWrapper>
+					<PaymentInfoFieldWrapper>
+						<PaymentInfoField placeholder="Card Number" />
+
+						<PaymentIcon />
+					</PaymentInfoFieldWrapper>
+
+					<PaymentInfoFieldBottomWrapper>
+						<SmallPaymentInfoField placeholder="Expiration Date" />
+						<SmallPaymentInfoField placeholder="CVV" />
+					</PaymentInfoFieldBottomWrapper>
+
+					<HorizontalLineUserInfo />
+				</UserInfoWrapper>
+				<UserInfoWrapper
+					onMouseEnter={() => {
+						setUserIconIsStopped(true);
+						setTimeout(() => {
+							setUserIconIsStopped(false);
+						}, 150);
+					}}
+				>
+					<UserInfoHeader>
+						<LottieWrapper>
+							<Lottie
+								options={userLottieOptions}
 								isClickToPauseDisabled={true}
 								isStopped={userIconIsStopped}
 							/>
@@ -201,7 +272,7 @@ const HorizontalLineUserInfo = styled(HorizontalLine)`
 	margin: 15px 0;
 `;
 
-const UserInfoWrapper = styled.div`
+export const UserInfoWrapper = styled.div`
 	width: 90%;
 	display: flex;
 	flex-direction: column;
@@ -213,11 +284,12 @@ const UserInfoWrapper = styled.div`
 		${(props) => (props.theme == lightTheme ? props.theme.brand : "#383838")};
 	border-radius: 8px;
 	overflow: visible;
+	margin-bottom: 20px;
 `;
-const UserInfoHeader = styled.div`
+export const UserInfoHeader = styled.div`
 	display: flex;
 	width: 100%;
-	padding: 15px 25px;
+	padding: 10px 25px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	justify-content: flex-start;
@@ -236,4 +308,41 @@ const LottieWrapper = styled.div`
 	align-items: center;
 	width: 70px;
 	margin-right: 20px;
+`;
+const PaymentInfoFieldWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-self: center;
+	margin-bottom: 10px;
+	align-items: center;
+	position: relative;
+	.MuiSvgIcon-root {
+		position: absolute;
+		top: 50%;
+		right: 2%;
+		transform: translate(-50%, -50%);
+	}
+`;
+const PaymentInfoField = styled.input`
+	outline: none;
+	border: 1px solid black;
+	background: initial;
+	color: ${(props) => props.theme.text};
+	font-weight: 700;
+	padding: 20px;
+	font-family: "Poppins", sans-serif;
+	width: 100%;
+	::placeholder {
+		color: ${(props) => props.theme.text};
+	}
+`;
+const PaymentInfoFieldBottomWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
+
+const SmallPaymentInfoField = styled(PaymentInfoField)`
+	width: 40%;
 `;

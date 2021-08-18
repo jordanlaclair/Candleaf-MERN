@@ -10,7 +10,9 @@ import Product from "./Product";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import Lottie from "react-lottie";
 import DarkModePlane from "../assets/lotties/darkTheme/plane.json";
+import DarkModeTruck from "../assets/lotties/darkTheme/truck.json";
 import LightModePlane from "../assets/lotties/lightTheme/plane.json";
+import LightModeTruck from "../assets/lotties/lightTheme/truck.json";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -33,6 +35,7 @@ import {
 	LocationWrapper,
 	NextBreadCrumb,
 } from "./Checkout";
+import { UserInfoHeader, UserInfoWrapper } from "./Payment";
 import { Button, makeStyles } from "@material-ui/core";
 import { useHistory, withRouter } from "react-router-dom";
 import {
@@ -43,6 +46,7 @@ import { ShippingMethod } from "../store/actions/usersActionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import { FC } from "react";
+import { lightTheme } from "../styles/Themes";
 
 const Shipping: FC = () => {
 	const [shippingMethod, setShippingMethod] = useState("");
@@ -53,6 +57,8 @@ const Shipping: FC = () => {
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
+	const [truckLottieIsStopped, setTruckLottieIsStopped] = useState(false);
+	const [planeLottieIsStopped, setPlaneLottieIsStopped] = useState(false);
 
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
 	const [couponCode, setCouponCode] = useState("");
@@ -78,10 +84,19 @@ const Shipping: FC = () => {
 		},
 	}));
 	const classes = useStyles();
-	const defaultOptions = {
+	const planeLottieOptions = {
 		loop: false,
 		autoplay: true,
 		animationData: theme == "light" ? LightModePlane : DarkModePlane,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
+
+	const truckLottieOptions = {
+		loop: false,
+		autoplay: true,
+		animationData: theme == "light" ? LightModeTruck : DarkModeTruck,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -196,47 +211,68 @@ const Shipping: FC = () => {
 					/>
 				</InputFieldWrapper>
 				<HorizontalLineShipping />
-				<h2>Shipping Method</h2>
-				<OptionWrapper>
-					<PurchaseOption>
-						<Radio
-							checked={shippingMethod === ShippingMethod.STANDARD}
-							onChange={handleShippingChange}
-							value={ShippingMethod.STANDARD}
-							color="default"
-							name="radio-button-demo"
-							inputProps={{ "aria-label": "Standard Shipping" }}
-						/>
-						<h4
-							onClick={() => {
-								setShippingMethod(ShippingMethod.STANDARD);
-							}}
-						>
-							Standard Shipping
-						</h4>
-					</PurchaseOption>
-					<h3>{calculateShippingCost(ShippingMethod.STANDARD)}</h3>
-				</OptionWrapper>
-				<OptionWrapper>
-					<PurchaseOption>
-						<Radio
-							checked={shippingMethod === ShippingMethod.EXPEDITED}
-							onChange={handleShippingChange}
-							value={ShippingMethod.EXPEDITED}
-							color="default"
-							name="radio-button-demo"
-							inputProps={{ "aria-label": "Expedited Shipping" }}
-						/>
-						<h4
-							onClick={() => {
-								setShippingMethod(ShippingMethod.EXPEDITED);
-							}}
-						>
-							Expedited Shipping
-						</h4>
-					</PurchaseOption>
-					<h3>{calculateShippingCost(ShippingMethod.EXPEDITED)}</h3>
-				</OptionWrapper>
+				<UserInfoWrapperShipping
+					onMouseEnter={() => {
+						setTruckLottieIsStopped(true);
+						setTimeout(() => {
+							setTruckLottieIsStopped(false);
+						}, 150);
+					}}
+				>
+					<UserInfoHeaderShipping>
+						<LottieWrapper>
+							<Lottie
+								options={truckLottieOptions}
+								isClickToPauseDisabled={true}
+								isStopped={truckLottieIsStopped}
+							/>
+						</LottieWrapper>
+						<h2>Shipping Method</h2>
+					</UserInfoHeaderShipping>
+					<OptionWrapper>
+						<PurchaseOption>
+							<Radio
+								checked={shippingMethod === ShippingMethod.STANDARD}
+								onChange={handleShippingChange}
+								value={ShippingMethod.STANDARD}
+								color="default"
+								name="radio-button-demo"
+								inputProps={{ "aria-label": "Standard Shipping" }}
+							/>
+							<h4
+								onClick={() => {
+									setShippingMethod(ShippingMethod.STANDARD);
+								}}
+							>
+								Standard Shipping
+							</h4>
+						</PurchaseOption>
+						<h3>{calculateShippingCost(ShippingMethod.STANDARD)}</h3>
+					</OptionWrapper>
+					<HorizontalLineShippingOption />
+
+					<OptionWrapper>
+						<PurchaseOption>
+							<Radio
+								checked={shippingMethod === ShippingMethod.EXPEDITED}
+								onChange={handleShippingChange}
+								value={ShippingMethod.EXPEDITED}
+								color="default"
+								name="radio-button-demo"
+								inputProps={{ "aria-label": "Expedited Shipping" }}
+							/>
+							<h4
+								onClick={() => {
+									setShippingMethod(ShippingMethod.EXPEDITED);
+								}}
+							>
+								Expedited Shipping
+							</h4>
+						</PurchaseOption>
+						<h3>{calculateShippingCost(ShippingMethod.EXPEDITED)}</h3>
+					</OptionWrapper>
+				</UserInfoWrapperShipping>
+
 				<ButtonWrapper>
 					<Button
 						variant="contained"
@@ -276,7 +312,7 @@ const Shipping: FC = () => {
 				</ProductsWrapper>
 				<HorizontalLine />
 				<PlaneWrapper>
-					<Lottie options={defaultOptions} isClickToPauseDisabled={true} />
+					<Lottie options={planeLottieOptions} isClickToPauseDisabled={true} />
 				</PlaneWrapper>
 				<HorizontalLine />
 				<DetailsOuterWrapper>
@@ -335,16 +371,19 @@ const HorizontalLineShipping = styled(HorizontalLine)`
 	margin: 3rem 0;
 `;
 
+const HorizontalLineShippingOption = styled(HorizontalLine)`
+	margin: 1rem 0;
+`;
+
 const OptionWrapper = styled.div`
 	padding: 3px 12px;
 	display: flex;
-	min-width: 350px;
+	width: 100%;
 	justify-content: space-between;
 	align-items: center;
 	background: transparent;
 	border-radius: 7px;
 	margin-top: 1rem;
-	border: 1px solid ${(props) => props.theme.colors.opposite};
 	> h3 {
 		font-weight: bold;
 		color: ${(props) => props.theme.brand};
@@ -356,6 +395,23 @@ const ButtonWrapper = styled.div`
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
+`;
+
+const UserInfoWrapperShipping = styled(UserInfoWrapper)`
+	width: 80%;
+`;
+
+const UserInfoHeaderShipping = styled(UserInfoHeader)`
+	padding: 0px 25px;
+`;
+
+const LottieWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	margin-top: 5px;
+	align-items: center;
+	width: 80px;
+	margin-right: 20px;
 `;
 
 const PlaneWrapper = styled.div`
