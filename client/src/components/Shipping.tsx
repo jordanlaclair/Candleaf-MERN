@@ -13,6 +13,7 @@ import DarkModePlane from "../assets/lotties/darkTheme/plane.json";
 import DarkModeTruck from "../assets/lotties/darkTheme/truck.json";
 import LightModePlane from "../assets/lotties/lightTheme/plane.json";
 import LightModeTruck from "../assets/lotties/lightTheme/truck.json";
+import { userSubmitDetails } from "../store/actions";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -36,6 +37,7 @@ import {
 	NextBreadCrumb,
 } from "./Checkout";
 import { UserInfoHeader, UserInfoWrapper } from "./Payment";
+import { UserSubmitDetailsObject } from "../store/actions";
 import { Button, makeStyles } from "@material-ui/core";
 import { useHistory, withRouter } from "react-router-dom";
 import {
@@ -65,6 +67,9 @@ const Shipping: FC = () => {
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
 	const [couponCode, setCouponCode] = useState("");
 	const userID = useSelector((state: State) => state.user._id);
+	const firstName = useSelector((state: State) => state.user.firstName);
+	const country = useSelector((state: State) => state.user.country);
+	const lastName = useSelector((state: State) => state.user.lastName);
 	const total = useSelector((state: State) => state.user.total);
 	const email = useSelector((state: State) => state.user.email);
 	const cartWeight = useSelector((state: State) => state.user.cartWeight);
@@ -109,6 +114,19 @@ const Shipping: FC = () => {
 	};
 
 	const handleContinueToPayment = () => {
+		let userDetails: UserSubmitDetailsObject = {
+			userEmail: email,
+			userFirstName: firstName,
+			userLastName: lastName,
+			userPostalCode: postalCode,
+			userCountry: country,
+			userRegion: region,
+			userAddress: address,
+			userCity: city,
+		};
+
+		dispatch(userSubmitDetails(userID, userDetails));
+
 		if (shippingMethod !== "") history.push("/checkout/payment");
 	};
 

@@ -141,6 +141,17 @@ interface UsersSchema {
 	cartWeight: number;
 }
 
+export interface UserSubmitDetailsObject {
+	userEmail: string;
+	userFirstName: string;
+	userLastName: string;
+	userPostalCode: number;
+	userCountry: string;
+	userRegion: string;
+	userAddress: string;
+	userCity: string;
+}
+
 interface CreateUserAction {
 	type: ActionType.CREATE_USER;
 	payload: UsersSchema;

@@ -23,34 +23,12 @@ import Product from "./Product";
 import { ShippingMethod } from "../store/actions/usersActionCreator";
 import * as userAction from "../store/actions/usersActionCreator";
 import { updateUser } from "../apis/users";
+import { UserSubmitDetailsObject } from "../store/actions";
 import { updateShippingCost } from "../store/actions";
 import { FC } from "react";
 
 const Checkout: FC = () => {
 	const { user, isAuthenticated } = useAuth0();
-
-	interface UserData {
-		firstName: string;
-		lastName: string;
-		address: string;
-		shippingNote?: string;
-		city: string;
-		postalCode: number;
-		email: string;
-		country: string;
-		region: string;
-	}
-
-	interface UserSubmitDetails {
-		userEmail: string;
-		userFirstName: string;
-		userLastName: string;
-		userPostalCode: number;
-		userCountry: string;
-		userRegion: string;
-		userAddress: string;
-		userCity: string;
-	}
 
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
@@ -205,7 +183,7 @@ const Checkout: FC = () => {
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		let userDetails: UserSubmitDetails = {
+		let userDetails: UserSubmitDetailsObject = {
 			userEmail: reduxUser.email,
 			userFirstName: reduxUser.firstName,
 			userLastName: reduxUser.lastName,

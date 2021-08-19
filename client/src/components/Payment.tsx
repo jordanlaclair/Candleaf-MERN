@@ -33,6 +33,7 @@ import LightThemeUserLottie from "../assets/lotties/lightTheme/userIcon.json";
 import LightThemeCardLottie from "../assets/lotties/lightTheme/card.json";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import EventIcon from "@material-ui/icons/Event";
 import { useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
@@ -40,6 +41,7 @@ import UserInfoField from "./UserInfoField";
 import Lottie from "react-lottie";
 import { useState } from "react";
 import { lightTheme } from "../styles/Themes";
+import PersonIcon from "@material-ui/icons/Person";
 import { Button, makeStyles } from "@material-ui/core";
 const Payment: FC = () => {
 	const history = useHistory();
@@ -47,6 +49,12 @@ const Payment: FC = () => {
 	const candles = useSelector((state: State) => state.candles);
 	const total = useSelector((state: State) => state.user.total);
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
+	const address = useSelector((state: State) => state.user.address);
+	const city = useSelector((state: State) => state.user.city);
+	const region = useSelector((state: State) => state.user.region);
+	const postalCode = useSelector((state: State) => state.user.postalCode);
+	const [cardHolderName, setCardHolderName] = useState("");
+	const [cardHolderNumber, setCardHolderNumber] = useState(0);
 	const shippingMethod = useSelector(
 		(state: State) => state.user.shippingMethod
 	);
@@ -104,17 +112,39 @@ const Payment: FC = () => {
 		return result;
 	};
 
+	const formatAddress = () => {
+		if (
+			address != "" &&
+			postalCode != 0 &&
+			city != "" &&
+			region != null &&
+			region != ""
+		) {
+			return `${address} ${city}, ${region}, ${postalCode}`;
+		} else {
+			return "None";
+		}
+	};
+
 	const handleBackToShipping = () => {
 		history.push("/checkout/shipping");
 	};
 
-	const handleCompleteOrder = () => {
+	const handleCompleteOrder = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
 		history.push("/checkout/success");
 	};
 
 	const returnShipping = (shippingCost: number) => {
 		let cost = roundToNearestTenths(shippingCost);
 		return `${cost} - ${shippingMethod}`;
+	};
+
+	const handleInputMaxLength = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.value.length > e.target.maxLength) {
+			e.target.value = e.target.value.slice(0, e.target.maxLength);
+		}
 	};
 
 	return (
@@ -140,90 +170,119 @@ const Payment: FC = () => {
 						<CurrentBreadCrumb>Payment</CurrentBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapper>
-
-				<UserInfoWrapper
-					onMouseEnter={() => {
-						setUserIconIsStopped(true);
-						setTimeout(() => {
-							setUserIconIsStopped(false);
-						}, 150);
-					}}
-				>
-					<UserInfoHeader>
-						<LottieWrapper>
-							<Lottie
-								options={userLottieOptions}
-								isClickToPauseDisabled={true}
-								isStopped={userIconIsStopped}
-							/>
-						</LottieWrapper>
-						<h2>Customer Information</h2>
-					</UserInfoHeader>
-					<UserInfoField fieldName={"Contact"} fieldData={userEmail} />
-					<HorizontalLineUserInfo />
-					<UserInfoField fieldName={"Ship To"} fieldData={userEmail} />
-					<HorizontalLineUserInfo />
-					<UserInfoField
-						fieldName={"Method"}
-						shipping
-						fieldData={shippingMethod}
-					/>
-				</UserInfoWrapper>
-				<UserInfoWrapper
-					onMouseEnter={() => {
-						setCardLottieIsStopped(true);
-						setTimeout(() => {
-							setCardLottieIsStopped(false);
-						}, 150);
-					}}
-				>
-					<UserInfoHeader>
-						<LottieWrapper>
-							<Lottie
-								options={cardLottieOptions}
-								isClickToPauseDisabled={true}
-								isStopped={cardLottieIsStopped}
-							/>
-						</LottieWrapper>
-						<h2>Payment Information</h2>
-					</UserInfoHeader>
-					<PaymentInfoFieldWrapper>
-						<PaymentInfoField placeholder="Card Holder Name" />
-
-						<PaymentIcon />
-					</PaymentInfoFieldWrapper>
-					<PaymentInfoFieldWrapper>
-						<PaymentInfoField placeholder="Card Number" />
-
-						<PaymentIcon />
-					</PaymentInfoFieldWrapper>
-
-					<PaymentInfoFieldBottomWrapper>
-						<SmallPaymentInfoField placeholder="Expiration Date" />
-						<SmallPaymentInfoField placeholder="CVV" />
-					</PaymentInfoFieldBottomWrapper>
-
-					<HorizontalLineUserInfo />
-				</UserInfoWrapper>
-				<ButtonWrapper>
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<LocalShippingIcon />}
-						onClick={handleBackToShipping}
+				<UserInfoOuterWrapper>
+					<UserInfoWrapper
+						onMouseEnter={() => {
+							setUserIconIsStopped(true);
+							setTimeout(() => {
+								setUserIconIsStopped(false);
+							}, 150);
+						}}
 					>
-						<h3>Back to Details</h3>
-					</Button>
-
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<CheckCircleIcon />}
-						onClick={handleCompleteOrder}
+						<UserInfoHeader>
+							<LottieWrapper>
+								<Lottie
+									options={userLottieOptions}
+									isClickToPauseDisabled={true}
+									isStopped={userIconIsStopped}
+								/>
+							</LottieWrapper>
+							<h2>Customer Information</h2>
+						</UserInfoHeader>
+						<UserInfoField fieldName={"Contact"} fieldData={userEmail} />
+						<HorizontalLineUserInfo />
+						<UserInfoField fieldName={"Ship To"} fieldData={formatAddress()} />
+						<HorizontalLineUserInfo />
+						<UserInfoField
+							fieldName={"Method"}
+							shipping
+							fieldData={shippingMethod}
+						/>
+					</UserInfoWrapper>
+				</UserInfoOuterWrapper>
+				<Form onSubmit={handleCompleteOrder}>
+					<UserInfoWrapper
+						onMouseEnter={() => {
+							setCardLottieIsStopped(true);
+							setTimeout(() => {
+								setCardLottieIsStopped(false);
+							}, 150);
+						}}
 					>
-						<h3>Complete Order</h3>
-					</Button>
-				</ButtonWrapper>
+						<UserInfoHeader>
+							<LottieWrapper>
+								<Lottie
+									options={cardLottieOptions}
+									isClickToPauseDisabled={true}
+									isStopped={cardLottieIsStopped}
+								/>
+							</LottieWrapper>
+							<h2>Payment Information</h2>
+						</UserInfoHeader>
+						<PaymentInfoFieldWrapper>
+							<PaymentInfoField
+								placeholder="Name"
+								required
+								value={cardHolderName}
+								onChange={(e) => {
+									setCardHolderName(e.target.value);
+								}}
+							/>
+							<PersonIcon />
+						</PaymentInfoFieldWrapper>
+						<PaymentInfoFieldWrapper>
+							<PaymentInfoField
+								placeholder="Card Number"
+								type="number"
+								required
+								value={cardHolderNumber}
+								maxLength={16}
+								onChange={handleInputMaxLength}
+							/>
+
+							<PaymentIcon />
+						</PaymentInfoFieldWrapper>
+
+						<PaymentInfoFieldBottomWrapper>
+							<SmallPaymentInfoFieldWrapper>
+								<SmallPaymentInfoField
+									type="date"
+									placeholder="Expiration Date"
+								/>
+								<EventIcon />
+							</SmallPaymentInfoFieldWrapper>
+							<SmallPaymentInfoFieldWrapper>
+								<SmallPaymentInfoField
+									type="number"
+									onChange={handleInputMaxLength}
+									maxLength={4}
+									placeholder="CVV"
+								/>
+							</SmallPaymentInfoFieldWrapper>
+						</PaymentInfoFieldBottomWrapper>
+
+						<HorizontalLineUserInfo />
+					</UserInfoWrapper>
+					<ButtonWrapperPayment>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<LocalShippingIcon />}
+							onClick={handleBackToShipping}
+						>
+							<h3>Back to Details</h3>
+						</Button>
+
+						<Button
+							variant="contained"
+							type="submit"
+							className={classes.button}
+							startIcon={<CheckCircleIcon />}
+						>
+							<h3>Complete Order</h3>
+						</Button>
+					</ButtonWrapperPayment>
+				</Form>
 			</FirstHalf>
 			<SecondHalf>
 				<ProductsWrapper>
@@ -352,6 +411,10 @@ const PaymentInfoField = styled.input`
 	::placeholder {
 		color: ${(props) => props.theme.text};
 	}
+	::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 `;
 const PaymentInfoFieldBottomWrapper = styled.div`
 	width: 100%;
@@ -361,5 +424,41 @@ const PaymentInfoFieldBottomWrapper = styled.div`
 `;
 
 const SmallPaymentInfoField = styled(PaymentInfoField)`
-	width: 40%;
+	width: 100%;
+	::-webkit-calendar-picker-indicator {
+		opacity: 0;
+	}
+	::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+`;
+
+const SmallPaymentInfoFieldWrapper = styled.div`
+	width: 48%;
+	position: relative;
+	display: flex;
+	align-items: center;
+
+	.MuiSvgIcon-root {
+		position: absolute;
+		top: 50%;
+		right: 2%;
+		z-index: -1;
+		transform: translate(-50%, -50%);
+	}
+`;
+const Form = styled.form`
+	display: flex;
+	width: 90%;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
+const ButtonWrapperPayment = styled(ButtonWrapper)`
+	width: 100%;
+`;
+const UserInfoOuterWrapper = styled.div`
+	width: 90%;
 `;

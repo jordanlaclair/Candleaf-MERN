@@ -62,7 +62,7 @@ const FieldHeader = styled.h4`
 const FieldInput = styled.input`
 	outline: none;
 	border: none;
-	min-width: 250px;
+	width: 90%;
 	font-family: "Poppins", sans-serif;
 	:disabled {
 		background: initial;
@@ -86,6 +86,7 @@ const UserInputField = styled.div`
 `;
 
 const UserInputLeftFields = styled.div`
+	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -101,4 +102,9 @@ const UserInputRightField = styled.div`
 	text-align: end;
 `;
 
-const Form = styled.form``;
+const Form = styled.form`
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+`;
