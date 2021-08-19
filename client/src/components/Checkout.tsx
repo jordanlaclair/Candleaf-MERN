@@ -84,7 +84,7 @@ const Checkout: FC = () => {
 	const history = useHistory();
 	const useStyles = makeStyles((theme) => ({
 		button: {
-			backgroundColor: "#49A010",
+			backgroundColor: "#54AD1A",
 			textTransform: "inherit",
 			fontFamily: "inherit",
 		},

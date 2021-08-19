@@ -16,5 +16,5 @@ export const darkTheme = {
 		secondary: "#2C2F33",
 		opposite: "whitesmoke",
 	},
-	brand: "#62C024",
+	brand: "#54AD1A",
 };

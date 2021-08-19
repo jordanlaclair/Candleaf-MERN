@@ -24,6 +24,7 @@ import Checkout from "./components/Checkout";
 import Shipping from "./components/Shipping";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Payment from "./components/Payment";
+import OrderComplete from "./components/OrderComplete";
 const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
@@ -73,6 +74,17 @@ const App: FC = () => {
 							exact={true}
 							path="/checkout/payment"
 							component={Payment}
+							isAuth={
+								cart.length > 0 &&
+								cart[0].productName != "None" &&
+								shippingCost != 0
+							}
+						/>
+
+						<ProtectedRoute
+							exact={true}
+							path="/checkout/success"
+							component={OrderComplete}
 							isAuth={
 								cart.length > 0 &&
 								cart[0].productName != "None" &&

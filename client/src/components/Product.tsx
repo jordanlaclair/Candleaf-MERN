@@ -40,7 +40,7 @@ const Product: FC<PropTypes> = ({
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),
-			backgroundColor: "#49A010",
+			backgroundColor: "#54AD1A",
 			textTransform: "inherit",
 			fontFamily: "inherit",
 		},

@@ -59,7 +59,9 @@ const Shipping: FC = () => {
 	);
 	const [truckLottieIsStopped, setTruckLottieIsStopped] = useState(false);
 	const [planeLottieIsStopped, setPlaneLottieIsStopped] = useState(false);
-
+	const reduxShippingMethod = useSelector(
+		(state: State) => state.user.shippingMethod
+	);
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
 	const [couponCode, setCouponCode] = useState("");
 	const userID = useSelector((state: State) => state.user._id);
@@ -78,7 +80,7 @@ const Shipping: FC = () => {
 
 	const useStyles = makeStyles((theme) => ({
 		button: {
-			backgroundColor: "#49A010",
+			backgroundColor: "#54AD1A",
 			textTransform: "inherit",
 			fontFamily: "inherit",
 		},
@@ -102,7 +104,7 @@ const Shipping: FC = () => {
 		},
 	};
 
-	const handleBackTotDetails = () => {
+	const handleBackToDetails = () => {
 		history.push("/checkout");
 	};
 
@@ -161,6 +163,11 @@ const Shipping: FC = () => {
 		});
 
 		return result;
+	};
+
+	const returnShipping = (shippingCost: number) => {
+		let cost = roundToNearestTenths(shippingCost);
+		return `${cost} - ${reduxShippingMethod}`;
 	};
 
 	useEffect(() => {
@@ -278,9 +285,9 @@ const Shipping: FC = () => {
 						variant="contained"
 						className={classes.button}
 						startIcon={<FormatListBulletedIcon />}
-						onClick={handleBackTotDetails}
+						onClick={handleBackToDetails}
 					>
-						<h3>Back to Details</h3>
+						<h3>Back to Shipping</h3>
 					</Button>
 
 					<Button
@@ -335,7 +342,7 @@ const Shipping: FC = () => {
 						<ShippingText>
 							{shippingCost === 0 || shippingMethod == ""
 								? "Please select shipping"
-								: roundToNearestTenths(shippingCost)}
+								: returnShipping(shippingCost)}
 						</ShippingText>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
@@ -389,7 +396,7 @@ const OptionWrapper = styled.div`
 		color: ${(props) => props.theme.brand};
 	}
 `;
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
 	display: flex;
 	width: 80%;
 	margin-top: 2rem;

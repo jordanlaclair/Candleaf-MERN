@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from "react";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import PaymentIcon from "@material-ui/icons/Payment";
@@ -26,11 +26,13 @@ import {
 	NextBreadCrumb,
 } from "./Checkout";
 import Product from "./Product";
+import { ButtonWrapper } from "./Shipping";
 import DarkThemeUserLottie from "../assets/lotties/darkTheme/userIcon.json";
 import DarkThemeCardLottie from "../assets/lotties/darkTheme/card.json";
 import LightThemeUserLottie from "../assets/lotties/lightTheme/userIcon.json";
 import LightThemeCardLottie from "../assets/lotties/lightTheme/card.json";
-
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
@@ -38,7 +40,9 @@ import UserInfoField from "./UserInfoField";
 import Lottie from "react-lottie";
 import { useState } from "react";
 import { lightTheme } from "../styles/Themes";
+import { Button, makeStyles } from "@material-ui/core";
 const Payment: FC = () => {
+	const history = useHistory();
 	const cart = useSelector((state: State) => state.user.cart);
 	const candles = useSelector((state: State) => state.candles);
 	const total = useSelector((state: State) => state.user.total);
@@ -76,6 +80,15 @@ const Payment: FC = () => {
 			preserveAspectRatio: "xMidYMid slice",
 		},
 	};
+
+	const useStyles = makeStyles((theme) => ({
+		button: {
+			backgroundColor: "#54AD1A",
+			textTransform: "inherit",
+			fontFamily: "inherit",
+		},
+	}));
+	const classes = useStyles();
 	const roundToNearestTenths = (value: number) => {
 		return `$${Math.round((value + Number.EPSILON) * 100) / 100}`;
 	};
@@ -89,6 +102,19 @@ const Payment: FC = () => {
 		});
 
 		return result;
+	};
+
+	const handleBackToShipping = () => {
+		history.push("/checkout/shipping");
+	};
+
+	const handleCompleteOrder = () => {
+		history.push("/checkout/success");
+	};
+
+	const returnShipping = (shippingCost: number) => {
+		let cost = roundToNearestTenths(shippingCost);
+		return `${cost} - ${shippingMethod}`;
 	};
 
 	return (
@@ -179,34 +205,25 @@ const Payment: FC = () => {
 
 					<HorizontalLineUserInfo />
 				</UserInfoWrapper>
-				<UserInfoWrapper
-					onMouseEnter={() => {
-						setUserIconIsStopped(true);
-						setTimeout(() => {
-							setUserIconIsStopped(false);
-						}, 150);
-					}}
-				>
-					<UserInfoHeader>
-						<LottieWrapper>
-							<Lottie
-								options={userLottieOptions}
-								isClickToPauseDisabled={true}
-								isStopped={userIconIsStopped}
-							/>
-						</LottieWrapper>
-						<h2>Customer Information</h2>
-					</UserInfoHeader>
-					<UserInfoField fieldName={"Contact"} fieldData={userEmail} />
-					<HorizontalLineUserInfo />
-					<UserInfoField fieldName={"Ship To"} fieldData={userEmail} />
-					<HorizontalLineUserInfo />
-					<UserInfoField
-						fieldName={"Method"}
-						shipping
-						fieldData={shippingMethod}
-					/>
-				</UserInfoWrapper>
+				<ButtonWrapper>
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<LocalShippingIcon />}
+						onClick={handleBackToShipping}
+					>
+						<h3>Back to Details</h3>
+					</Button>
+
+					<Button
+						variant="contained"
+						className={classes.button}
+						startIcon={<CheckCircleIcon />}
+						onClick={handleCompleteOrder}
+					>
+						<h3>Complete Order</h3>
+					</Button>
+				</ButtonWrapper>
 			</FirstHalf>
 			<SecondHalf>
 				<ProductsWrapper>
@@ -247,7 +264,7 @@ const Payment: FC = () => {
 						<ShippingText>
 							{shippingCost === 0
 								? "Please select shipping"
-								: roundToNearestTenths(shippingCost)}
+								: returnShipping(shippingCost)}
 						</ShippingText>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
