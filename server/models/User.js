@@ -1,30 +1,6 @@
 import mongoose from "mongoose";
-
 const userSchema = mongoose.Schema({
-	orders: [
-		{
-			productName: {
-				type: String,
-				default: "None",
-			},
-			productId: {
-				type: String,
-				default: "None",
-			},
-			totalPrice: {
-				type: Number,
-				default: 0,
-			},
-			price: {
-				type: Number,
-				default: 0,
-			},
-			productQuantity: {
-				type: Number,
-				default: 0,
-			},
-		},
-	],
+	orders: Array,
 	firstName: String,
 	lastName: String,
 	address: String,

@@ -61,7 +61,6 @@ export const createUser = async (req, res) => {
 		} else {
 			//handle subdocuments (set subdocument path to a non-nullish value)
 
-			orders = {};
 			cart = {};
 
 			const newData = {

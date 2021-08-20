@@ -147,56 +147,6 @@ const OrderComplete: FC = () => {
 					</Button>
 				</PaymentButtonWrapper>
 			</OrderCompleteFirstHalf>
-			<SecondHalf>
-				<ProductsWrapper>
-					{cart.map((product) => {
-						let result = handleGetImageSrc(product.productId);
-						return (
-							<Product
-								title={product.productName}
-								price={product.price}
-								image={result}
-								productId={product.productId}
-								productQuantity={product.productQuantity}
-								showQuantity={true}
-								showAddToCart={false}
-							/>
-						);
-					})}
-				</ProductsWrapper>
-				<HorizontalLine />
-
-				<DetailsOuterWrapper>
-					<DetailsWrapper>
-						<h3>Subtotal</h3>
-						<h3>{roundToNearestTenths(cartTotal)}</h3>
-					</DetailsWrapper>
-					<DetailsWrapper>
-						<h3>Coupon Code</h3>
-						<h3> {couponDiscount === 0 ? "None" : `-$${couponDiscount}`}</h3>
-					</DetailsWrapper>
-					<DetailsWrapper>
-						<h3>Discount</h3>
-						<h3>
-							{newsLetterDiscount === 0 ? "None" : `-$${newsLetterDiscount}`}
-						</h3>
-					</DetailsWrapper>
-					<DetailsWrapper>
-						<h3>Shipping</h3>
-						<ShippingText>
-							{shippingCost === 0
-								? "Please select shipping"
-								: `${returnShipping(shippingCost)}`}
-						</ShippingText>
-					</DetailsWrapper>
-				</DetailsOuterWrapper>
-				<HorizontalLine />
-				<TotalWrapper>
-					<h3>Total</h3>
-
-					<h2>{roundToNearestTenths(total)}</h2>
-				</TotalWrapper>
-			</SecondHalf>
 		</PaymentWrapper>
 	);
 };

@@ -80,17 +80,9 @@ const App: FC = () => {
 								shippingCost != 0
 							}
 						/>
-
-						<ProtectedRoute
-							exact={true}
-							path="/checkout/success"
-							component={OrderComplete}
-							isAuth={
-								cart.length > 0 &&
-								cart[0].productName != "None" &&
-								shippingCost != 0
-							}
-						/>
+						<Route exact path="/checkout/success">
+							<OrderComplete />
+						</Route>
 
 						<Route exact path="/products/candles/:id">
 							<Header />

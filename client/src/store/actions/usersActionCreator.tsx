@@ -1051,6 +1051,7 @@ export const addToOrders =
 				await productApi.purchaseCandle(id, quantity);
 			}
 
+			console.log(userCart);
 			const newData = {
 				orders: [...orders, userCart],
 				cart: [],
