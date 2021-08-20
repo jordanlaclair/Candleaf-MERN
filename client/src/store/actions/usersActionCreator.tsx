@@ -1082,3 +1082,7 @@ export const addToOrders =
 			console.log(error);
 		}
 	};
+
+export const signOut = () => (dispatch: Dispatch<UserActions>) => {
+	dispatch({ type: ActionType.SIGN_OUT });
+};

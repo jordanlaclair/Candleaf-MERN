@@ -278,6 +278,10 @@ interface UpdateOrders {
 	payload: CartsArray;
 }
 
+interface UserSignOut {
+	type: ActionType.SIGN_OUT;
+}
+
 export type UserActions =
 	| GetUserAction
 	| UpdateUserAction
@@ -294,6 +298,7 @@ export type UserActions =
 	| AddNewsLetterDiscount
 	| UserSubmitDetails
 	| UpdateUserCountry
+	| UserSignOut
 	| UpdateUserCity
 	| UpdateUserPostalCode
 	| UpdateUserAddress

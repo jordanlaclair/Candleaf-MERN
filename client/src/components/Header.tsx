@@ -15,6 +15,7 @@ import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { FC } from "react";
+import { signOut } from "../store/actions/usersActionCreator";
 
 const Header: FC = () => {
 	interface NewUserSchema {
@@ -49,14 +50,23 @@ const Header: FC = () => {
 	};
 
 	useEffect(() => {
-		if (isAuthenticated && firstName == "Guest") {
+		console.log(isAuthenticated);
+		if (isAuthenticated) {
+			console.log("here 1");
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
 			let newUser: NewUserSchema = {
 				firstName: user?.given_name!,
 				lastName: user?.family_name!,
 				auth0ID: user?.sub!,
 			};
-
+			dispatch(action.createUser(newUser));
+		} else if (!isAuthenticated && firstName == "Guest") {
+			console.log("here 2");
+			let newUser: NewUserSchema = {
+				firstName: "Guest",
+				lastName: "",
+				auth0ID: "",
+			};
 			dispatch(action.createUser(newUser));
 		}
 	}, [isAuthenticated]);
@@ -65,6 +75,7 @@ const Header: FC = () => {
 		if (user == undefined) {
 			loginWithRedirect();
 		} else {
+			dispatch(signOut());
 			logout();
 		}
 	};

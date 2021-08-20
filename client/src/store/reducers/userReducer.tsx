@@ -58,7 +58,7 @@ let initialState: UserSchema = {
 	shippingCost: 0,
 	shippingMethod: "",
 	total: 0,
-	_id: "6109c4e2bf50d522609ed25f",
+	_id: "",
 	cart: [
 		{
 			productName: "none",
@@ -159,6 +159,9 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			user.totalDiscounts = 0;
 			user.shippingMethod = "";
 			return user;
+
+		case ActionType.SIGN_OUT:
+			return initialState;
 
 		default:
 			return user;
