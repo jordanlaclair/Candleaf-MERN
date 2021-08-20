@@ -45,17 +45,6 @@ export const updateCandle =
 		}
 	};
 
-export const purchaseCandle =
-	(id: string) => async (dispatch: Dispatch<CandleActions>) => {
-		try {
-			const { data } = await api.purchaseCandle(id);
-
-			dispatch({ type: ActionType.PURCHASE_CANDLE, payload: data });
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 export const deleteCandle =
 	(id: string) => async (dispatch: Dispatch<CandleActions>) => {
 		try {

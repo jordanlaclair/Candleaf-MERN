@@ -14,6 +14,6 @@ router.post("/", createCandle);
 router.get("/:id", getCandle);
 router.delete("/:id", deleteCandle);
 router.patch("/:id", updateCandle);
-router.patch("/:id/purchase", purchaseCandle);
+router.patch("/:id/:quantity/purchase", purchaseCandle);
 
 export default router;

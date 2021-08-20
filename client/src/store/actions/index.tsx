@@ -3,7 +3,6 @@ import { ActionType } from "./actionTypes";
 export {
 	createCandle,
 	deleteCandle,
-	purchaseCandle,
 	getCandles,
 	getCandle,
 } from "./candlesActionCreator";
@@ -23,6 +22,7 @@ export {
 	updateCity,
 	updateFirstName,
 	updateLastName,
+	addToOrders,
 	updatePostalCode,
 	updateRegion,
 	updateCountry,
@@ -116,6 +116,7 @@ interface CartSchema {
 }
 
 type CartsArray = Array<CartSchema>;
+type OrdersArray = Array<Array<CartSchema>>;
 
 interface UsersSchema {
 	firstName: string;
@@ -134,7 +135,7 @@ interface UsersSchema {
 	postalCode: number;
 	country: string;
 	region: string;
-	orders: CartsArray;
+	orders: OrdersArray;
 	_id: string;
 	cart: CartsArray;
 	cartTotal: number;
@@ -272,6 +273,11 @@ interface UpdateShipping {
 	payload: ShippingPayload;
 }
 
+interface UpdateOrders {
+	type: ActionType.PURCHASE_COMPLETE;
+	payload: CartsArray;
+}
+
 export type UserActions =
 	| GetUserAction
 	| UpdateUserAction
@@ -293,6 +299,7 @@ export type UserActions =
 	| UpdateUserAddress
 	| UpdateFirstName
 	| UpdateShipping
+	| UpdateOrders
 	| UpdateLastName
 	| UpdateUserRegion
 	| UpdateUserEmail

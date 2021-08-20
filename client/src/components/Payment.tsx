@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect } from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
@@ -26,7 +26,6 @@ import {
 	NextBreadCrumb,
 } from "./Checkout";
 import Product from "./Product";
-import { ButtonWrapper } from "./Shipping";
 import DarkThemeUserLottie from "../assets/lotties/darkTheme/userIcon.json";
 import DarkThemeCardLottie from "../assets/lotties/darkTheme/card.json";
 import LightThemeUserLottie from "../assets/lotties/lightTheme/userIcon.json";
@@ -34,7 +33,7 @@ import LightThemeCardLottie from "../assets/lotties/lightTheme/card.json";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import EventIcon from "@material-ui/icons/Event";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
 import UserInfoField from "./UserInfoField";
@@ -43,7 +42,10 @@ import { useState } from "react";
 import { lightTheme } from "../styles/Themes";
 import PersonIcon from "@material-ui/icons/Person";
 import { Button, makeStyles } from "@material-ui/core";
+import { configureStore } from "@reduxjs/toolkit";
+import { addToOrders } from "../store/actions";
 const Payment: FC = () => {
+	const dispatch = useDispatch();
 	const history = useHistory();
 	const cart = useSelector((state: State) => state.user.cart);
 	const candles = useSelector((state: State) => state.candles);
@@ -53,11 +55,10 @@ const Payment: FC = () => {
 	const city = useSelector((state: State) => state.user.city);
 	const region = useSelector((state: State) => state.user.region);
 	const postalCode = useSelector((state: State) => state.user.postalCode);
-	const [cardHolderName, setCardHolderName] = useState("");
-	const [cardHolderNumber, setCardHolderNumber] = useState(0);
 	const shippingMethod = useSelector(
 		(state: State) => state.user.shippingMethod
 	);
+	const userID = useSelector((state: State) => state.user._id);
 	const userEmail = useSelector((state: State) => state.user.email);
 
 	const couponDiscount = useSelector(
@@ -70,6 +71,9 @@ const Payment: FC = () => {
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const [userIconIsStopped, setUserIconIsStopped] = useState(false);
 	const [cardLottieIsStopped, setCardLottieIsStopped] = useState(false);
+	const [todaysDate, setTodaysDate] = useState("");
+	const [cardNumber, setCardNumber] = useState("");
+	const [cardCVV, setCardCVV] = useState("");
 	const userLottieOptions = {
 		loop: false,
 		autoplay: true,
@@ -133,6 +137,8 @@ const Payment: FC = () => {
 	const handleCompleteOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		dispatch(addToOrders(cart, userID));
+
 		history.push("/checkout/success");
 	};
 
@@ -141,11 +147,28 @@ const Payment: FC = () => {
 		return `${cost} - ${shippingMethod}`;
 	};
 
-	const handleInputMaxLength = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.value.length > e.target.maxLength) {
-			e.target.value = e.target.value.slice(0, e.target.maxLength);
+	const handleCheckCardNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const re = /^[0-9\b]+$/;
+		if (e.target.value === "" || re.test(e.target.value)) {
+			setCardNumber(e.target.value);
 		}
 	};
+
+	const handleCheckCardCVV = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const re = /^[0-9\b]+$/;
+		if (e.target.value === "" || re.test(e.target.value)) {
+			setCardCVV(e.target.value);
+		}
+	};
+
+	const returnTodaysDate = () => {
+		return new Date().toISOString().split("T")[0];
+	};
+
+	useEffect(() => {
+		let todaysDate = returnTodaysDate();
+		setTodaysDate(todaysDate);
+	}, []);
 
 	return (
 		<PaymentWrapper>
@@ -220,24 +243,18 @@ const Payment: FC = () => {
 							<h2>Payment Information</h2>
 						</UserInfoHeader>
 						<PaymentInfoFieldWrapper>
-							<PaymentInfoField
-								placeholder="Name"
-								required
-								value={cardHolderName}
-								onChange={(e) => {
-									setCardHolderName(e.target.value);
-								}}
-							/>
+							<PaymentInfoField placeholder="Name" required type="text" />
 							<PersonIcon />
 						</PaymentInfoFieldWrapper>
 						<PaymentInfoFieldWrapper>
 							<PaymentInfoField
 								placeholder="Card Number"
-								type="number"
+								type="text"
+								value={cardNumber}
+								onChange={handleCheckCardNumber}
+								minLength={16}
 								required
-								value={cardHolderNumber}
 								maxLength={16}
-								onChange={handleInputMaxLength}
 							/>
 
 							<PaymentIcon />
@@ -247,15 +264,20 @@ const Payment: FC = () => {
 							<SmallPaymentInfoFieldWrapper>
 								<SmallPaymentInfoField
 									type="date"
+									required
+									min={todaysDate}
 									placeholder="Expiration Date"
 								/>
 								<EventIcon />
 							</SmallPaymentInfoFieldWrapper>
 							<SmallPaymentInfoFieldWrapper>
 								<SmallPaymentInfoField
-									type="number"
-									onChange={handleInputMaxLength}
+									type="text"
+									required
+									value={cardCVV}
+									minLength={4}
 									maxLength={4}
+									onChange={handleCheckCardCVV}
 									placeholder="CVV"
 								/>
 							</SmallPaymentInfoFieldWrapper>
@@ -263,7 +285,7 @@ const Payment: FC = () => {
 
 						<HorizontalLineUserInfo />
 					</UserInfoWrapper>
-					<ButtonWrapperPayment>
+					<ButtonWrapper>
 						<Button
 							variant="contained"
 							className={classes.button}
@@ -281,7 +303,7 @@ const Payment: FC = () => {
 						>
 							<h3>Complete Order</h3>
 						</Button>
-					</ButtonWrapperPayment>
+					</ButtonWrapper>
 				</Form>
 			</FirstHalf>
 			<SecondHalf>
@@ -456,8 +478,12 @@ const Form = styled.form`
 	align-items: center;
 `;
 
-const ButtonWrapperPayment = styled(ButtonWrapper)`
+const ButtonWrapper = styled.div`
+	display: flex;
 	width: 100%;
+	margin-top: 2rem;
+	justify-content: space-between;
+	align-items: center;
 `;
 const UserInfoOuterWrapper = styled.div`
 	width: 90%;

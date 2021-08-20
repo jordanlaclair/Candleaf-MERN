@@ -54,6 +54,8 @@ export const updateCandle = async (req, res) => {
 		message,
 		title,
 		tags,
+		purchaseCount,
+		createdAt,
 		image,
 		wax,
 		fragrance,
@@ -74,6 +76,8 @@ export const updateCandle = async (req, res) => {
 		price,
 		_id: id,
 		wax,
+		purchaseCount,
+		createdAt,
 		fragrance,
 		burningTime,
 		dimensions,
@@ -86,20 +90,26 @@ export const updateCandle = async (req, res) => {
 };
 
 export const purchaseCandle = async (req, res) => {
-	const { id } = req.params;
+	try {
+		const { id, quantity } = req.params;
 
-	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No post with id: ${id}`);
+		if (!mongoose.Types.ObjectId.isValid(id))
+			return res.status(404).send(`No post with id: ${id}`);
 
-	const candle = await Candle.findById(id);
+		const candle = await Candle.findById(id);
+		let quantityInt = parseInt(quantity);
 
-	const likedCandle = await Candle.findByIdAndUpdate(
-		id,
-		{ purchaseCount: candle.purchaseCount + 1 },
-		{ new: true }
-	);
-
-	res.json(likedCandle);
+		const purchasedCandle = await Candle.findByIdAndUpdate(
+			id,
+			{ purchaseCount: candle.purchaseCount + quantityInt },
+			{
+				new: true,
+			}
+		);
+		res.json(purchasedCandle);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 export default router;

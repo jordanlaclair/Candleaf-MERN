@@ -1023,3 +1023,61 @@ export const updateShippingCost =
 			console.log(error);
 		}
 	};
+
+export const addToOrders =
+	(userCart: CartsArray, userID: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.fetchUser(userID);
+			let {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				createdAt,
+				auth0ID,
+				_id,
+				email,
+				postalCode,
+				country,
+				region,
+				address,
+				city,
+			} = data;
+
+			for (const product of cart) {
+				let quantity = product.productQuantity;
+				let id = product.productId;
+				await productApi.purchaseCandle(id, quantity);
+			}
+
+			const newData = {
+				orders: [...orders, userCart],
+				cart: [],
+				firstName,
+				lastName,
+				createdAt,
+				cartWeight: 0,
+				auth0ID,
+				_id,
+				cartTotal: 0,
+				email,
+				postalCode,
+				shippingMethod: "",
+				country,
+				shippingCost: 0,
+				region,
+				address,
+				city,
+				total: 0,
+				couponDiscount: 0,
+				newsLetterDiscount: 0,
+				totalDiscounts: 0,
+			};
+			await api.updateUser(userID, newData);
+
+			dispatch({ type: ActionType.PURCHASE_COMPLETE, payload: userCart });
+		} catch (error) {
+			console.log(error);
+		}
+	};

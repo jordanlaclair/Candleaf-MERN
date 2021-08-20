@@ -29,7 +29,7 @@ interface UserSchema {
 	postalCode: number;
 	country: string;
 	region: string;
-	orders: CartsArray;
+	orders: OrdersArray;
 	_id: string;
 	cart: CartsArray;
 	cartWeight: number;
@@ -37,6 +37,7 @@ interface UserSchema {
 }
 
 type CartsArray = Array<CartSchema>;
+type OrdersArray = Array<Array<CartSchema>>;
 
 let initialState: UserSchema = {
 	firstName: "Guest",
@@ -144,6 +145,19 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			user.shippingCost = action.payload.newShippingCost;
 			user.total = action.payload.newTotal;
 			user.shippingMethod = action.payload.newShippingMethod;
+			return user;
+
+		case ActionType.PURCHASE_COMPLETE:
+			user.orders.push(action.payload);
+			user.cart = [];
+			user.total = 0;
+			user.shippingCost = 0;
+			user.cartTotal = 0;
+			user.cartWeight = 0;
+			user.couponDiscount = 0;
+			user.newsLetterDiscount = 0;
+			user.totalDiscounts = 0;
+			user.shippingMethod = "";
 			return user;
 
 		default:

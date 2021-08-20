@@ -48,20 +48,22 @@ const Products: FC = () => {
 				<h2>Order it for you or for a loved one!</h2>
 			</Header>
 			<TableWrapper>
-				{candles.map((candle) => {
-					return (
-						<Product
-							title={candle.title}
-							price={candle.price}
-							image={candle.image}
-							productId={candle._id}
-							productQuantity={candle.purchaseCount}
-							showQuantity={false}
-							showAddToCart={true}
-							productWeight={stringWeightToInt(candle.weight)}
-						/>
-					);
-				})}
+				{candles.length > 2
+					? candles.map((candle) => {
+							return (
+								<Product
+									title={candle.title}
+									price={candle.price}
+									image={candle.image}
+									productId={candle._id}
+									productQuantity={candle.purchaseCount}
+									showQuantity={false}
+									showAddToCart={true}
+									productWeight={stringWeightToInt(candle.weight)}
+								/>
+							);
+					  })
+					: null}
 			</TableWrapper>
 		</ProductsWrapper>
 	);
