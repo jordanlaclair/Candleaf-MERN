@@ -14,7 +14,7 @@ const Reviews: FC = () => {
 					rating={4}
 					name="Luisa"
 					picture={
-						"https://avada.theme-fusion.com/wp-content/uploads/2019/07/person_sample_2.jpg"
+						"https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
 					}
 					description="I love it! No more Air fresheners!"
 				/>

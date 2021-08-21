@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+import { createReview } from "../apis/review";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import * as api from "../apis/products";
@@ -18,14 +19,47 @@ import { HorizontalLine } from "./Checkout";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import { useAuth0 } from "@auth0/auth0-react";
 import { lightTheme } from "../styles/Themes";
+import StarGrow from "../assets/lotties/starGrow.json";
+import StarEmpty from "../assets/lotties/starEmpty.json";
+import Lottie from "react-lottie";
 const ProductDetails: FC = () => {
 	const [productQuantity, setProductQuantity] = useState(1);
 	const [productPurchasedBefore, setProductPurchasedBefore] = useState(false);
-
+	const [reviewTitle, setReviewTitle] = useState("");
+	const [reviewDescription, setReviewDescription] = useState("");
 	const { user, isAuthenticated } = useAuth0();
+	const [starState, setStarState] = useState({
+		firstStar: false,
+		secondStar: false,
+		thirdStar: false,
+		fourthStar: false,
+		fifthStar: false,
+	});
+
+	useEffect(() => {
+		let ratingValue = Object.values(starState).filter((star) => {
+			return star == true;
+		});
+	}, [starState]);
+
 	const userID = useSelector((state: State) => state.user._id);
 	const orders = useSelector((state: State) => state.user.orders);
-
+	const starNormalOptions = {
+		loop: false,
+		autoplay: true,
+		animationData: StarGrow,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
+	const emptyStarOptions = {
+		loop: false,
+		autoplay: true,
+		animationData: StarEmpty,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(3),
@@ -40,6 +74,15 @@ const ProductDetails: FC = () => {
 		productName: string;
 		price: number;
 		productId: string;
+	}
+
+	interface ReviewTypes {
+		title: string;
+		name: string;
+		description: string;
+		rating: number;
+		candleID: string;
+		userPicture: string;
 	}
 	interface CandleSchema {
 		title: string;
@@ -100,7 +143,12 @@ const ProductDetails: FC = () => {
 			return prevState;
 		});
 	};
-	const handleSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {};
+	const handleSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		//let newReview: ReviewTypes = {};
+		//createReview();
+	};
 	useEffect(() => {
 		fetchCandle(id);
 	}, []);
@@ -153,6 +201,60 @@ const ProductDetails: FC = () => {
 			}
 		}
 		return hasThisProduct;
+	};
+
+	const handleStarsClicked = (starsClicked: number) => {
+		if (starsClicked == 1) {
+			setStarState(() => {
+				return {
+					firstStar: true,
+					secondStar: false,
+					thirdStar: false,
+					fourthStar: false,
+					fifthStar: false,
+				};
+			});
+		} else if (starsClicked == 2) {
+			setStarState(() => {
+				return {
+					firstStar: true,
+					secondStar: true,
+					thirdStar: false,
+					fourthStar: false,
+					fifthStar: false,
+				};
+			});
+		} else if (starsClicked == 3) {
+			setStarState(() => {
+				return {
+					firstStar: true,
+					secondStar: true,
+					thirdStar: true,
+					fourthStar: false,
+					fifthStar: false,
+				};
+			});
+		} else if (starsClicked == 4) {
+			setStarState(() => {
+				return {
+					firstStar: true,
+					secondStar: true,
+					thirdStar: true,
+					fourthStar: true,
+					fifthStar: false,
+				};
+			});
+		} else if (starsClicked == 5) {
+			setStarState(() => {
+				return {
+					firstStar: true,
+					secondStar: true,
+					thirdStar: true,
+					fourthStar: true,
+					fifthStar: true,
+				};
+			});
+		}
 	};
 
 	return (
@@ -281,13 +383,116 @@ const ProductDetails: FC = () => {
 								<h3>Guest</h3>
 							</UserHeaderInfo>
 						)}
+						<ReviewSectionWrapperLottie>
+							<h4>Rating</h4>
+							<LottieWrapper
+								onClick={() => {
+									handleStarsClicked(1);
+								}}
+							>
+								{starState.firstStar ? (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={starNormalOptions}
+									/>
+								) : (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={emptyStarOptions}
+									/>
+								)}
+							</LottieWrapper>
+							<LottieWrapper
+								onClick={() => {
+									handleStarsClicked(2);
+								}}
+							>
+								{starState.secondStar ? (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={starNormalOptions}
+									/>
+								) : (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={emptyStarOptions}
+									/>
+								)}
+							</LottieWrapper>
+							<LottieWrapper
+								onClick={() => {
+									handleStarsClicked(3);
+								}}
+							>
+								{starState.thirdStar ? (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={starNormalOptions}
+									/>
+								) : (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={emptyStarOptions}
+									/>
+								)}
+							</LottieWrapper>
+							<LottieWrapper
+								onClick={() => {
+									handleStarsClicked(4);
+								}}
+							>
+								{starState.fourthStar ? (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={starNormalOptions}
+									/>
+								) : (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={emptyStarOptions}
+									/>
+								)}
+							</LottieWrapper>
+							<LottieWrapper
+								onClick={() => {
+									handleStarsClicked(5);
+								}}
+							>
+								{starState.fifthStar ? (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={starNormalOptions}
+									/>
+								) : (
+									<Lottie
+										isClickToPauseDisabled={true}
+										options={emptyStarOptions}
+									/>
+								)}
+							</LottieWrapper>
+						</ReviewSectionWrapperLottie>
 						<ReviewSectionWrapper>
 							<h4>Title</h4>
-							<ReviewTitle type="text" required minLength={5} />
+							<ReviewTitle
+								type="text"
+								required
+								minLength={4}
+								value={reviewTitle}
+								onChange={(e) => {
+									setReviewTitle(e.target.value);
+								}}
+							/>
 						</ReviewSectionWrapper>
 						<ReviewSectionWrapper>
 							<h4>Description</h4>
-							<ReviewDescription required minLength={5} />
+							<ReviewDescription
+								required
+								minLength={4}
+								value={reviewDescription}
+								onChange={(e) => {
+									setReviewDescription(e.target.value);
+								}}
+							/>
 						</ReviewSectionWrapper>
 						<Button
 							variant="contained"
@@ -527,7 +732,6 @@ const UserProfilePicture = styled.img`
 const ReviewSectionWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: column;
 	align-items: flex-start;
 	margin: 16px 0;
 	margin-bottom: 8px;
@@ -574,4 +778,17 @@ const ReviewDescription = styled.textarea`
 	width: 98%;
 	min-height: 200px;
 	resize: none;
+`;
+
+const LottieWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80px;
+	cursor: pointer;
+`;
+const ReviewSectionWrapperLottie = styled(ReviewSectionWrapper)`
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
 `;

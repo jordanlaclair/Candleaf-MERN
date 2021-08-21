@@ -9,7 +9,6 @@ const reviewSchema = mongoose.Schema({
 		type: String,
 		default: "",
 	},
-
 	description: {
 		type: String,
 		default: "",
@@ -19,6 +18,10 @@ const reviewSchema = mongoose.Schema({
 		default: 0,
 	},
 	candleID: {
+		type: String,
+		default: "",
+	},
+	userPicture: {
 		type: String,
 		default: "",
 	},
