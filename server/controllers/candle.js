@@ -44,7 +44,7 @@ export const deleteCandle = async (req, res) => {
 		return res.status(404).send(`No post with id: ${id}`);
 
 	await Candle.findByIdAndRemove(id);
-	res.status(204).json({ message: "Post deleted successfully." });
+	res.status(200).json({ message: "Candle deleted successfully." });
 };
 
 export const updateCandle = async (req, res) => {

@@ -162,7 +162,7 @@ export const deleteUser = async (req, res) => {
 		return res.status(404).send(`No post with id: ${id}`);
 
 	await Users.findByIdAndRemove(id);
-	res.status(200).json({ message: "Post deleted successfully." });
+	res.status(200).json({ message: "User deleted successfully." });
 };
 
 export default router;

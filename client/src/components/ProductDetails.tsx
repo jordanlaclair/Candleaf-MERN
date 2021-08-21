@@ -17,6 +17,7 @@ import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import { HorizontalLine } from "./Checkout";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import { useAuth0 } from "@auth0/auth0-react";
+import { lightTheme } from "../styles/Themes";
 const ProductDetails: FC = () => {
 	const [productQuantity, setProductQuantity] = useState(1);
 	const [productPurchasedBefore, setProductPurchasedBefore] = useState(false);
@@ -332,6 +333,7 @@ const ProductSpecs = styled.div`
 	width: 70%;
 	padding: 25px 40px;
 	display: flex;
+	box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
 	flex-direction: column;
 	justify-content: center;
 	margin: 15px 0;
@@ -417,6 +419,8 @@ const ProductDetailsRightRight = styled.div`
 	padding: 25px;
 	padding-left: 25px;
 	padding-right: 55px;
+	box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
+
 	width: 70%;
 	background-color: ${(props) => props.theme.colors.secondary};
 	border-radius: 8px;
@@ -482,6 +486,7 @@ const ReviewsWrapper = styled.form`
 	position: relative;
 	border-radius: 8px;
 	align-items: flex-start;
+	box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
 	background-color: ${(props) => props.theme.colors.secondary};
 	width: 50%;
 	margin-bottom: 2rem;
@@ -505,7 +510,7 @@ const HorizontalLineReviews = styled(HorizontalLine)`
 const UserHeaderInfo = styled.div`
 	position: absolute;
 	top: 20px;
-	left: 20px;
+	left: 27px;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
@@ -524,10 +529,22 @@ const ReviewSectionWrapper = styled.div`
 	flex-direction: column;
 	justify-content: column;
 	align-items: flex-start;
-	margin: 15px 0;
+	margin: 16px 0;
+	margin-bottom: 8px;
 	width: 100%;
 	> h4 {
-		margin-bottom: 5px;
+		margin-bottom: 11px;
+		border: 1px solid
+			${(props) =>
+				props.theme == lightTheme
+					? props.theme.brand
+					: props.theme.colors.primary};
+		background-color: ${(props) =>
+			props.theme == lightTheme
+				? props.theme.brand
+				: props.theme.colors.primary};
+		border-radius: 8px;
+		padding: 4px 8px;
 	}
 `;
 
@@ -540,7 +557,9 @@ const ReviewTitle = styled.input`
 	width: 40%;
 	border-radius: 8px;
 	margin: none;
-	padding: 10px;
+	font-weight: bold;
+	font-size: 15px;
+	padding: 15px;
 `;
 const ReviewDescription = styled.textarea`
 	outline: none;
@@ -548,6 +567,7 @@ const ReviewDescription = styled.textarea`
 	border: 1px solid gray;
 	color: ${(props) => props.theme.text};
 	font-family: inherit;
+	font-size: 14px;
 	border-radius: 8px;
 	margin: none;
 	padding: 13px;
