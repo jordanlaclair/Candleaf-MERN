@@ -93,13 +93,22 @@ const Header: FC = () => {
 		checked: {},
 		track: {},
 	})(Switch);
-	const handleHome = () => {
+	const handleHomeTop = () => {
 		history.push("/");
+	};
+	const handleHomeProducts = () => {
+		history.push("/#products");
+	};
+	const handleHomeAbout = () => {
+		history.push("/#about");
+	};
+	const handleHomeOrders = () => {
+		history.push("/#orders");
 	};
 	return (
 		<HeaderWrapper>
 			<HeaderLeft>
-				<LogoTitle onClick={handleHome}>
+				<LogoTitle onClick={handleHomeTop}>
 					<LogoWrapper>
 						<Logo />
 					</LogoWrapper>
@@ -110,7 +119,7 @@ const Header: FC = () => {
 			<HeaderMiddle>
 				<Discovery>
 					<div>
-						<a onClick={handleHome} href="#products">
+						<a onClick={handleHomeProducts} href="#products">
 							<h3>Discovery</h3>
 						</a>
 					</div>
@@ -118,12 +127,12 @@ const Header: FC = () => {
 				</Discovery>
 
 				<About>
-					<a onClick={handleHome} href="#about">
+					<a onClick={handleHomeAbout} href="#about">
 						<h3>About</h3>
 					</a>
 				</About>
 				<Orders>
-					<a href="#orders">
+					<a onClick={handleHomeOrders} href="#orders">
 						<h3>Your Orders</h3>
 					</a>
 				</Orders>

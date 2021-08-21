@@ -61,21 +61,24 @@ const Cart: FC = () => {
 				/>
 			</LottieWrapper>
 
-			<SubTitle onClick={handleBackToHome}>Back To Shopping</SubTitle>
-			<CartItemWrapper>
-				{cart.map((item) => {
-					return (
-						<CartItem
-							productId={item.productId}
-							productName={item.productName}
-							productWeight={item.productWeight}
-							totalPrice={item.totalPrice}
-							productQuantity={item.productQuantity}
-							price={item.price}
-						/>
-					);
-				})}
-			</CartItemWrapper>
+			{cart.length == 0 || cart[0].productName == "None" ? (
+				<CartEmpty>Cart Empty!</CartEmpty>
+			) : (
+				<CartItemWrapper>
+					{cart.map((item) => {
+						return (
+							<CartItem
+								productId={item.productId}
+								productName={item.productName}
+								productWeight={item.productWeight}
+								totalPrice={item.totalPrice}
+								productQuantity={item.productQuantity}
+								price={item.price}
+							/>
+						);
+					})}
+				</CartItemWrapper>
+			)}
 
 			<ProceedCheckoutWrapper>
 				<ProceedCheckoutLeft>
@@ -127,11 +130,6 @@ const CartItemWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 `;
-const SubTitle = styled.h2`
-	text-decoration: underline;
-	color: ${(props) => props.theme.brand};
-	cursor: pointer;
-`;
 
 const ProceedCheckoutWrapper = styled.div`
 	display: flex;
@@ -142,6 +140,7 @@ const ProceedCheckoutWrapper = styled.div`
 
 const SubTotalWrapper = styled.div`
 	display: flex;
+	white-space: nowrap;
 	margin: 0px 20px;
 	justify-content: center;
 	align-items: center;
@@ -162,3 +161,7 @@ const ProceedCheckoutRight = styled.div`
 `;
 
 const ProceedCheckoutLeft = styled.div``;
+const CartEmpty = styled.h1`
+	margin: 5rem;
+	padding: 0 3rem;
+`;

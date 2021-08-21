@@ -34,7 +34,7 @@ const Products: FC = () => {
 	);
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(action.getCandles());
+		if (candles.length == 0) dispatch(action.getCandles());
 	}, []);
 
 	const stringWeightToInt = (weight: string) => {

@@ -2,24 +2,32 @@ import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import * as api from "../apis/products";
-import { Button, makeStyles, withStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Footer from "./Footer";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import Radio from "@material-ui/core/Radio";
-import { lightTheme } from "../styles/Themes";
 import Spinner from "react-spinkit";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
-import { addSpecificAmount, addToCart } from "../store/actions";
+import { addSpecificAmount } from "../store/actions";
+import PermIdentityIcon from "@material-ui/icons/PermIdentity";
+import { HorizontalLine } from "./Checkout";
+import RateReviewIcon from "@material-ui/icons/RateReview";
+import { useAuth0 } from "@auth0/auth0-react";
 const ProductDetails: FC = () => {
 	const [productQuantity, setProductQuantity] = useState(1);
-	const user = useSelector((state: State) => state.user);
+	const [productPurchasedBefore, setProductPurchasedBefore] = useState(false);
+
+	const { user, isAuthenticated } = useAuth0();
+	const userID = useSelector((state: State) => state.user._id);
+	const orders = useSelector((state: State) => state.user.orders);
+
 	const useStyles = makeStyles((theme) => ({
 		button: {
-			marginTop: theme.spacing(1),
+			marginTop: theme.spacing(3),
 			backgroundColor: "#49A010",
 			textTransform: "inherit",
 			fontFamily: "inherit",
@@ -91,14 +99,21 @@ const ProductDetails: FC = () => {
 			return prevState;
 		});
 	};
+	const handleSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {};
 	useEffect(() => {
 		fetchCandle(id);
 	}, []);
 
-	const [purchase, setPurchase] = useState("One time purchase");
 	useEffect(() => {
-		console.log(purchase);
-	}, [purchase]);
+		if (candleData.title !== "") {
+			let hasBeenPurchased = productIsPurchased(candleData.title);
+			if (hasBeenPurchased) {
+				setProductPurchasedBefore(true);
+			}
+		}
+	}, [candleData]);
+
+	const [purchase, setPurchase] = useState("One time purchase");
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPurchase(event.target.value);
@@ -128,6 +143,17 @@ const ProductDetails: FC = () => {
 		setProductQuantity(1);
 	};
 
+	const productIsPurchased = (candleName: string) => {
+		let hasThisProduct: boolean = false;
+		if (orders.length > 0) {
+			for (const order of orders) {
+				hasThisProduct = order.some((i) => i.productName.includes(candleName));
+				if (hasThisProduct) break;
+			}
+		}
+		return hasThisProduct;
+	};
+
 	return (
 		<ProductDetailsOuterWrapper>
 			{candleData.title == "" ? (
@@ -142,7 +168,7 @@ const ProductDetails: FC = () => {
 						</ImageWrapper>
 						<ProductDescription>{candleData.message}</ProductDescription>
 						<ProductSale>
-							<h4>Free Shipping! </h4>
+							<h5>Free Shipping this coming December! </h5>
 							<LocalShippingIcon />
 						</ProductSale>
 					</ProductDetailsLeft>
@@ -171,7 +197,7 @@ const ProductDetails: FC = () => {
 											candleData.weight,
 											candleData.title,
 											candleData.price,
-											user._id,
+											userID,
 											productQuantity
 										);
 									}}
@@ -238,6 +264,42 @@ const ProductDetails: FC = () => {
 					</ProductDetailsRightWrapper>
 				</ProductDetailsWrapper>
 			)}
+			{productPurchasedBefore ? (
+				<ReviewsOuterWrapper>
+					<h2>Leave a Review!</h2>
+					<HorizontalLineReviews />
+					<ReviewsWrapper onSubmit={handleSubmitReview}>
+						{isAuthenticated ? (
+							<UserHeaderInfo>
+								<UserProfilePicture src={user?.picture} />
+								<h3>{user?.name}</h3>
+							</UserHeaderInfo>
+						) : (
+							<UserHeaderInfo>
+								<PermIdentityIcon />
+								<h3>Guest</h3>
+							</UserHeaderInfo>
+						)}
+						<ReviewSectionWrapper>
+							<h4>Title</h4>
+							<ReviewTitle type="text" required minLength={5} />
+						</ReviewSectionWrapper>
+						<ReviewSectionWrapper>
+							<h4>Description</h4>
+							<ReviewDescription required minLength={5} />
+						</ReviewSectionWrapper>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<RateReviewIcon />}
+							type="submit"
+						>
+							<h4>Submit Review</h4>
+						</Button>
+					</ReviewsWrapper>
+				</ReviewsOuterWrapper>
+			) : null}
+
 			<Footer />
 		</ProductDetailsOuterWrapper>
 	);
@@ -246,9 +308,10 @@ const ProductDetails: FC = () => {
 export default ProductDetails;
 
 const ProductDetailsWrapper = styled.div`
-	width: 80%;
-	margin-top: 100px;
-	padding: 100px 50px;
+	width: 100%;
+	margin-top: 70px;
+	padding-top: 80px;
+	padding-bottom: 20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -266,8 +329,8 @@ const LoadingWrapper = styled.div`
 `;
 
 const ProductSpecs = styled.div`
-	width: 100%;
-	padding: 25px;
+	width: 70%;
+	padding: 25px 40px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -352,7 +415,9 @@ const ProductDetailsRightLeft = styled.div`
 const ProductDetailsRightRight = styled.div`
 	margin-top: 15px;
 	padding: 25px;
-	width: 100%;
+	padding-left: 25px;
+	padding-right: 55px;
+	width: 70%;
 	background-color: ${(props) => props.theme.colors.secondary};
 	border-radius: 8px;
 `;
@@ -407,4 +472,86 @@ const QuantityBottomWrapper = styled.div`
 		cursor: pointer;
 		font-size: 2rem;
 	}
+`;
+const ReviewsWrapper = styled.form`
+	padding: 60px 40px;
+	padding-bottom: 45px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	position: relative;
+	border-radius: 8px;
+	align-items: flex-start;
+	background-color: ${(props) => props.theme.colors.secondary};
+	width: 50%;
+	margin-bottom: 2rem;
+`;
+
+const ReviewsOuterWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+`;
+
+const HorizontalLineReviews = styled(HorizontalLine)`
+	width: 65%;
+	background-color: ${(props) => props.theme.brand};
+	border: 1.5px solid ${(props) => props.theme.brand};
+	margin: 2rem 0px;
+`;
+
+const UserHeaderInfo = styled.div`
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	white-space: nowrap;
+	width: 20%;
+`;
+
+const UserProfilePicture = styled.img`
+	border-radius: 50%;
+	width: 35px;
+	height: auto;
+`;
+
+const ReviewSectionWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: column;
+	align-items: flex-start;
+	margin: 15px 0;
+	width: 100%;
+	> h4 {
+		margin-bottom: 5px;
+	}
+`;
+
+const ReviewTitle = styled.input`
+	outline: none;
+	background: transparent;
+	border: 1px solid gray;
+	color: ${(props) => props.theme.text};
+	font-family: inherit;
+	width: 40%;
+	border-radius: 8px;
+	margin: none;
+	padding: 10px;
+`;
+const ReviewDescription = styled.textarea`
+	outline: none;
+	background: transparent;
+	border: 1px solid gray;
+	color: ${(props) => props.theme.text};
+	font-family: inherit;
+	border-radius: 8px;
+	margin: none;
+	padding: 13px;
+	width: 98%;
+	min-height: 200px;
+	resize: none;
 `;
