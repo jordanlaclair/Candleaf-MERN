@@ -3,7 +3,7 @@ export const lightTheme = {
 	toggleBorder: "#2C2F33",
 	colors: {
 		primary: "#FFFFFF",
-		secondary: "whitesmoke",
+		secondary: "#EEEEEE",
 		opposite: "#2C2F33",
 	},
 	brand: "#49a010",

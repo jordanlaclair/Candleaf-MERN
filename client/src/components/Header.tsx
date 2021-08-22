@@ -206,6 +206,7 @@ const HeaderWrapper = styled.div`
 	top: 0px;
 	left: 0px;
 	width: 100%;
+	box-shadow: inset 0px 0px 20px -8px #000000;
 	background-color: ${(props) => props.theme.colors.primary};
 	display: flex;
 	justify-content: space-evenly;

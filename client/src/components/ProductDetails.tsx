@@ -623,7 +623,7 @@ const ImageWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #f7f8fa;
+	background-color: ${(props) => props.theme.colors.secondary};
 	border-radius: 10px;
 	> img {
 		object-fit: contain;
