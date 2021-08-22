@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
-import { createReview } from "../apis/review";
+import { createReview, fetchReviewsFromCandle } from "../apis/review";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import * as api from "../apis/products";
 import { Button, makeStyles } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -22,17 +22,21 @@ import { lightTheme } from "../styles/Themes";
 import StarGrow from "../assets/lotties/starGrow.json";
 import StarEmpty from "../assets/lotties/starEmpty.json";
 import Lottie from "react-lottie";
+import Reviews from "./Reviews";
 const ProductDetails: FC = () => {
+	const history = useHistory();
 	const [productQuantity, setProductQuantity] = useState(1);
 	const [productPurchasedBefore, setProductPurchasedBefore] = useState(false);
 	const [reviewTitle, setReviewTitle] = useState("");
 	const [reviewDescription, setReviewDescription] = useState("");
 	const { user, isAuthenticated } = useAuth0();
+	const firstName = useSelector((state: State) => state.user.firstName);
+	const [reviewRating, setReviewRating] = useState(0);
 	const [starState, setStarState] = useState({
-		firstStar: false,
-		secondStar: false,
-		thirdStar: false,
-		fourthStar: false,
+		firstStar: true,
+		secondStar: true,
+		thirdStar: true,
+		fourthStar: true,
 		fifthStar: false,
 	});
 
@@ -40,7 +44,13 @@ const ProductDetails: FC = () => {
 		let ratingValue = Object.values(starState).filter((star) => {
 			return star == true;
 		});
+
+		setReviewRating(ratingValue.length);
 	}, [starState]);
+
+	useEffect(() => {
+		console.log(reviewRating);
+	}, [reviewRating]);
 
 	const userID = useSelector((state: State) => state.user._id);
 	const orders = useSelector((state: State) => state.user.orders);
@@ -97,7 +107,7 @@ const ProductDetails: FC = () => {
 		weight: string;
 		price: number;
 	}
-	let initialState: CandleSchema = {
+	const candleInitialState: CandleSchema = {
 		title: "",
 		message: "",
 		tags: [""],
@@ -110,7 +120,14 @@ const ProductDetails: FC = () => {
 		weight: "",
 		price: 0,
 	};
-	const [candleData, setCandleData] = useState<CandleSchema>(initialState);
+	const reviewsInitialState: ReviewsArray = [];
+
+	type ReviewsArray = Array<ReviewTypes>;
+
+	const [candleData, setCandleData] =
+		useState<CandleSchema>(candleInitialState);
+	const [candleReviews, setCandleReviews] =
+		useState<ReviewsArray>(reviewsInitialState);
 
 	interface DataTypes {
 		id: string;
@@ -127,6 +144,11 @@ const ProductDetails: FC = () => {
 	const fetchCandle = async (id: string) => {
 		const { data } = await api.fetchCandle(id);
 		setCandleData(data);
+	};
+
+	const fetchReviewsForCandle = async (id: string) => {
+		const { data } = await fetchReviewsFromCandle(id);
+		setCandleReviews(data);
 	};
 
 	const handleAdd = () => {
@@ -146,12 +168,20 @@ const ProductDetails: FC = () => {
 	const handleSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		//let newReview: ReviewTypes = {};
-		//createReview();
+		let newReview: ReviewTypes = {
+			candleID: id,
+			title: reviewTitle,
+			description: reviewDescription,
+			name: firstName,
+			rating: reviewRating,
+			userPicture:
+				user?.picture ||
+				"https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png",
+		};
+		createReview(newReview);
+		history.push("/");
+		history.push(`/products/candles/${id}`);
 	};
-	useEffect(() => {
-		fetchCandle(id);
-	}, []);
 
 	useEffect(() => {
 		if (candleData.title !== "") {
@@ -161,6 +191,13 @@ const ProductDetails: FC = () => {
 			}
 		}
 	}, [candleData]);
+
+	useEffect(() => {
+		if (id.length > 1) {
+			fetchCandle(id);
+			fetchReviewsForCandle(id);
+		}
+	}, []);
 
 	const [purchase, setPurchase] = useState("One time purchase");
 
@@ -503,6 +540,12 @@ const ProductDetails: FC = () => {
 							<h4>Submit Review</h4>
 						</Button>
 					</ReviewsWrapper>
+					{candleReviews.length > 0 ? (
+						<Reviews
+							reviewsArray={candleReviews}
+							subtitle={`Reviews for ${candleData.title}`}
+						/>
+					) : null}
 				</ReviewsOuterWrapper>
 			) : null}
 
@@ -709,7 +752,7 @@ const HorizontalLineReviews = styled(HorizontalLine)`
 	width: 65%;
 	background-color: ${(props) => props.theme.brand};
 	border: 1.5px solid ${(props) => props.theme.brand};
-	margin: 2rem 0px;
+	margin: 3rem 0px;
 `;
 
 const UserHeaderInfo = styled.div`

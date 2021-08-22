@@ -1,6 +1,5 @@
-import React from "react";
-import styled, { css, keyframes } from "styled-components";
-import BackgroundSrcImage from "../assets/images/homebackground1.jpg";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import BackgroundImageWallpaper from "../assets/images/background.jpg";
 import { ReactComponent as Leaf } from "../assets/images/leaf2.svg";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,11 +9,23 @@ import Products from "./Products";
 import devices from "../styles/devices";
 import LearnMore from "./LearnMore";
 import Reviews from "./Reviews";
+import { fetchReviews } from "../apis/review";
 import Footer from "./Footer";
 import { lightTheme } from "../styles/Themes";
 import { FC } from "react";
 
 const Home: FC = () => {
+	interface ReviewTypes {
+		title: string;
+		name: string;
+		description: string;
+		rating: number;
+		candleID: string;
+		userPicture: string;
+	}
+	type ReviewsArray = Array<ReviewTypes>;
+
+	const [recentReviews, setRecentReviews] = useState<ReviewsArray>([]);
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			backgroundColor: "#54AD1A",
@@ -24,6 +35,20 @@ const Home: FC = () => {
 	}));
 
 	const classes = useStyles();
+
+	const fetchAllReviews = async () => {
+		let { data } = await fetchReviews();
+		//only show the three most recent reviews
+		if (data.length > 2) {
+			data = data.slice(data.length - 3);
+			setRecentReviews(data);
+		}
+	};
+
+	useEffect(() => {
+		console.log("home component refreshed");
+		fetchAllReviews();
+	}, []);
 
 	return (
 		<HomeWrapper>
@@ -52,7 +77,12 @@ const Home: FC = () => {
 			</BackgroundWrapper>
 			<Products />
 			<LearnMore />
-			<Reviews />
+			{recentReviews.length > 0 ? (
+				<Reviews
+					reviewsArray={recentReviews}
+					subtitle={"Some recent quotes from our happy customers!"}
+				/>
+			) : null}
 			<Footer />
 		</HomeWrapper>
 	);

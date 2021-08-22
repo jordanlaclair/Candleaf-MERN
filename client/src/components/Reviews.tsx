@@ -2,22 +2,39 @@ import React from "react";
 import { FC } from "react";
 import styled from "styled-components";
 import Review from "./Review";
-const Reviews: FC = () => {
+
+interface ReviewTypes {
+	rating: number;
+	name: string;
+	userPicture: string;
+	description: string;
+}
+
+interface ReviewsPropTypes {
+	subtitle?: string;
+	reviewsArray: ReviewsArray;
+}
+
+type ReviewsArray = Array<ReviewTypes>;
+const Reviews: FC<ReviewsPropTypes> = ({ reviewsArray, subtitle }) => {
 	return (
-		<ReviewsWrapper id="reviews">
+		<ReviewsWrapper>
 			<Header>
 				<h1>Reviews</h1>
-				<h4>Some quotes from our happy customers</h4>
+				<h3>{subtitle}</h3>
 			</Header>
+			<HorizontalLine />
 			<GridWrapper>
-				<Review
-					rating={4}
-					name="Luisa"
-					picture={
-						"https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
-					}
-					description="I love it! No more Air fresheners!"
-				/>
+				{reviewsArray.map((review) => {
+					return (
+						<Review
+							rating={review.rating}
+							name={review.name}
+							picture={review.userPicture}
+							description={review.description}
+						/>
+					);
+				})}
 			</GridWrapper>
 		</ReviewsWrapper>
 	);
@@ -31,13 +48,11 @@ const ReviewsWrapper = styled.div`
 	padding: 5rem 0;
 	display: flex;
 	scroll-snap-align: start;
-
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 `;
 const Header = styled.div`
-	margin-bottom: 2rem;
 	padding: 10px;
 `;
 const GridWrapper = styled.div`
@@ -45,4 +60,11 @@ const GridWrapper = styled.div`
 	width: 70%;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 	grid-gap: 2rem;
+`;
+const HorizontalLine = styled.hr`
+	width: 65%;
+	background-color: ${(props) => props.theme.brand};
+	border: 1.5px solid ${(props) => props.theme.brand};
+	margin-top: 1.5rem;
+	margin-bottom: 2rem;
 `;

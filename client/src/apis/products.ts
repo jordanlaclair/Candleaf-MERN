@@ -8,6 +8,7 @@ export const fetchCandle = (id: string) => axios.get(`${url}/candles/${id}`);
 
 export const createCandle = (newCandle: Object) =>
 	axios.post(`${url}/candles`, newCandle);
+
 export const purchaseCandle = (id: string, quantity: number) =>
 	axios.patch(`${url}/candles/${id}/${quantity}/purchase`);
 
