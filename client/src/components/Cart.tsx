@@ -9,6 +9,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import CartLottie from "../assets/lotties/cart.json";
 import CartItem from "./CartItem";
 import Lottie from "react-lottie";
+import devices from "../styles/devices";
 
 const Cart: FC = () => {
 	const history = useHistory();
@@ -91,12 +92,11 @@ const Cart: FC = () => {
 						<h3>Back to Home</h3>
 					</Button>
 				</ProceedCheckoutLeft>
+				<SubTotalWrapper>
+					<h3>Sub-Total</h3>
+					<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
+				</SubTotalWrapper>
 				<ProceedCheckoutRight>
-					<SubTotalWrapper>
-						<h3>Sub-Total</h3>
-						<h3>${Math.round((cartTotal + Number.EPSILON) * 100) / 100}</h3>
-					</SubTotalWrapper>
-
 					<Button
 						variant="contained"
 						className={classes.button}
@@ -115,11 +115,13 @@ export default Cart;
 
 const CheckoutWrapper = styled.div`
 	display: flex;
-	padding-bottom: 50px;
+	padding: 50px;
 	flex-direction: column;
+	height: 100%;
 	justify-content: center;
 	align-items: center;
-	margin-top: 100px;
+	width: 80%;
+	margin-top: 80px;
 `;
 
 const Title = styled.h1``;
@@ -129,10 +131,16 @@ const CartItemWrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-evenly;
 	align-items: center;
+	width: 100%;
 `;
 
 const ProceedCheckoutWrapper = styled.div`
 	display: flex;
+	@media ${devices.mobileXL} {
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 20vh;
+	}
 	width: 90%;
 	justify-content: space-between;
 	align-items: center;
@@ -141,7 +149,7 @@ const ProceedCheckoutWrapper = styled.div`
 const SubTotalWrapper = styled.div`
 	display: flex;
 	white-space: nowrap;
-	margin: 0px 20px;
+	margin: 20px 20px;
 	justify-content: center;
 	align-items: center;
 	> h3 {
@@ -156,11 +164,14 @@ const LottieWrapper = styled.div`
 `;
 const ProceedCheckoutRight = styled.div`
 	display: flex;
+	margin: 20px 0px;
 	justify-content: center;
 	align-items: center;
 `;
 
-const ProceedCheckoutLeft = styled.div``;
+const ProceedCheckoutLeft = styled.div`
+	margin: 20px 0px;
+`;
 const CartEmpty = styled.h1`
 	margin: 5rem;
 	padding: 0 3rem;

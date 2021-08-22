@@ -272,6 +272,11 @@ const UserStatus = styled.div`
 		top: 2.5rem;
 		background-color: ${(props) => props.theme.brand};
 	}
+	.MuiSvgIcon-root {
+		@media ${devices.laptop} {
+			display: none;
+		}
+	}
 `;
 
 const LogoTitle = styled.div`

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions/index";
 import { State } from "../store/reducers";
 import { ReactNode } from "react";
+import devices from "../styles/devices";
 type PropTypes = {
 	productName: string;
 	productId: string;
@@ -119,10 +120,14 @@ export default CartItem;
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: flex-start;
-
 	border-top: solid 1px ${(props) => props.theme.colors.opposite};
+	width: 100%;
+	@media ${devices.tablet} {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const SectionWrapper = styled.div`
@@ -131,7 +136,11 @@ const SectionWrapper = styled.div`
 	justify-content: center;
 	align-items: flex-start;
 	padding: 40px;
-	min-width: 250px;
+	width: 100%;
+	flex: 1;
+	@media ${devices.tablet} {
+		align-items: center;
+	}
 `;
 
 const SectionTitle = styled.h3`
@@ -140,7 +149,6 @@ const SectionTitle = styled.h3`
 const SectionProductTitle = styled.h3`
 	text-align: start;
 
-	align-self: flex-start;
 	margin-left: 20px;
 	margin-bottom: 20px;
 `;
@@ -155,6 +163,10 @@ const SectionImageWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	@media ${devices.tablet} {
+		width: 100%;
+		justify-content: space-evenly;
+	}
 `;
 const QuantityWrapper = styled.div`
 	display: flex;
@@ -167,7 +179,7 @@ const QuantityWrapper = styled.div`
 `;
 const ImageWrapper = styled.div`
 	justify-self: flex-start;
-	width: 80px;
+	width: 150px;
 
 	> img {
 		width: 100%;

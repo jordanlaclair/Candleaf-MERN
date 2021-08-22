@@ -29,7 +29,6 @@ import { FC } from "react";
 
 const Checkout: FC = () => {
 	const { user, isAuthenticated } = useAuth0();
-
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [couponCode, setCouponCode] = useState("");
@@ -127,8 +126,8 @@ const Checkout: FC = () => {
 		fontFamily: "Poppins, sans-serif",
 		border: `2.5px solid #49a010`,
 		outline: "none",
-		minWidth: "207.5px",
-		maxWidth: "207.5px",
+		minWidth: "50%",
+		maxWidth: "50%",
 		fontWeight: "bold",
 		color: "gray",
 	};
@@ -227,12 +226,20 @@ const Checkout: FC = () => {
 						</LogoWrapper>
 					</Header>
 					<BreadCrumbs>
-						<PastBreadCrumb>Cart</PastBreadCrumb>
-						<NavigateNextIcon />
-						<CurrentBreadCrumb>Details</CurrentBreadCrumb>
-						<NavigateNextIcon />
-						<NextBreadCrumb>Shipping</NextBreadCrumb>
-						<NavigateNextIcon />
+						<CrumbWrapper>
+							<PastBreadCrumb>Cart</PastBreadCrumb>
+
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<CurrentBreadCrumb>Details</CurrentBreadCrumb>
+
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<NextBreadCrumb>Shipping</NextBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
 						<NextBreadCrumb>Payment</NextBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapper>
@@ -364,7 +371,7 @@ const Checkout: FC = () => {
 				</ProductsWrapper>
 				<HorizontalLine />
 				<CouponWrapper>
-					<InputField
+					<InputFieldCoupon
 						placeholder="Coupon Code"
 						type="text"
 						value={couponCode}
@@ -401,13 +408,12 @@ const Checkout: FC = () => {
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Shipping</h3>
-						<ShippingText>Calculated at the next step</ShippingText>
+						<ShippingText>-</ShippingText>
 					</DetailsWrapper>
 				</DetailsOuterWrapper>
 				<HorizontalLine />
 				<TotalWrapper>
 					<h3>Total</h3>
-
 					<h2>Calculated at the next step</h2>
 				</TotalWrapper>
 			</SecondHalf>
@@ -419,38 +425,55 @@ export default withRouter(Checkout);
 
 export const CheckoutWrapper = styled.div`
 	display: flex;
-	flex-direction: row;
+	width: 100vw;
+	height: 100%;
 	justify-content: center;
 	align-items: flex-start;
-	width: 100%;
+
+	@media ${devices.laptopM} {
+		flex-direction: column;
+		width: 80%;
+		align-items: center;
+	}
 `;
 
 export const FirstHalf = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	height: 100%;
 	align-items: center;
 	flex: 1;
 	padding: 0px 3.5rem;
+	@media ${devices.laptopM} {
+		flex: 1;
+		width: 100%;
+	}
 `;
 
 export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
-	height: 100vh;
 	display: flex;
+	height: 100vh;
 	padding: 3rem 5rem;
 	flex-direction: column;
 	justify-content: space-evenly;
 	align-items: center;
+	align-self: center;
 	flex: 2;
+	@media ${devices.laptopM} {
+		flex: 1;
+		width: 80vw;
+		margin-top: 50px;
+	}
 `;
 export const HeaderWrapper = styled.div`
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
 	margin-top: 30px;
-	margin-left: -100px;
 	margin-bottom: 50px;
 `;
 export const Header = styled.div`
@@ -477,6 +500,12 @@ export const BreadCrumbs = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media ${devices.mobileL} {
+		flex-direction: column;
+		align-items: flex-start;
+		margin-top: 10px;
+	}
 `;
 
 export const PastBreadCrumb = styled.h3`
@@ -486,12 +515,13 @@ export const CurrentBreadCrumb = styled.h3`
 	color: ${(props) => props.theme.brand};
 `;
 export const LocationWrapper = styled.div`
-	min-width: 380px;
+	width: 90%;
 `;
 
 export const NextBreadCrumb = styled.h3``;
 
 const FormWrapper = styled.form`
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -505,6 +535,10 @@ const NewsLetterWrapper = styled.div`
 	> h4 {
 		white-space: nowrap;
 	}
+
+	@media ${devices.desktopM} {
+		font-size: 12px;
+	}
 `;
 
 const InputHeader = styled.h2``;
@@ -512,7 +546,7 @@ const InputHeader = styled.h2``;
 export const InputField = styled.input<{ fieldType?: string }>`
 	padding: 15px;
 	outline: none;
-	min-width: ${(props) => (props.fieldType == "name" ? "200px" : "380px")};
+	width: ${(props) => (props.fieldType == "name" ? "50%" : "80%")};
 	border: 2.5px solid ${(props) => props.theme.brand};
 	font-family: "Poppins", sans-serif;
 	font-weight: bold;
@@ -520,27 +554,39 @@ export const InputField = styled.input<{ fieldType?: string }>`
 
 const ShippingWrapper = styled.div`
 	margin-top: 15px;
-	min-width: 415px;
+	width: 90%;
 
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	@media ${devices.mobileXL} {
+		flex-direction: column;
+		height: 100px;
+	}
 `;
 
 export const ProductsWrapper = styled.div`
+	flex: 2;
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	grid-gap: 2rem;
+	justify-items: center;
+	@media ${devices.laptopM} {
+		width: 90%;
+	}
 `;
 
 export const HorizontalLine = styled.hr`
 	width: 100%;
+	margin: 2rem 0;
 `;
 export const CouponWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex: 1;
+	width: 100%;
 
 	> input {
 		margin-right: 10px;
@@ -548,6 +594,7 @@ export const CouponWrapper = styled.div`
 `;
 export const DetailsOuterWrapper = styled.div`
 	width: 80%;
+	flex: 3;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -563,6 +610,21 @@ export const DetailsWrapper = styled.div`
 
 export const TotalWrapper = styled(DetailsWrapper)`
 	width: 80%;
+	flex: 1;
+	@media ${devices.laptopM} {
+		flex-direction: column;
+		text-align: start;
+		align-items: flex-start;
+	}
 `;
 
 export const ShippingText = styled.h3``;
+const InputFieldCoupon = styled(InputField)`
+	min-width: unset;
+	width: 50%;
+`;
+const CrumbWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
