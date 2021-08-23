@@ -425,15 +425,18 @@ export default withRouter(Checkout);
 
 export const CheckoutWrapper = styled.div`
 	display: flex;
-	width: 100vw;
+	width: 100%;
 	height: 100%;
 	justify-content: center;
 	align-items: flex-start;
 
 	@media ${devices.laptopM} {
 		flex-direction: column;
-		width: 80%;
+		width: 100%;
 		align-items: center;
+	}
+	@media ${devices.tablet} {
+		font-size: 13px;
 	}
 `;
 
@@ -444,10 +447,11 @@ export const FirstHalf = styled.div`
 	height: 100%;
 	align-items: center;
 	flex: 1;
-	padding: 0px 3.5rem;
+	padding: 2rem 3.5rem;
 	@media ${devices.laptopM} {
+		padding: 2rem 0;
 		flex: 1;
-		width: 100%;
+		width: 85%;
 	}
 `;
 
@@ -462,8 +466,9 @@ export const SecondHalf = styled.div`
 	align-self: center;
 	flex: 2;
 	@media ${devices.laptopM} {
+		padding: 3rem 0;
 		flex: 1;
-		width: 80vw;
+		width: 100%;
 		margin-top: 50px;
 	}
 `;
@@ -473,7 +478,6 @@ export const HeaderWrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
-	margin-top: 30px;
 	margin-bottom: 50px;
 `;
 export const Header = styled.div`
@@ -501,7 +505,7 @@ export const BreadCrumbs = styled.div`
 	justify-content: center;
 	align-items: center;
 
-	@media ${devices.mobileL} {
+	@media ${devices.mobileXS} {
 		flex-direction: column;
 		align-items: flex-start;
 		margin-top: 10px;
@@ -531,12 +535,14 @@ const FormWrapper = styled.form`
 const NewsLetterWrapper = styled.div`
 	display: flex;
 	justify-content: center;
+	text-align: start;
 	align-items: center;
+	padding: 20px 0;
 	> h4 {
-		white-space: nowrap;
+		text-align: start;
 	}
 
-	@media ${devices.desktopM} {
+	@media ${devices.laptopM} {
 		font-size: 12px;
 	}
 `;
@@ -561,6 +567,9 @@ const ShippingWrapper = styled.div`
 	align-items: center;
 	@media ${devices.mobileXL} {
 		flex-direction: column;
+		height: 100px;
+	}
+	@media ${devices.mobileXL} {
 		height: 100px;
 	}
 `;
@@ -591,14 +600,27 @@ export const CouponWrapper = styled.div`
 	> input {
 		margin-right: 10px;
 	}
+	@media ${devices.mobileXL} {
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 120px;
+	}
 `;
 export const DetailsOuterWrapper = styled.div`
 	width: 80%;
 	flex: 3;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: center;
+
+	@media ${devices.mobileXL} {
+		font-size: 14px;
+	}
+
+	@media ${devices.mobileS} {
+		font-size: 13px;
+	}
 `;
 
 export const DetailsWrapper = styled.div`
@@ -616,6 +638,12 @@ export const TotalWrapper = styled(DetailsWrapper)`
 		text-align: start;
 		align-items: flex-start;
 	}
+	@media ${devices.mobileXL} {
+		font-size: 14px;
+	}
+	@media ${devices.mobileS} {
+		font-size: 13px;
+	}
 `;
 
 export const ShippingText = styled.h3``;
@@ -623,7 +651,7 @@ const InputFieldCoupon = styled(InputField)`
 	min-width: unset;
 	width: 50%;
 `;
-const CrumbWrapper = styled.div`
+export const CrumbWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;

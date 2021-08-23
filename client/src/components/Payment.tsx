@@ -14,6 +14,7 @@ import {
 	CouponWrapper,
 	ShippingText,
 	ImageWrapper,
+	CrumbWrapper,
 	InputField,
 	ProductsWrapper,
 	BreadCrumbs,
@@ -44,6 +45,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import { Button, makeStyles } from "@material-ui/core";
 import { configureStore } from "@reduxjs/toolkit";
 import { addToOrders } from "../store/actions";
+import devices from "../styles/devices";
 const Payment: FC = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -139,7 +141,7 @@ const Payment: FC = () => {
 
 		dispatch(addToOrders(cart, userID));
 
-		history.push("/checkout/success");
+		history.replace("/checkout/success");
 	};
 
 	const returnShipping = (shippingCost: number) => {
@@ -184,12 +186,18 @@ const Payment: FC = () => {
 						</LogoWrapper>
 					</Header>
 					<BreadCrumbs>
-						<PastBreadCrumb>Cart</PastBreadCrumb>
-						<NavigateNextIcon />
-						<PastBreadCrumb>Details</PastBreadCrumb>
-						<NavigateNextIcon />
-						<PastBreadCrumb>Shipping</PastBreadCrumb>
-						<NavigateNextIcon />
+						<CrumbWrapper>
+							<PastBreadCrumb>Cart</PastBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<PastBreadCrumb>Details</PastBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<PastBreadCrumb>Shipping</PastBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
 						<CurrentBreadCrumb>Payment</CurrentBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapper>
@@ -362,7 +370,11 @@ const Payment: FC = () => {
 
 export default withRouter(Payment);
 
-const PaymentWrapper = styled(CheckoutWrapper)``;
+const PaymentWrapper = styled(CheckoutWrapper)`
+	@media ${devices.tablet} {
+		font-size: 13px;
+	}
+`;
 
 const HorizontalLineUserInfo = styled(HorizontalLine)`
 	border-color: ${(props) => props.theme.brand};
@@ -371,7 +383,7 @@ const HorizontalLineUserInfo = styled(HorizontalLine)`
 `;
 
 export const UserInfoWrapper = styled.div`
-	width: 90%;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -480,11 +492,19 @@ const Form = styled.form`
 
 const ButtonWrapper = styled.div`
 	display: flex;
-	width: 100%;
+	width: 80%;
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
+	@media ${devices.mobileXL} {
+		flex-direction: column;
+		min-height: 120px;
+	}
 `;
 const UserInfoOuterWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	width: 90%;
 `;

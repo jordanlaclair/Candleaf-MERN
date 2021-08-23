@@ -16,6 +16,7 @@ import LightModeTruck from "../assets/lotties/lightTheme/truck.json";
 import { userSubmitDetails } from "../store/actions";
 import {
 	HeaderWrapper,
+	CrumbWrapper,
 	CheckoutWrapper,
 	FirstHalf,
 	SecondHalf,
@@ -49,6 +50,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import { FC } from "react";
 import { lightTheme } from "../styles/Themes";
+import devices from "../styles/devices";
 
 const Shipping: FC = () => {
 	const [shippingMethod, setShippingMethod] = useState("");
@@ -208,12 +210,21 @@ const Shipping: FC = () => {
 						</LogoWrapper>
 					</Header>
 					<BreadCrumbs>
-						<PastBreadCrumb>Cart</PastBreadCrumb>
-						<NavigateNextIcon />
-						<PastBreadCrumb>Details</PastBreadCrumb>
-						<NavigateNextIcon />
-						<CurrentBreadCrumb>Shipping</CurrentBreadCrumb>
-						<NavigateNextIcon />
+						<CrumbWrapper>
+							<PastBreadCrumb>Cart</PastBreadCrumb>
+
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<PastBreadCrumb>Details</PastBreadCrumb>
+
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<CurrentBreadCrumb>Shipping</CurrentBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
+
 						<NextBreadCrumb>Payment</NextBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapper>
@@ -336,8 +347,14 @@ const Shipping: FC = () => {
 					})}
 				</ProductsWrapper>
 				<HorizontalLine />
+
 				<PlaneWrapper>
-					<Lottie options={planeLottieOptions} isClickToPauseDisabled={true} />
+					<LottieWrapperPlane>
+						<Lottie
+							options={planeLottieOptions}
+							isClickToPauseDisabled={true}
+						/>
+					</LottieWrapperPlane>
 				</PlaneWrapper>
 				<HorizontalLine />
 				<DetailsOuterWrapper>
@@ -380,12 +397,17 @@ const Shipping: FC = () => {
 
 export default withRouter(Shipping);
 
-const ShippingWrapper = styled(CheckoutWrapper)``;
+const ShippingWrapper = styled(CheckoutWrapper)`
+	@media ${devices.mobileXL} {
+		font-size: 13px;
+	}
+`;
 
 const InputFieldShipping = styled(InputField)``;
 
 const InputFieldWrapper = styled.div`
 	display: flex;
+	width: 100%;
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
@@ -420,6 +442,11 @@ export const ButtonWrapper = styled.div`
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
+
+	@media ${devices.tablet} {
+		flex-direction: column;
+		min-height: 120px;
+	}
 `;
 
 const UserInfoWrapperShipping = styled(UserInfoWrapper)`
@@ -438,10 +465,20 @@ const LottieWrapper = styled.div`
 	width: 80px;
 	margin-right: 20px;
 `;
-
+const LottieWrapperPlane = styled(LottieWrapper)`
+	display: flex;
+	justify-content: center;
+	width: 600px;
+	@media ${devices.tablet} {
+		width: 450px;
+	}
+	@media ${devices.mobileXL} {
+		width: 350px;
+	}
+`;
 const PlaneWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-width: 600px;
+	width: 100%;
 `;

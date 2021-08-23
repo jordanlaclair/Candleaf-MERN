@@ -7,14 +7,10 @@ import {
 	HeaderWrapper,
 	CheckoutWrapper,
 	FirstHalf,
-	SecondHalf,
 	Header,
 	LogoWrapper,
-	TotalWrapper,
-	CouponWrapper,
-	ShippingText,
 	ImageWrapper,
-	InputField,
+	CrumbWrapper,
 	ProductsWrapper,
 	BreadCrumbs,
 	PastBreadCrumb,
@@ -35,6 +31,7 @@ import Lottie from "react-lottie";
 import { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
+import devices from "../styles/devices";
 const OrderComplete: FC = () => {
 	const history = useHistory();
 	const firstName = useSelector((state: State) => state.user.firstName);
@@ -116,12 +113,18 @@ const OrderComplete: FC = () => {
 						</LogoWrapper>
 					</Header>
 					<BreadCrumbs>
-						<PastBreadCrumb>Cart</PastBreadCrumb>
-						<NavigateNextIcon />
-						<PastBreadCrumb>Details</PastBreadCrumb>
-						<NavigateNextIcon />
-						<PastBreadCrumb>Shipping</PastBreadCrumb>
-						<NavigateNextIcon />
+						<CrumbWrapper>
+							<PastBreadCrumb>Cart</PastBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<PastBreadCrumb>Details</PastBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
+						<CrumbWrapper>
+							<PastBreadCrumb>Shipping</PastBreadCrumb>
+							<NavigateNextIcon />
+						</CrumbWrapper>
 						<CurrentBreadCrumb>Payment</CurrentBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapperShipping>
@@ -153,7 +156,11 @@ const OrderComplete: FC = () => {
 
 export default withRouter(OrderComplete);
 
-const PaymentWrapper = styled(CheckoutWrapper)``;
+const PaymentWrapper = styled(CheckoutWrapper)`
+	@media ${devices.tablet} {
+		font-size: 13px;
+	}
+`;
 
 const HorizontalLineUserInfo = styled(HorizontalLine)`
 	border-color: ${(props) => props.theme.brand};
