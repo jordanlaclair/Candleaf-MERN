@@ -103,7 +103,7 @@ const Header: FC = () => {
 		history.push("/#about");
 	};
 	const handleHomeOrders = () => {
-		history.push("/#orders");
+		history.push("/orders");
 	};
 	return (
 		<HeaderWrapper>
@@ -132,7 +132,7 @@ const Header: FC = () => {
 					</a>
 				</About>
 				<Orders>
-					<a onClick={handleHomeOrders} href="#orders">
+					<a onClick={handleHomeOrders}>
 						<h3>Your Orders</h3>
 					</a>
 				</Orders>

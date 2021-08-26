@@ -25,6 +25,7 @@ import Shipping from "./components/Shipping";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Payment from "./components/Payment";
 import OrderComplete from "./components/OrderComplete";
+import Orders from "./components/Orders";
 const App: FC = () => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
@@ -54,6 +55,10 @@ const App: FC = () => {
 						<Route exact path="/cart">
 							<Header />
 							<Cart />
+						</Route>
+						<Route exact path="/orders">
+							<Header />
+							<Orders />
 						</Route>
 
 						<ProtectedRoute

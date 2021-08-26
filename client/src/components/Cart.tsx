@@ -113,7 +113,7 @@ const Cart: FC = () => {
 
 export default Cart;
 
-const CheckoutWrapper = styled.div`
+export const CheckoutWrapper = styled.div`
 	display: flex;
 	padding: 50px;
 	flex-direction: column;
@@ -142,6 +142,7 @@ const ProceedCheckoutWrapper = styled.div`
 		min-height: 20vh;
 	}
 	width: 90%;
+
 	justify-content: space-between;
 	align-items: center;
 `;
