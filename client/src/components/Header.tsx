@@ -82,7 +82,7 @@ const Header: FC = () => {
 
 	const GreenSwitch = withStyles({
 		switchBase: {
-			color: green[300],
+			color: green[500],
 			"&$checked": {
 				color: green[500],
 			},

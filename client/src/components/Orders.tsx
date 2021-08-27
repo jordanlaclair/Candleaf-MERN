@@ -5,8 +5,9 @@ import { State } from "../store/reducers";
 import devices from "../styles/devices";
 import { CheckoutWrapper } from "./Cart";
 import { HorizontalLine } from "./Checkout";
-import Order from "./Order";
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import Product from "./Product";
+import { lightTheme } from "../styles/Themes";
 
 const Orders = () => {
 	const orders = useSelector((state: State) => state.user.orders);
@@ -49,6 +50,18 @@ const Orders = () => {
 									);
 								})}
 							</OrdersGridWrapper>
+							<OrderDetailsWrapper>
+								<ShippingDetailsWrapper>
+									<ShippingText>{order.shippingMethod}</ShippingText>
+									<IconWrapper>
+										<LocalShippingIcon />
+									</IconWrapper>
+								</ShippingDetailsWrapper>
+								<OrderTotal>Order Total ${order.total}</OrderTotal>
+
+								<OrderNumber>Order #{order.orderNumber}</OrderNumber>
+								<OrderDate>Order Placed: {order.purchasedOn}</OrderDate>
+							</OrderDetailsWrapper>
 							<HorizontalLineOrders />
 						</OuterOrderGridWrapper>
 					);
@@ -110,4 +123,56 @@ const OuterOrderGridWrapper = styled.div`
 	@media ${devices.tabletL} {
 		align-items: center;
 	}
+`;
+
+const ShippingText = styled.div`
+	font-size: 15px;
+	font-weight: 900;
+	display: flex;
+	letter-spacing: 0.8px;
+	text-transform: capitalize;
+	justify-content: center;
+	align-items: center;
+	color: black;
+	background-color: ${(props) => props.theme.brand};
+	border-radius: 99px;
+	padding: 5px 10px;
+	margin-right: 5px;
+`;
+
+const IconWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: ${(props) => props.theme.brand};
+	padding: 5px 10px;
+	border-radius: 99px;
+`;
+const OrderDetailsWrapper = styled.div`
+	width: 90%;
+	align-self: center;
+	display: flex;
+	flex-direction: column;
+	padding: 15px 0;
+	justify-content: space-evenly;
+	align-items: flex-start;
+`;
+
+const OrderTotal = styled.h2`
+	padding: 15px 0px;
+`;
+
+const ShippingDetailsWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	.MuiSvgIcon-root {
+		color: #2c2f33;
+	}
+`;
+const OrderNumber = styled.h4`
+	opacity: 0.8;
+`;
+const OrderDate = styled.h4`
+	opacity: 0.8;
 `;
