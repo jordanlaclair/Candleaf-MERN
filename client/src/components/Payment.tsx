@@ -135,11 +135,14 @@ const Payment: FC = () => {
 	const handleBackToShipping = () => {
 		history.push("/checkout/shipping");
 	};
+	const getRandomArbitrary = (min: number, max: number) => {
+		return Math.floor(Math.random() * (max - min) + min);
+	};
 
 	const handleCompleteOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
-		dispatch(addToOrders(cart, userID));
+		const orderNumber = getRandomArbitrary(2000, 4000);
+		dispatch(addToOrders(cart, userID, orderNumber, shippingMethod));
 
 		history.replace("/checkout/success");
 	};

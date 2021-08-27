@@ -2,6 +2,23 @@ import { ActionType } from "../actions/actionTypes";
 import { updateShippingCost, UserActions } from "../actions";
 import { Reducer } from "redux";
 
+interface OrderData {
+	productName: string;
+	productWeight: number;
+	productId: string;
+	totalPrice: number;
+	productQuantity: number;
+	price: number;
+	_id: string;
+}
+interface OrderSchema {
+	data: Array<OrderData>;
+	purchasedOn: Date;
+	shippingMethod: String;
+	total: Number;
+	orderNumber: Number;
+}
+
 interface CartSchema {
 	productName: string;
 	productWeight: number;
@@ -37,7 +54,7 @@ interface UserSchema {
 }
 
 type CartsArray = Array<CartSchema>;
-type OrdersArray = Array<Array<CartSchema>>;
+type OrdersArray = Array<OrderSchema>;
 
 let initialState: UserSchema = {
 	firstName: "Guest",

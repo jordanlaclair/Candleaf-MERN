@@ -34,7 +34,7 @@ const Orders = () => {
 					return (
 						<OuterOrderGridWrapper>
 							<OrdersGridWrapper>
-								{order.map((product) => {
+								{order.data.map((product) => {
 									let imageSrc = handleGetImageSrc(product.productId);
 									return (
 										<Product
@@ -67,6 +67,7 @@ const OrdersWrapper = styled(CheckoutWrapper)`
 `;
 
 const OrdersInnerWrapper = styled.div`
+	box-shadow: 0px 0px 20px -8px #000000;
 	display: flex;
 	padding: 50px 0;
 	flex-direction: column;

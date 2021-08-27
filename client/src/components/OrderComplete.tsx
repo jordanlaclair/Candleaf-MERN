@@ -95,10 +95,6 @@ const OrderComplete: FC = () => {
 		history.push("/");
 	};
 
-	const getRandomArbitrary = (min: number, max: number) => {
-		return Math.floor(Math.random() * (max - min) + min);
-	};
-
 	return (
 		<PaymentWrapper>
 			<OrderCompleteFirstHalf>
@@ -137,7 +133,7 @@ const OrderComplete: FC = () => {
 					/>
 				</LottieWrapper>
 				<h1>Payment Confirmed!</h1>
-				<h4>{`Order #${getRandomArbitrary(2000, 4000)}`}</h4>
+				<h4>Order #</h4>
 				<h5>{`Thank you, ${firstName}, for purchasing from Candleaf. The earth is grateful of your descision to buy our eco-friendly candles. Now that your order has been confirmed, please wait unti you receive an email notifying you that your order has been shipped.`}</h5>
 				<PaymentButtonWrapper>
 					<Button

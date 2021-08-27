@@ -1,6 +1,48 @@
 import mongoose from "mongoose";
+
+const emptyOrderData = {
+	productName: "",
+	productWeight: 0,
+	productId: "",
+	totalPrice: 0,
+	productQuantity: 0,
+	price: 0,
+	_id: "",
+};
+const orderData = mongoose.Schema({
+	productName: String,
+	productWeight: Number,
+	productId: String,
+	totalPrice: Number,
+	productQuantity: Number,
+	price: Number,
+	_id: String,
+});
+const orderSchema = mongoose.Schema({
+	data: {
+		type: [orderData],
+		default: emptyOrderData,
+	},
+	purchasedOn: {
+		type: Date,
+		default: new Date(),
+	},
+	total: {
+		default: 0,
+		type: Number,
+	},
+	orderNumber: {
+		type: Number,
+		default: 0,
+	},
+	shippingMethod: {
+		type: String,
+		default: "",
+	},
+});
+
 const userSchema = mongoose.Schema({
-	orders: Array,
+	orders: [orderSchema],
 	firstName: String,
 	lastName: String,
 	address: String,

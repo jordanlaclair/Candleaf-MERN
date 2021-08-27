@@ -115,9 +115,26 @@ interface CartSchema {
 	_id: string;
 }
 
-type CartsArray = Array<CartSchema>;
-type OrdersArray = Array<Array<CartSchema>>;
+interface OrderData {
+	productName: string;
+	productWeight: number;
+	productId: string;
+	totalPrice: number;
+	productQuantity: number;
+	price: number;
+	_id: string;
+}
 
+interface OrderSchema {
+	data: Array<OrderData>;
+	purchasedOn: Date;
+	shippingMethod: String;
+	total: Number;
+	orderNumber: Number;
+}
+
+type CartsArray = Array<CartSchema>;
+type OrdersArray = Array<OrderSchema>;
 interface UsersSchema {
 	firstName: string;
 	lastName: string;
@@ -275,7 +292,7 @@ interface UpdateShipping {
 
 interface UpdateOrders {
 	type: ActionType.PURCHASE_COMPLETE;
-	payload: CartsArray;
+	payload: OrderSchema;
 }
 
 interface UserSignOut {

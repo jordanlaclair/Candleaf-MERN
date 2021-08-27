@@ -67,7 +67,23 @@ interface UserSubmitDetails {
 	userAddress: string;
 	userCity: string;
 }
+interface OrderData {
+	productName: string;
+	productWeight: number;
+	productId: string;
+	totalPrice: number;
+	productQuantity: number;
+	price: number;
+	_id: string;
+}
 
+interface OrderSchema {
+	data: Array<OrderData>;
+	purchasedOn: Date;
+	shippingMethod: String;
+	total: Number;
+	orderNumber: Number;
+}
 export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
 	try {
 		const { data } = await api.fetchUsers();
@@ -1025,7 +1041,12 @@ export const updateShippingCost =
 	};
 
 export const addToOrders =
-	(userCart: CartsArray, userID: string) =>
+	(
+		userCart: CartsArray,
+		userID: string,
+		orderNumber: number,
+		shippingMethod: string
+	) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
 			const { data } = await api.fetchUser(userID);
@@ -1051,9 +1072,21 @@ export const addToOrders =
 				await productApi.purchaseCandle(id, quantity);
 			}
 
-			console.log(userCart);
+			let totalCartPrice = 0;
+			userCart.forEach((product) => {
+				totalCartPrice += product.totalPrice;
+			});
+
+			const newOrder: OrderSchema = {
+				data: userCart,
+				orderNumber,
+				purchasedOn: new Date(),
+				total: totalCartPrice,
+				shippingMethod,
+			};
+
 			const newData = {
-				orders: [...orders, userCart],
+				orders: [...orders, newOrder],
 				cart: [],
 				firstName,
 				lastName,
@@ -1077,7 +1110,7 @@ export const addToOrders =
 			};
 			await api.updateUser(userID, newData);
 
-			dispatch({ type: ActionType.PURCHASE_COMPLETE, payload: userCart });
+			dispatch({ type: ActionType.PURCHASE_COMPLETE, payload: newOrder });
 		} catch (error) {
 			console.log(error);
 		}

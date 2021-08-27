@@ -233,7 +233,9 @@ const ProductDetails: FC = () => {
 		let hasThisProduct: boolean = false;
 		if (orders.length > 0) {
 			for (const order of orders) {
-				hasThisProduct = order.some((i) => i.productName.includes(candleName));
+				hasThisProduct = order.data.some((i) =>
+					i.productName.includes(candleName)
+				);
 				if (hasThisProduct) break;
 			}
 		}
