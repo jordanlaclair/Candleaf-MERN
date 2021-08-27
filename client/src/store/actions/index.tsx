@@ -124,10 +124,9 @@ interface OrderData {
 	price: number;
 	_id: string;
 }
-
 interface OrderSchema {
 	data: Array<OrderData>;
-	purchasedOn: Date;
+	purchasedOn: String;
 	shippingMethod: String;
 	total: Number;
 	orderNumber: Number;

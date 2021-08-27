@@ -106,7 +106,7 @@ const App: FC = () => {
 
 export default App;
 
-const SpinnerWrapper = styled.div`
+export const SpinnerWrapper = styled.div`
 	position: fixed;
 	left: 50%;
 	top: 50%;

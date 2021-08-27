@@ -6,12 +6,26 @@ import devices from "../styles/devices";
 import { CheckoutWrapper } from "./Cart";
 import { HorizontalLine } from "./Checkout";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
+import HomeIcon from "@material-ui/icons/Home";
 import Product from "./Product";
 import { lightTheme } from "../styles/Themes";
+import { useHistory } from "react-router-dom";
+import { Button, makeStyles } from "@material-ui/core";
 
 const Orders = () => {
+	const history = useHistory();
 	const orders = useSelector((state: State) => state.user.orders);
 	const candles = useSelector((state: State) => state.candles);
+	const useStyles = makeStyles((theme) => ({
+		button: {
+			marginTop: "15px",
+			backgroundColor: "#54AD1A",
+			textTransform: "inherit",
+			fontFamily: "inherit",
+		},
+	}));
+
+	const classes = useStyles();
 
 	const handleGetImageSrc = (id: string) => {
 		let result: string = "";
@@ -23,6 +37,27 @@ const Orders = () => {
 
 		return result;
 	};
+
+	const returnHome = () => {
+		history.push("/");
+	};
+
+	if (orders.length == 0) {
+		console.log("here");
+		return (
+			<NoOrdersWrapper>
+				<h1>Oh no! You haven't ordered yet!</h1>
+				<Button
+					variant="contained"
+					className={classes.button}
+					startIcon={<HomeIcon />}
+					onClick={returnHome}
+				>
+					<h4>Browse the Collection</h4>
+				</Button>
+			</NoOrdersWrapper>
+		);
+	}
 
 	return (
 		<OrdersWrapper>
@@ -175,4 +210,15 @@ const OrderNumber = styled.h4`
 `;
 const OrderDate = styled.h4`
 	opacity: 0.8;
+`;
+
+const NoOrdersWrapper = styled.div`
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 `;

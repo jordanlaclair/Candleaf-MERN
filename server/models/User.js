@@ -18,14 +18,15 @@ const orderData = mongoose.Schema({
 	price: Number,
 	_id: String,
 });
+
 const orderSchema = mongoose.Schema({
 	data: {
 		type: [orderData],
 		default: emptyOrderData,
 	},
 	purchasedOn: {
-		type: Date,
-		default: new Date(),
+		type: String,
+		default: "",
 	},
 	total: {
 		default: 0,

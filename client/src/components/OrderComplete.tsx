@@ -27,32 +27,39 @@ import CheckMarkLottie from "../assets/lotties/checkmark.json";
 import { useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import styled from "styled-components";
+import Spinner from "react-spinkit";
 import Lottie from "react-lottie";
 import { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import devices from "../styles/devices";
+import { fetchUser } from "../apis/users";
+import { SpinnerWrapper } from "../App";
 const OrderComplete: FC = () => {
 	const history = useHistory();
+	const userID = useSelector((state: State) => state.user._id);
 	const firstName = useSelector((state: State) => state.user.firstName);
-	const cart = useSelector((state: State) => state.user.cart);
+	const [newOrderNumber, setNewOrderNumber] = useState(0);
 	const candles = useSelector((state: State) => state.candles);
-	const total = useSelector((state: State) => state.user.total);
-	const shippingCost = useSelector((state: State) => state.user.shippingCost);
+
 	const shippingMethod = useSelector(
 		(state: State) => state.user.shippingMethod
 	);
-	const userEmail = useSelector((state: State) => state.user.email);
 
-	const couponDiscount = useSelector(
-		(state: State) => state.user.couponDiscount
-	);
-	const newsLetterDiscount = useSelector(
-		(state: State) => state.user.newsLetterDiscount
-	);
-	const theme = useSelector((state: State) => state.global.theme);
-	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const [checkMarkIsStopped, setCheckMarkIsStopped] = useState(false);
+
+	const fetchOrderNumber = async () => {
+		setTimeout(async () => {
+			const { data } = await fetchUser(userID);
+			let { orders } = data;
+
+			const { orderNumber } = orders.slice(-1)[0];
+			setNewOrderNumber(orderNumber);
+		}, 2000);
+	};
+	useEffect(() => {
+		fetchOrderNumber();
+	}, []);
 
 	const checkMarkLottieOptions = {
 		loop: false,
@@ -75,25 +82,17 @@ const OrderComplete: FC = () => {
 		return `$${Math.round((value + Number.EPSILON) * 100) / 100}`;
 	};
 
-	const returnShipping = (shippingCost: number) => {
-		let cost = roundToNearestTenths(shippingCost);
-		return `${cost} - ${shippingMethod}`;
-	};
-
-	const handleGetImageSrc = (id: string) => {
-		let result: string = "";
-		candles.forEach((candle) => {
-			if (candle._id == id) {
-				result = candle.image;
-			}
-		});
-
-		return result;
-	};
-
 	const handleBackToHome = () => {
 		history.push("/");
 	};
+
+	if (newOrderNumber == 0) {
+		return (
+			<SpinnerWrapper>
+				<Spinner color="green" name="ball-grid-beat" fadeIn="none" />
+			</SpinnerWrapper>
+		);
+	}
 
 	return (
 		<PaymentWrapper>
@@ -133,7 +132,7 @@ const OrderComplete: FC = () => {
 					/>
 				</LottieWrapper>
 				<h1>Payment Confirmed!</h1>
-				<h4>Order #</h4>
+				<h4>Order # {newOrderNumber}</h4>
 				<h5>{`Thank you, ${firstName}, for purchasing from Candleaf. The earth is grateful of your descision to buy our eco-friendly candles. Now that your order has been confirmed, please wait unti you receive an email notifying you that your order has been shipped.`}</h5>
 				<PaymentButtonWrapper>
 					<Button

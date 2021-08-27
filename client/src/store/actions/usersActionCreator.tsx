@@ -79,11 +79,12 @@ interface OrderData {
 
 interface OrderSchema {
 	data: Array<OrderData>;
-	purchasedOn: Date;
+	purchasedOn: String;
 	shippingMethod: String;
 	total: Number;
 	orderNumber: Number;
 }
+
 export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
 	try {
 		const { data } = await api.fetchUsers();
@@ -1077,10 +1078,20 @@ export const addToOrders =
 				totalCartPrice += product.totalPrice;
 			});
 
+			let currentDate = new Date()
+				.toLocaleTimeString("en-us", {
+					month: "long",
+					year: "numeric",
+					day: "numeric",
+				})
+				.split(" ");
+			const [month, day, year] = currentDate;
+			let date = month + " " + day + " " + year.replace(",", "");
+
 			const newOrder: OrderSchema = {
 				data: userCart,
 				orderNumber,
-				purchasedOn: new Date(),
+				purchasedOn: date,
 				total: totalCartPrice,
 				shippingMethod,
 			};
