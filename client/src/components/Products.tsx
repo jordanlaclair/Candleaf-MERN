@@ -45,7 +45,7 @@ const Products: FC = () => {
 		<ProductsWrapper id="products">
 			<Header>
 				<h1>Products</h1>
-				<h2>Order it for you or for a loved one!</h2>
+				<h2>Order for you or for a loved one!</h2>
 			</Header>
 			<TableWrapper>
 				{candles.length > 2

@@ -1,0 +1,19 @@
+.show {
+	right: 0 !important;
+}
+.active::after {
+	position: absolute;
+	content: "";
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 2px;
+	text-align: center;
+	bottom: -2px;
+	background-color: #54ad1a;
+}
+
+.red {
+	color: red;
+}

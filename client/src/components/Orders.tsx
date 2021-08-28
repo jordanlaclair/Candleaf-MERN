@@ -111,6 +111,9 @@ const OrdersWrapper = styled(CheckoutWrapper)`
 	width: 100%;
 	padding: 0;
 	justify-content: space-between;
+	@media ${devices.mobileM} {
+		font-size: 14px;
+	}
 `;
 
 const OrdersInnerWrapper = styled.div`
@@ -141,8 +144,11 @@ const OrdersGridWrapper = styled.div`
 	padding: 30px 50px;
 	display: grid;
 	justify-items: center;
-	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	grid-gap: 2rem;
+	@media ${devices.mobileM} {
+		padding: 30px 30px;
+	}
 `;
 
 const HorizontalLineOrders = styled(HorizontalLine)`

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
+import "../assets/css/header.css";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
@@ -15,7 +16,9 @@ import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { FC } from "react";
+
 import { signOut } from "../store/actions/usersActionCreator";
+import { LaptopWindowsOutlined } from "@material-ui/icons";
 
 const Header: FC = () => {
 	interface NewUserSchema {
@@ -49,10 +52,50 @@ const Header: FC = () => {
 		});
 	};
 
+	const showMenu = (toggleId: string, navId: string) => {
+		const toggle = document.getElementById(toggleId),
+			nav = document.getElementById(navId);
+
+		if (toggle && nav) {
+			toggle.addEventListener("click", show);
+		}
+	};
+
+	function show() {
+		const navMenu = document.getElementById("nav-menu");
+		navMenu?.classList.toggle("show");
+	}
+
+	function linkAction(this: Element) {
+		//active link
+		const navLink = document.querySelectorAll(".nav__link");
+		navLink.forEach((n) => n.classList.remove("active"));
+		console.log(this);
+		this.classList.add("active");
+
+		//remove menu
+		const navMenu = document.getElementById("nav-menu");
+		navMenu?.classList.remove("show");
+	}
+
+	useEffect(() => {
+		showMenu("nav-toggle", "nav-menu");
+
+		const navLink = document.querySelectorAll(".nav__link");
+		if (navLink) {
+			//remove nav after click
+			navLink.forEach((n) => n.addEventListener("click", linkAction));
+		}
+
+		return () => {
+			window.removeEventListener("click", show);
+			window.removeEventListener("click", linkAction);
+		};
+	}, []);
+
 	useEffect(() => {
 		console.log(isAuthenticated);
 		if (isAuthenticated) {
-			console.log("here 1");
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
 			let newUser: NewUserSchema = {
 				firstName: user?.given_name!,
@@ -61,7 +104,6 @@ const Header: FC = () => {
 			};
 			dispatch(action.createUser(newUser));
 		} else if (!isAuthenticated && firstName == "Guest") {
-			console.log("here 2");
 			let newUser: NewUserSchema = {
 				firstName: "Guest",
 				lastName: "",
@@ -83,6 +125,7 @@ const Header: FC = () => {
 	const GreenSwitch = withStyles({
 		switchBase: {
 			color: green[500],
+			overflow: "hidden",
 			"&$checked": {
 				color: green[500],
 			},
@@ -113,61 +156,66 @@ const Header: FC = () => {
 						<Logo />
 					</LogoWrapper>
 					<h2>Candleaf</h2>
+
+					<Test></Test>
 				</LogoTitle>
 			</HeaderLeft>
+			<NavMenu id="nav-menu">
+				<HeaderMiddle id="nav__links">
+					<Discovery onClick={handleHomeProducts} className="nav__link">
+						<div>
+							<a href="#products">
+								<h3>Products</h3>
+							</a>
+						</div>
+						<ExpandMoreIcon />
+					</Discovery>
 
-			<HeaderMiddle>
-				<Discovery>
-					<div>
-						<a onClick={handleHomeProducts} href="#products">
-							<h3>Discovery</h3>
+					<About onClick={handleHomeAbout} className="nav__link">
+						<a href="#about">
+							<h3>About</h3>
 						</a>
-					</div>
-					<ExpandMoreIcon />
-				</Discovery>
+					</About>
+					<Orders onClick={handleHomeOrders} className="nav__link">
+						<a>
+							<h3>Your Orders</h3>
+						</a>
+					</Orders>
+					<UserStatus
+						onClick={() => {
+							handleLogIn();
+						}}
+						className="nav__link"
+					>
+						<Status>{!isAuthenticated ? "Sign In" : "Sign Out"}</Status>
+						{isAuthenticated ? (
+							<UserProfilePicture src={user?.picture} />
+						) : (
+							<PermIdentityIcon />
+						)}
+					</UserStatus>
+					<CartWrapper
+						className="nav__link"
+						onClick={() => {
+							history.push("/cart");
+						}}
+					>
+						<CartHeading>Cart</CartHeading>
+						<ShoppingCartOutlinedIcon />
 
-				<About>
-					<a onClick={handleHomeAbout} href="#about">
-						<h3>About</h3>
-					</a>
-				</About>
-				<Orders>
-					<a onClick={handleHomeOrders}>
-						<h3>Your Orders</h3>
-					</a>
-				</Orders>
-			</HeaderMiddle>
-
-			<HeaderRight>
-				<UserStatus
-					onClick={() => {
-						handleLogIn();
-					}}
-				>
-					<Status>{!isAuthenticated ? "Sign In" : "Sign Out"}</Status>
-					{isAuthenticated ? (
-						<UserProfilePicture src={user?.picture} />
-					) : (
-						<PermIdentityIcon />
-					)}
-				</UserStatus>
-				<CartWrapper
-					onClick={() => {
-						history.push("/cart");
-					}}
-				>
-					<ShoppingCartOutlinedIcon />
-					{cartItemsCount > 0 ? <h3>({cartItemsCount})</h3> : null}
-				</CartWrapper>
-
-				<GreenSwitch
-					checked={themeSwitch}
-					onChange={() => {
-						handleSwitch();
-					}}
-				/>
-			</HeaderRight>
-			<HamBurgerMenu>
+						{cartItemsCount > 0 ? <h3>({cartItemsCount})</h3> : null}
+					</CartWrapper>
+					<SwitchWrapper>
+						<GreenSwitch
+							checked={themeSwitch}
+							onChange={() => {
+								handleSwitch();
+							}}
+						/>
+					</SwitchWrapper>
+				</HeaderMiddle>
+			</NavMenu>
+			<HamBurgerMenu id="nav-toggle">
 				<Bar />
 				<Bar />
 				<Bar />
@@ -201,7 +249,7 @@ const slideDown = keyframes`
 
 `;
 
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled.nav`
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -220,7 +268,7 @@ const HeaderWrapper = styled.div`
 
 const CartWrapper = styled.div`
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	cursor: pointer;
 	align-items: center;
 	transition: all 0.3s ease;
@@ -269,7 +317,7 @@ const UserStatus = styled.div`
 		height: 2px;
 		text-align: center;
 		left: 0;
-		top: 2.5rem;
+		top: 2.3rem;
 		background-color: ${(props) => props.theme.brand};
 	}
 	.MuiSvgIcon-root {
@@ -300,7 +348,7 @@ const Discovery = styled.div`
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-	text-align: center;
+
 	position: relative;
 	transition: all 0.3s ease;
 	div > a {
@@ -327,8 +375,7 @@ const Discovery = styled.div`
 		align-items: center;
 		height: 2px;
 		text-align: center;
-		left: 0;
-		top: 2.5rem;
+		top: 2.3rem;
 		background-color: ${(props) => props.theme.brand};
 	}
 `;
@@ -354,7 +401,7 @@ const Orders = styled.div`
 		height: 2px;
 		text-align: center;
 		left: 0;
-		top: 2.5rem;
+		top: 2.3rem;
 		background-color: ${(props) => props.theme.brand};
 	}
 `;
@@ -380,7 +427,7 @@ const About = styled.div`
 		height: 2px;
 		text-align: center;
 		left: 0;
-		top: 2.5rem;
+		top: 2.3rem;
 		background-color: ${(props) => props.theme.brand};
 	}
 `;
@@ -390,10 +437,14 @@ const LogoWrapper = styled.div``;
 const HeaderMiddle = styled.div`
 	flex: 2;
 	display: flex;
+	background-color: transparent;
 	justify-content: space-evenly;
 	align-items: center;
 	@media ${devices.tablet} {
-		display: none;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: flex-start;
+		flex: 1;
 	}
 `;
 
@@ -418,19 +469,6 @@ const Bar = styled.div`
 	height: 2px;
 	margin: 3px;
 `;
-const HeaderRight = styled.div`
-	flex: 1;
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-
-	.MuiSvgIcon-root {
-		transform: scale(1.2);
-	}
-	@media ${devices.tablet} {
-		display: none;
-	}
-`;
 
 const Status = styled.h3`
 	cursor: pointer;
@@ -441,4 +479,51 @@ const UserProfilePicture = styled.img`
 	border-radius: 50%;
 	width: 35px;
 	height: auto;
+`;
+
+const NavMenu = styled.div`
+	flex: 3;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	transition: 0.5s;
+
+	@media ${devices.tablet} {
+		position: fixed;
+		background-color: ${(props) => props.theme.colors.primary};
+		right: -100%;
+		top: 77px;
+		width: 30%;
+		height: 85%;
+		padding: 2rem;
+		flex-direction: column;
+		transition: 0.5s;
+		* {
+			text-align: start;
+			width: auto;
+		}
+	}
+	@media ${devices.mobileM} {
+		width: 50%;
+	}
+`;
+
+const CartHeading = styled.h3`
+	display: none;
+
+	@media ${devices.tablet} {
+		display: block;
+		margin-right: 12px;
+	}
+`;
+const Test = styled.h3``;
+
+const SwitchWrapper = styled.div`
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	@media ${devices.tablet} {
+		width: 100%;
+	}
 `;
