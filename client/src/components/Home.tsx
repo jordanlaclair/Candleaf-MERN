@@ -36,18 +36,22 @@ const Home: FC = () => {
 
 	const classes = useStyles();
 
-	const fetchAllReviews = async () => {
+	const fetchRecentReviews = async () => {
 		let { data } = await fetchReviews();
 		//only show the three most recent reviews
 		if (data.length > 2) {
 			data = data.slice(data.length - 3);
+			//console.log(data);
 			setRecentReviews(data);
 		}
 	};
 
 	useEffect(() => {
-		console.log("home component refreshed");
-		fetchAllReviews();
+		console.log(recentReviews);
+	}, [recentReviews]);
+
+	useEffect(() => {
+		fetchRecentReviews();
 	}, []);
 
 	return (
@@ -147,20 +151,23 @@ const ForeGroundWrapper = styled.div`
 	height: 40%;
 
 	> h4 {
+		width: 80%;
+		margin-top: 8px;
 		margin-bottom: 15px;
 		@media ${devices.tablet} {
 			font-size: 0.9rem;
 		}
 	}
-
-	@media ${devices.mobileXL} {
-		background: none;
-		backdrop-filter: none;
-	}
-
-	@media ${devices.tablet} {
+	@media ${devices.tabletL} {
 		width: 80%;
 		height: 60%;
+		padding: 0px;
+	}
+	@media ${devices.mobileXL} {
+		background: ${(props) => props.theme.colors.secondary};
+		width: 100%;
+		height: 100%;
+		backdrop-filter: none;
 	}
 `;
 const LeafWrapper = styled.div`

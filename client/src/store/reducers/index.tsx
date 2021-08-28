@@ -6,6 +6,8 @@ import storage from "redux-persist/lib/storage";
 
 import globalReducer from "./globalReducer";
 import userReducer from "./userReducer";
+//import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+//import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 
 const allReducers = combineReducers({
 	global: globalReducer,
@@ -14,7 +16,7 @@ const allReducers = combineReducers({
 });
 
 export default allReducers;
-export const config = {
+export const config: any = {
 	key: "root",
 	storage: storage,
 	blacklist: ["extras"],

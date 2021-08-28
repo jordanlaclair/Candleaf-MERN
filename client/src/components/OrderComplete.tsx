@@ -154,6 +154,8 @@ export default withRouter(OrderComplete);
 const PaymentWrapper = styled(CheckoutWrapper)`
 	@media ${devices.tablet} {
 		font-size: 13px;
+		padding-left: 0px;
+		padding-right: 0px;
 	}
 `;
 
@@ -178,6 +180,11 @@ const OrderCompleteFirstHalf = styled(FirstHalf)`
 
 	> h5 {
 		margin-top: 15px;
+		width: 70%;
+	}
+	@media ${devices.tablet} {
+		padding-left: 0px;
+		padding-right: 0px;
 	}
 `;
 

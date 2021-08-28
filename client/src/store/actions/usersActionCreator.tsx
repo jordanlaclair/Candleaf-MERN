@@ -22,9 +22,9 @@ interface UsersSchema {
 	postalCode: number;
 	country: string;
 	region: string;
-	orders: Array<CartSchema>;
+	orders: OrdersArray;
 	_id: string;
-	cart: Array<CartSchema>;
+	cart: CartsArray;
 	cartTotal: number;
 	cartWeight: number;
 }
@@ -40,16 +40,17 @@ interface NewUserSchema {
 	lastName: string;
 	auth0ID: string;
 }
+
 interface CartSchema {
 	productName: string;
-	productId: string;
 	productWeight: number;
+	productId: string;
 	totalPrice: number;
-	price: number;
 	productQuantity: number;
+	price: number;
 	_id: string;
 }
-type CartsArray = Array<CartSchema>;
+
 interface ProductSchema {
 	productName: string;
 	price: number;
@@ -84,6 +85,8 @@ interface OrderSchema {
 	total: Number;
 	orderNumber: Number;
 }
+type CartsArray = Array<CartSchema>;
+type OrdersArray = Array<OrderSchema>;
 
 export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
 	try {
@@ -1096,7 +1099,7 @@ export const addToOrders =
 				shippingMethod,
 			};
 
-			const newData = {
+			const newData: UsersSchema = {
 				orders: [...orders, newOrder],
 				cart: [],
 				firstName,
@@ -1121,7 +1124,7 @@ export const addToOrders =
 			};
 			await api.updateUser(userID, newData);
 
-			dispatch({ type: ActionType.PURCHASE_COMPLETE, payload: newOrder });
+			dispatch({ type: ActionType.PURCHASE_COMPLETE, payload: newData });
 		} catch (error) {
 			console.log(error);
 		}

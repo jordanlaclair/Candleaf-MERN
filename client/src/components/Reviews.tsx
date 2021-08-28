@@ -7,7 +7,7 @@ interface ReviewTypes {
 	rating: number;
 	name: string;
 	userPicture: string;
-	description: string;
+	title: string;
 }
 
 interface ReviewsPropTypes {
@@ -31,7 +31,7 @@ const Reviews: FC<ReviewsPropTypes> = ({ reviewsArray, subtitle }) => {
 							rating={review.rating}
 							name={review.name}
 							picture={review.userPicture}
-							description={review.description}
+							description={review.title}
 						/>
 					);
 				})}
@@ -54,6 +54,9 @@ const ReviewsWrapper = styled.div`
 `;
 const Header = styled.div`
 	padding: 10px;
+	> h3 {
+		opacity: 0.8;
+	}
 `;
 const GridWrapper = styled.div`
 	display: grid;

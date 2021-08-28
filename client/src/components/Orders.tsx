@@ -93,7 +93,6 @@ const Orders = () => {
 									</IconWrapper>
 								</ShippingDetailsWrapper>
 								<OrderTotal>Order Total ${order.total}</OrderTotal>
-
 								<OrderNumber>Order #{order.orderNumber}</OrderNumber>
 								<OrderDate>Order Placed: {order.purchasedOn}</OrderDate>
 							</OrderDetailsWrapper>
@@ -121,6 +120,7 @@ const OrdersInnerWrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: flex-start;
+	min-height: 70vh;
 	width: 100%;
 	background-color: ${(props) => props.theme.colors.secondary};
 	border-top-left-radius: 50px;

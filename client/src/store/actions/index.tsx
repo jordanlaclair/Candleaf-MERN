@@ -110,8 +110,8 @@ interface CartSchema {
 	productWeight: number;
 	productId: string;
 	totalPrice: number;
-	price: number;
 	productQuantity: number;
+	price: number;
 	_id: string;
 }
 
@@ -142,9 +142,9 @@ interface UsersSchema {
 	newsLetterDiscount: number;
 	totalDiscounts: number;
 	shippingCost: number;
+	shippingMethod: string;
 	total: number;
 	email: string;
-	shippingMethod: string;
 	address: string;
 	createdAt: string;
 	city: string;
@@ -291,7 +291,7 @@ interface UpdateShipping {
 
 interface UpdateOrders {
 	type: ActionType.PURCHASE_COMPLETE;
-	payload: OrderSchema;
+	payload: UsersSchema;
 }
 
 interface UserSignOut {
