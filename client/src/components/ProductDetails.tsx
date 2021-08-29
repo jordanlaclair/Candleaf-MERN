@@ -24,6 +24,7 @@ import StarGrow from "../assets/lotties/starGrow.json";
 import StarEmpty from "../assets/lotties/starEmpty.json";
 import Lottie from "react-lottie";
 import Reviews from "./Reviews";
+import devices from "../styles/devices";
 const ProductDetails: FC = () => {
 	const history = useHistory();
 	const [productQuantity, setProductQuantity] = useState(1);
@@ -314,106 +315,104 @@ const ProductDetails: FC = () => {
 				</LoadingWrapper>
 			) : (
 				<ProductDetailsWrapper>
-					<ProductDetailsLeft>
+					<ProductHeader>
+						<ProductTitle>{candleData.title} &reg;</ProductTitle>
+						<ProductPrice>${candleData.price}</ProductPrice>
+					</ProductHeader>
+					<OuterImageWrapper>
 						<ImageWrapper>
 							<img src={candleData.image} alt="candle" />
 						</ImageWrapper>
+
 						<ProductDescription>{candleData.message}</ProductDescription>
-						<ProductSale>
-							<h5>Free Shipping this coming December! </h5>
-							<LocalShippingIcon />
-						</ProductSale>
-					</ProductDetailsLeft>
-					<ProductDetailsRightWrapper>
-						<ProductDetailsRight>
-							<ProductDetailsRightLeft>
-								<ProductTitle>{candleData.title} &reg;</ProductTitle>
-								<ProductPrice>${candleData.price}</ProductPrice>
-								<ProductOptions></ProductOptions>
-								<ProductQuantityWrapper>
-									<h3>Quantity</h3>
-									<QuantityBottomWrapper>
-										<IndeterminateCheckBoxIcon onClick={handleSubtract} />
+					</OuterImageWrapper>
+					<ProductSale>
+						<h5>Free Shipping this coming December! </h5>
+						<LocalShippingIcon />
+					</ProductSale>
 
-										<h3>{productQuantity}</h3>
-										<AddBoxIcon onClick={handleAdd} />
-									</QuantityBottomWrapper>
-								</ProductQuantityWrapper>
+					<ProductQuantityWrapper>
+						<h3>Quantity</h3>
+						<QuantityBottomWrapper>
+							<IndeterminateCheckBoxIcon onClick={handleSubtract} />
 
-								<Button
-									variant="contained"
-									className={classes.button}
-									onClick={() => {
-										handleAddToCart(
-											id,
-											candleData.weight,
-											candleData.title,
-											candleData.price,
-											userID,
-											productQuantity
-										);
-									}}
-									startIcon={<ShoppingCartIcon />}
-								>
-									<h4>Add to Cart</h4>
-								</Button>
-							</ProductDetailsRightLeft>
-						</ProductDetailsRight>
-						<ProductDetailsRightRight>
-							<h2>Purchase Options</h2>
-							<PurchaseOption>
-								<Radio
-									checked={purchase === "One Time Purchase"}
-									onChange={handleChange}
-									value="One Time Purchase"
-									color="default"
-									name="radio-button-demo"
-									inputProps={{ "aria-label": "One Time Purchase" }}
-								/>
-								<h4
-									onClick={() => {
-										setPurchase("One Time Purchase");
-									}}
-								>
-									One Time Purchase
-								</h4>
-							</PurchaseOption>
-							<PurchaseOption>
-								<Radio
-									checked={purchase === "Subscription"}
-									onChange={handleChange}
-									value="Subscription"
-									color="default"
-									name="radio-button-demo"
-									inputProps={{ "aria-label": "Subscription" }}
-								/>
-								<h4
-									onClick={() => {
-										setPurchase("Subscription");
-									}}
-								>
-									Purchase with Subscription
-								</h4>
-							</PurchaseOption>
-						</ProductDetailsRightRight>
-						<ProductSpecs>
-							<ProductSpecsDetail flex="row">
-								<h3>Wax: </h3> &nbsp; <h4>{candleData.wax}</h4>
-							</ProductSpecsDetail>
-							<ProductSpecsDetail flex="column">
-								<h3>Fragrance: </h3> <h4>{candleData.fragrance}</h4>
-							</ProductSpecsDetail>
-							<ProductSpecsDetail flex="row">
-								<h3>Burning Time: </h3> &nbsp; <h4>{candleData.burningTime}</h4>
-							</ProductSpecsDetail>
-							<ProductSpecsDetail flex="row">
-								<h3>Dimensions: </h3> &nbsp; <h4>{candleData.dimensions}</h4>
-							</ProductSpecsDetail>
-							<ProductSpecsDetail flex="row">
-								<h3>Weight: </h3> &nbsp; <h4>{candleData.weight}</h4>
-							</ProductSpecsDetail>
-						</ProductSpecs>
-					</ProductDetailsRightWrapper>
+							<h3>{productQuantity}</h3>
+							<AddBoxIcon onClick={handleAdd} />
+						</QuantityBottomWrapper>
+					</ProductQuantityWrapper>
+
+					<Button
+						variant="contained"
+						className={classes.button}
+						onClick={() => {
+							handleAddToCart(
+								id,
+								candleData.weight,
+								candleData.title,
+								candleData.price,
+								userID,
+								productQuantity
+							);
+						}}
+						startIcon={<ShoppingCartIcon />}
+					>
+						<h4>Add to Cart</h4>
+					</Button>
+
+					<ProductDetailsRightRight>
+						<h2>Purchase Options</h2>
+						<PurchaseOption>
+							<Radio
+								checked={purchase === "One Time Purchase"}
+								onChange={handleChange}
+								value="One Time Purchase"
+								color="default"
+								name="radio-button-demo"
+								inputProps={{ "aria-label": "One Time Purchase" }}
+							/>
+							<h4
+								onClick={() => {
+									setPurchase("One Time Purchase");
+								}}
+							>
+								One Time Purchase
+							</h4>
+						</PurchaseOption>
+						<PurchaseOption>
+							<Radio
+								checked={purchase === "Subscription"}
+								onChange={handleChange}
+								value="Subscription"
+								color="default"
+								name="radio-button-demo"
+								inputProps={{ "aria-label": "Subscription" }}
+							/>
+							<h4
+								onClick={() => {
+									setPurchase("Subscription");
+								}}
+							>
+								Purchase with Subscription
+							</h4>
+						</PurchaseOption>
+					</ProductDetailsRightRight>
+					<ProductSpecs>
+						<ProductSpecsDetail flex="row">
+							<h3>Wax: </h3> &nbsp; <h4>{candleData.wax}</h4>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail flex="column">
+							<h3>Fragrance: </h3> <h4>{candleData.fragrance}</h4>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail flex="row">
+							<h3>Burning Time: </h3> &nbsp; <h4>{candleData.burningTime}</h4>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail flex="row">
+							<h3>Dimensions: </h3> &nbsp; <h4>{candleData.dimensions}</h4>
+						</ProductSpecsDetail>
+						<ProductSpecsDetail flex="row">
+							<h3>Weight: </h3> &nbsp; <h4>{candleData.weight}</h4>
+						</ProductSpecsDetail>
+					</ProductSpecs>
 				</ProductDetailsWrapper>
 			)}
 			{productPurchasedBefore ? (
@@ -581,13 +580,18 @@ const ProductDetails: FC = () => {
 export default ProductDetails;
 
 const ProductDetailsWrapper = styled.div`
-	width: 100%;
+	width: 75%;
 	margin-top: 70px;
-	padding-top: 80px;
+	height: 100%;
+	padding-top: 45px;
 	padding-bottom: 20px;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+	@media ${devices.tablet} {
+		font-size: 13px;
+	}
 `;
 
 const LoadingWrapper = styled.div`
@@ -612,6 +616,7 @@ const ProductSpecs = styled.div`
 	border-radius: 8px;
 	align-items: flex-start;
 	background-color: ${(props) => props.theme.colors.secondary};
+	align-self: center;
 `;
 const ProductSpecsDetail = styled.div<{ flex: string }>`
 	display: flex;
@@ -635,15 +640,8 @@ const ProductDetailsOuterWrapper = styled.div`
 	align-items: center;
 `;
 
-const ProductDetailsRightWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-`;
-
 const ImageWrapper = styled.div`
-	width: 400px;
+	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -652,15 +650,6 @@ const ImageWrapper = styled.div`
 	> img {
 		object-fit: contain;
 	}
-`;
-
-const ProductDetailsLeft = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding: 20px;
-	align-items: center;
-	width: 50%;
 `;
 
 export const PurchaseOption = styled.div`
@@ -673,26 +662,14 @@ export const PurchaseOption = styled.div`
 		cursor: pointer;
 	}
 `;
-const ProductDetailsRight = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-`;
-const ProductDetailsRightLeft = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	margin-bottom: 15px;
-`;
+
 const ProductDetailsRightRight = styled.div`
-	margin-top: 15px;
+	margin-top: 30px;
 	padding: 25px;
 	padding-left: 25px;
 	padding-right: 55px;
 	box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
-
+	align-self: center;
 	width: 70%;
 	background-color: ${(props) => props.theme.colors.secondary};
 	border-radius: 8px;
@@ -717,9 +694,11 @@ const ProductQuantityWrapper = styled.div`
 `;
 
 const ProductDescription = styled.h3`
+	text-align: start;
 	margin-top: 14px;
 	padding: 5px;
-	width: 70%;
+	width: 100%;
+	opacity: 0.9;
 `;
 
 const ProductSale = styled.h2`
@@ -878,4 +857,18 @@ const ReviewCompleteWrapper = styled.div`
 	> h2 {
 		margin-top: 10px;
 	}
+`;
+const ProductHeader = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	align-items: flex-start;
+`;
+const OuterImageWrapper = styled.div`
+	width: 40%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
 `;
