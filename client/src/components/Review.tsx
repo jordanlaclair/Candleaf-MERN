@@ -9,17 +9,25 @@ interface PropTypes {
 	rating: number;
 	name: string;
 	picture: string;
-	description: string;
+	title: string;
+	description?: string | null;
 }
-const Review: FC<PropTypes> = ({ picture, rating, description, name }) => {
+const Review: FC<PropTypes> = ({
+	picture,
+	rating,
+	title,
+	name,
+	description,
+}) => {
 	return (
 		<ReviewWrapper>
 			<ImageWrapper>
 				<img src={picture} alt="profile picture" />
 			</ImageWrapper>
-			<Stars rating={rating} />
-			<Description>"{description}"</Description>
 			<Name>{name}</Name>
+			<Stars rating={rating} />
+			<Title>"{title}"</Title>
+			<Description>{description}</Description>
 		</ReviewWrapper>
 	);
 };
@@ -47,7 +55,10 @@ const ImageWrapper = styled.div`
 		border-radius: 50%;
 	}
 `;
-const Description = styled.h2``;
+const Title = styled.h2`
+	margin-bottom: 10px;
+`;
+const Description = styled.h4``;
 
 const Name = styled.h4`
 	color: gray;
@@ -57,5 +68,5 @@ Review.propTypes = {
 	rating: PropTypes.number.isRequired,
 	name: PropTypes.string.isRequired,
 	picture: PropTypes.string.isRequired,
-	description: PropTypes.string.isRequired,
+	description: PropTypes.string,
 };

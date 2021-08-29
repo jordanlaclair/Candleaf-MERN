@@ -51,6 +51,9 @@ const FooterWrapper = styled.div`
 	flex-direction: column;
 	padding: 30px 0;
 	scroll-snap-align: start;
+	@media ${devices.tablet} {
+		font-size: 14px;
+	}
 `;
 
 const FooterTop = styled.div`

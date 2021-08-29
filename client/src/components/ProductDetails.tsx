@@ -315,104 +315,107 @@ const ProductDetails: FC = () => {
 				</LoadingWrapper>
 			) : (
 				<ProductDetailsWrapper>
-					<ProductHeader>
-						<ProductTitle>{candleData.title} &reg;</ProductTitle>
-						<ProductPrice>${candleData.price}</ProductPrice>
-					</ProductHeader>
-					<OuterImageWrapper>
-						<ImageWrapper>
-							<img src={candleData.image} alt="candle" />
-						</ImageWrapper>
+					<ProductDetailsLeft>
+						<ProductHeader>
+							<ProductTitle>{candleData.title} &reg;</ProductTitle>
+							<ProductPrice>${candleData.price}</ProductPrice>
+						</ProductHeader>
+						<OuterImageWrapper>
+							<ImageWrapper>
+								<img src={candleData.image} alt="candle" />
+							</ImageWrapper>
 
-						<ProductDescription>{candleData.message}</ProductDescription>
-					</OuterImageWrapper>
-					<ProductSale>
-						<h5>Free Shipping this coming December! </h5>
-						<LocalShippingIcon />
-					</ProductSale>
+							<ProductDescription>{candleData.message}</ProductDescription>
+						</OuterImageWrapper>
+						<ProductSale>
+							<h5>Free Shipping this coming holidays! </h5>
+							<LocalShippingIcon />
+						</ProductSale>
 
-					<ProductQuantityWrapper>
-						<h3>Quantity</h3>
-						<QuantityBottomWrapper>
-							<IndeterminateCheckBoxIcon onClick={handleSubtract} />
+						<ProductQuantityWrapper>
+							<h3>Quantity</h3>
+							<QuantityBottomWrapper>
+								<IndeterminateCheckBoxIcon onClick={handleSubtract} />
 
-							<h3>{productQuantity}</h3>
-							<AddBoxIcon onClick={handleAdd} />
-						</QuantityBottomWrapper>
-					</ProductQuantityWrapper>
+								<h3>{productQuantity}</h3>
+								<AddBoxIcon onClick={handleAdd} />
+							</QuantityBottomWrapper>
+						</ProductQuantityWrapper>
 
-					<Button
-						variant="contained"
-						className={classes.button}
-						onClick={() => {
-							handleAddToCart(
-								id,
-								candleData.weight,
-								candleData.title,
-								candleData.price,
-								userID,
-								productQuantity
-							);
-						}}
-						startIcon={<ShoppingCartIcon />}
-					>
-						<h4>Add to Cart</h4>
-					</Button>
-
-					<ProductDetailsRightRight>
-						<h2>Purchase Options</h2>
-						<PurchaseOption>
-							<Radio
-								checked={purchase === "One Time Purchase"}
-								onChange={handleChange}
-								value="One Time Purchase"
-								color="default"
-								name="radio-button-demo"
-								inputProps={{ "aria-label": "One Time Purchase" }}
-							/>
-							<h4
-								onClick={() => {
-									setPurchase("One Time Purchase");
-								}}
-							>
-								One Time Purchase
-							</h4>
-						</PurchaseOption>
-						<PurchaseOption>
-							<Radio
-								checked={purchase === "Subscription"}
-								onChange={handleChange}
-								value="Subscription"
-								color="default"
-								name="radio-button-demo"
-								inputProps={{ "aria-label": "Subscription" }}
-							/>
-							<h4
-								onClick={() => {
-									setPurchase("Subscription");
-								}}
-							>
-								Purchase with Subscription
-							</h4>
-						</PurchaseOption>
-					</ProductDetailsRightRight>
-					<ProductSpecs>
-						<ProductSpecsDetail flex="row">
-							<h3>Wax: </h3> &nbsp; <h4>{candleData.wax}</h4>
-						</ProductSpecsDetail>
-						<ProductSpecsDetail flex="column">
-							<h3>Fragrance: </h3> <h4>{candleData.fragrance}</h4>
-						</ProductSpecsDetail>
-						<ProductSpecsDetail flex="row">
-							<h3>Burning Time: </h3> &nbsp; <h4>{candleData.burningTime}</h4>
-						</ProductSpecsDetail>
-						<ProductSpecsDetail flex="row">
-							<h3>Dimensions: </h3> &nbsp; <h4>{candleData.dimensions}</h4>
-						</ProductSpecsDetail>
-						<ProductSpecsDetail flex="row">
-							<h3>Weight: </h3> &nbsp; <h4>{candleData.weight}</h4>
-						</ProductSpecsDetail>
-					</ProductSpecs>
+						<Button
+							variant="contained"
+							className={classes.button}
+							onClick={() => {
+								handleAddToCart(
+									id,
+									candleData.weight,
+									candleData.title,
+									candleData.price,
+									userID,
+									productQuantity
+								);
+							}}
+							startIcon={<ShoppingCartIcon />}
+						>
+							<h4>Add to Cart</h4>
+						</Button>
+					</ProductDetailsLeft>
+					<ProductDetailsRight>
+						<ProductOptionsWrapper>
+							<h2>Purchase Options</h2>
+							<PurchaseOption>
+								<Radio
+									checked={purchase === "One Time Purchase"}
+									onChange={handleChange}
+									value="One Time Purchase"
+									color="default"
+									name="radio-button-demo"
+									inputProps={{ "aria-label": "One Time Purchase" }}
+								/>
+								<h4
+									onClick={() => {
+										setPurchase("One Time Purchase");
+									}}
+								>
+									One Time Purchase
+								</h4>
+							</PurchaseOption>
+							<PurchaseOption>
+								<Radio
+									checked={purchase === "Subscription"}
+									onChange={handleChange}
+									value="Subscription"
+									color="default"
+									name="radio-button-demo"
+									inputProps={{ "aria-label": "Subscription" }}
+								/>
+								<h4
+									onClick={() => {
+										setPurchase("Subscription");
+									}}
+								>
+									Purchase with Subscription
+								</h4>
+							</PurchaseOption>
+						</ProductOptionsWrapper>
+						<ProductSpecs>
+							<ProductSpecsDetail>
+								<h3>Wax: </h3> &nbsp; <h4>{candleData.wax}</h4>
+							</ProductSpecsDetail>
+							<ProductSpecsDetail>
+								<h3>Fragrance: </h3> <h4>{candleData.fragrance}</h4>
+							</ProductSpecsDetail>
+							<ProductSpecsDetail>
+								<h3>Burning Time: </h3> <h4>{candleData.burningTime}</h4>
+							</ProductSpecsDetail>
+							<ProductSpecsDetail>
+								<h3>Dimensions: </h3> &nbsp; <h4>{candleData.dimensions}</h4>
+							</ProductSpecsDetail>
+							<ProductSpecsDetail>
+								<h3>Weight: </h3> &nbsp; <h4>{candleData.weight}</h4>
+							</ProductSpecsDetail>
+						</ProductSpecs>
+					</ProductDetailsRight>
 				</ProductDetailsWrapper>
 			)}
 			{productPurchasedBefore ? (
@@ -444,91 +447,93 @@ const ProductDetails: FC = () => {
 							)}
 							<ReviewSectionWrapperLottie>
 								<h4>Rating</h4>
-								<LottieWrapper
-									onClick={() => {
-										handleStarsClicked(1);
-									}}
-								>
-									{starState.firstStar ? (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={starNormalOptions}
-										/>
-									) : (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={emptyStarOptions}
-										/>
-									)}
-								</LottieWrapper>
-								<LottieWrapper
-									onClick={() => {
-										handleStarsClicked(2);
-									}}
-								>
-									{starState.secondStar ? (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={starNormalOptions}
-										/>
-									) : (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={emptyStarOptions}
-										/>
-									)}
-								</LottieWrapper>
-								<LottieWrapper
-									onClick={() => {
-										handleStarsClicked(3);
-									}}
-								>
-									{starState.thirdStar ? (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={starNormalOptions}
-										/>
-									) : (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={emptyStarOptions}
-										/>
-									)}
-								</LottieWrapper>
-								<LottieWrapper
-									onClick={() => {
-										handleStarsClicked(4);
-									}}
-								>
-									{starState.fourthStar ? (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={starNormalOptions}
-										/>
-									) : (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={emptyStarOptions}
-										/>
-									)}
-								</LottieWrapper>
-								<LottieWrapper
-									onClick={() => {
-										handleStarsClicked(5);
-									}}
-								>
-									{starState.fifthStar ? (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={starNormalOptions}
-										/>
-									) : (
-										<Lottie
-											isClickToPauseDisabled={true}
-											options={emptyStarOptions}
-										/>
-									)}
-								</LottieWrapper>
+								<StarsWrapper>
+									<LottieWrapper
+										onClick={() => {
+											handleStarsClicked(1);
+										}}
+									>
+										{starState.firstStar ? (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={starNormalOptions}
+											/>
+										) : (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={emptyStarOptions}
+											/>
+										)}
+									</LottieWrapper>
+									<LottieWrapper
+										onClick={() => {
+											handleStarsClicked(2);
+										}}
+									>
+										{starState.secondStar ? (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={starNormalOptions}
+											/>
+										) : (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={emptyStarOptions}
+											/>
+										)}
+									</LottieWrapper>
+									<LottieWrapper
+										onClick={() => {
+											handleStarsClicked(3);
+										}}
+									>
+										{starState.thirdStar ? (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={starNormalOptions}
+											/>
+										) : (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={emptyStarOptions}
+											/>
+										)}
+									</LottieWrapper>
+									<LottieWrapper
+										onClick={() => {
+											handleStarsClicked(4);
+										}}
+									>
+										{starState.fourthStar ? (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={starNormalOptions}
+											/>
+										) : (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={emptyStarOptions}
+											/>
+										)}
+									</LottieWrapper>
+									<LottieWrapper
+										onClick={() => {
+											handleStarsClicked(5);
+										}}
+									>
+										{starState.fifthStar ? (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={starNormalOptions}
+											/>
+										) : (
+											<Lottie
+												isClickToPauseDisabled={true}
+												options={emptyStarOptions}
+											/>
+										)}
+									</LottieWrapper>
+								</StarsWrapper>
 							</ReviewSectionWrapperLottie>
 							<ReviewSectionWrapper>
 								<h4>Title</h4>
@@ -569,6 +574,7 @@ const ProductDetails: FC = () => {
 				<Reviews
 					reviewsArray={candleReviews}
 					subtitle={`Reviews for ${candleData.title}`}
+					showDescription={true}
 				/>
 			) : null}
 
@@ -582,15 +588,14 @@ export default ProductDetails;
 const ProductDetailsWrapper = styled.div`
 	width: 75%;
 	margin-top: 70px;
-	height: 100%;
-	padding-top: 45px;
-	padding-bottom: 20px;
+	padding: 50px 0;
 	display: flex;
-	flex-direction: column;
 	justify-content: space-between;
-	align-items: flex-start;
+	align-items: center;
 	@media ${devices.tablet} {
-		font-size: 13px;
+		font-size: 14px;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 `;
 
@@ -618,10 +623,9 @@ const ProductSpecs = styled.div`
 	background-color: ${(props) => props.theme.colors.secondary};
 	align-self: center;
 `;
-const ProductSpecsDetail = styled.div<{ flex: string }>`
+const ProductSpecsDetail = styled.div`
 	display: flex;
 	justify-content: center;
-	flex-direction: ${(props) => (props.flex == "row" ? "row" : "column")};
 	align-items: flex-end;
 	text-align: start;
 	> h3 {
@@ -629,6 +633,10 @@ const ProductSpecsDetail = styled.div<{ flex: string }>`
 	}
 	> h4 {
 		opacity: 0.7;
+	}
+	@media ${devices.tablet} {
+		flex-direction: column;
+		align-items: flex-start;
 	}
 `;
 
@@ -663,7 +671,7 @@ export const PurchaseOption = styled.div`
 	}
 `;
 
-const ProductDetailsRightRight = styled.div`
+const ProductOptionsWrapper = styled.div`
 	margin-top: 30px;
 	padding: 25px;
 	padding-left: 25px;
@@ -683,8 +691,6 @@ const ProductPrice = styled.h2`
 	color: #49a010;
 `;
 
-const ProductOptions = styled.div``;
-
 const ProductQuantityWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -696,7 +702,7 @@ const ProductQuantityWrapper = styled.div`
 const ProductDescription = styled.h3`
 	text-align: start;
 	margin-top: 14px;
-	padding: 5px;
+	font-size: 16px;
 	width: 100%;
 	opacity: 0.9;
 `;
@@ -705,12 +711,13 @@ const ProductSale = styled.h2`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 10px;
+	text-align: start;
 	color: #49a010;
+	margin-top: 5px;
 
 	.MuiSvgIcon-root {
-		margin-left: 5px;
 		font-size: 2.5rem;
+		margin-left: 5px;
 	}
 `;
 const QuantityBottomWrapper = styled.div`
@@ -729,7 +736,7 @@ const QuantityBottomWrapper = styled.div`
 	}
 `;
 const ReviewsWrapper = styled.form`
-	padding: 60px 40px;
+	padding: 40px;
 	padding-bottom: 45px;
 	display: flex;
 	flex-direction: column;
@@ -741,6 +748,11 @@ const ReviewsWrapper = styled.form`
 	background-color: ${(props) => props.theme.colors.secondary};
 	width: 50%;
 	margin-bottom: 2rem;
+	@media ${devices.mobileXL} {
+		font-size: 14px;
+		padding: 20px;
+		width: 70%;
+	}
 `;
 
 const ReviewsOuterWrapper = styled.div`
@@ -759,14 +771,15 @@ const HorizontalLineReviews = styled(HorizontalLine)`
 `;
 
 const UserHeaderInfo = styled.div`
-	position: absolute;
-	top: 20px;
-	left: 27px;
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: flex-start;
 	align-items: center;
 	white-space: nowrap;
-	width: 20%;
+	width: 100%;
+
+	> h3 {
+		margin-left: 10px;
+	}
 `;
 
 const UserProfilePicture = styled.img`
@@ -780,7 +793,6 @@ const ReviewSectionWrapper = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	margin: 16px 0;
-	margin-bottom: 8px;
 	width: 100%;
 	> h4 {
 		margin-bottom: 11px;
@@ -820,23 +832,43 @@ const ReviewDescription = styled.textarea`
 	font-size: 14px;
 	border-radius: 8px;
 	margin: none;
-	padding: 13px;
-	width: 98%;
+	padding: 15px;
+	width: 90%;
 	min-height: 200px;
 	resize: none;
+	@media ${devices.tablet} {
+		width: 85%;
+	}
 `;
 
 const LottieWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 80px;
+	width: 10%;
 	cursor: pointer;
+	@media ${devices.mobileXL} {
+		width: 20%;
+		> svg {
+			width: 100%;
+		}
+	}
+	@media ${devices.tablet} {
+		width: 20%;
+	}
+	@media ${devices.laptopM} {
+		width: 15%;
+	}
 `;
 const ReviewSectionWrapperLottie = styled(ReviewSectionWrapper)`
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items: center;
+
+	@media ${devices.tabletL} {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 
 const LottieWrapperCheck = styled.div`
@@ -862,13 +894,34 @@ const ProductHeader = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-
 	align-items: flex-start;
+	margin-bottom: 10px;
 `;
 const OuterImageWrapper = styled.div`
-	width: 40%;
+	width: 70%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
+`;
+const ProductDetailsRight = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+const ProductDetailsLeft = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
+`;
+const StarsWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	@media ${devices.tabletL} {
+		justify-content: space-between;
+	}
 `;

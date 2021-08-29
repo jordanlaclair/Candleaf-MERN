@@ -506,6 +506,10 @@ const NavMenu = styled.div`
 	}
 	@media ${devices.mobileM} {
 		width: 50%;
+		font-size: 10px;
+	}
+	@media ${devices.mobileXL} {
+		font-size: 14px;
 	}
 `;
 

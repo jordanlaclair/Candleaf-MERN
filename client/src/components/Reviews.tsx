@@ -8,15 +8,21 @@ interface ReviewTypes {
 	name: string;
 	userPicture: string;
 	title: string;
+	description: string;
 }
 
 interface ReviewsPropTypes {
 	subtitle?: string;
 	reviewsArray: ReviewsArray;
+	showDescription?: boolean;
 }
 
 type ReviewsArray = Array<ReviewTypes>;
-const Reviews: FC<ReviewsPropTypes> = ({ reviewsArray, subtitle }) => {
+const Reviews: FC<ReviewsPropTypes> = ({
+	reviewsArray,
+	subtitle,
+	showDescription,
+}) => {
 	return (
 		<ReviewsWrapper>
 			<Header>
@@ -31,7 +37,8 @@ const Reviews: FC<ReviewsPropTypes> = ({ reviewsArray, subtitle }) => {
 							rating={review.rating}
 							name={review.name}
 							picture={review.userPicture}
-							description={review.title}
+							title={review.title}
+							description={showDescription ? review.description : null}
 						/>
 					);
 				})}
