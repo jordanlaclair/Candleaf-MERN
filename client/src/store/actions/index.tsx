@@ -227,8 +227,8 @@ interface RemoveNewsLetterDiscount {
 	type: ActionType.REMOVE_NEWSLETTER_DISCOUNT;
 	payload: number;
 }
-interface UpdateTotalDiscounts {
-	type: ActionType.UPDATE_TOTAL_DISCOUNT;
+interface ResetTotalDiscounts {
+	type: ActionType.RESET_TOTAL_DISCOUNT;
 }
 interface UpdateTotal {
 	type: ActionType.UPDATE_TOTAL;
@@ -305,7 +305,7 @@ export type UserActions =
 	| AddToCartAction
 	| RemoveFromCartAction
 	| LowerQuantityAction
-	| UpdateTotalDiscounts
+	| ResetTotalDiscounts
 	| UpdateTotal
 	| AddToCartQuantityAction
 	| RemoveNewsLetterDiscount

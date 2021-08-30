@@ -587,9 +587,9 @@ export const addCouponDiscount =
 				region,
 				address,
 				city,
-				total: total - value,
+				total,
 				couponDiscount: value,
-				totalDiscounts: totalDiscounts + value,
+				totalDiscounts,
 				newsLetterDiscount,
 			};
 
@@ -651,7 +651,7 @@ export const removeCouponDiscount =
 				total: cartTotal,
 				couponDiscount: 0,
 				totalDiscounts: 0,
-				newsLetterDiscount,
+				newsLetterDiscount: 0,
 			};
 
 			await api.updateUser(userID, newData);
@@ -708,9 +708,9 @@ export const addNewsLetterDiscount =
 				region,
 				address,
 				city,
-				total: total - value,
+				total,
 				couponDiscount,
-				totalDiscounts: totalDiscounts + value,
+				totalDiscounts,
 				newsLetterDiscount: value,
 			};
 
@@ -771,9 +771,9 @@ export const removeNewsLetterDiscount =
 				address,
 				city,
 				cartWeight,
-				total: total + value,
+				total,
 				couponDiscount,
-				totalDiscounts: totalDiscounts - value,
+				totalDiscounts,
 				newsLetterDiscount: 0,
 			};
 
@@ -783,66 +783,6 @@ export const removeNewsLetterDiscount =
 				type: ActionType.REMOVE_NEWSLETTER_DISCOUNT,
 				payload: value,
 			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-export const updateTotalDiscounts =
-	(userID: string) => async (dispatch: Dispatch<UserActions>) => {
-		try {
-			const { data } = await api.fetchUser(userID);
-
-			let {
-				orders,
-				cart,
-				firstName,
-				lastName,
-				createdAt,
-				auth0ID,
-				_id,
-				cartTotal,
-				email,
-				postalCode,
-				shippingCost,
-				shippingMethod,
-				country,
-				cartWeight,
-				region,
-				address,
-				city,
-				total,
-				couponDiscount,
-				newsLetterDiscount,
-				totalDiscounts,
-			} = data;
-
-			const newData = {
-				orders,
-				cart,
-				firstName,
-				lastName,
-				createdAt,
-				auth0ID,
-				_id,
-				cartTotal,
-				email,
-				postalCode,
-				cartWeight,
-				shippingCost,
-				shippingMethod,
-				country,
-				region,
-				address,
-				city,
-				totalDiscounts: couponDiscount + newsLetterDiscount,
-				total,
-				couponDiscount,
-				newsLetterDiscount,
-			};
-
-			await api.updateUser(userID, newData);
-			dispatch({ type: ActionType.UPDATE_TOTAL_DISCOUNT });
 		} catch (error) {
 			console.log(error);
 		}
@@ -899,9 +839,9 @@ export const userSubmitDetails =
 				region: userRegion,
 				address: userAddress,
 				city: userCity,
-				total,
+				total: cartTotal - (newsLetterDiscount + couponDiscount),
 				couponDiscount,
-				totalDiscounts,
+				totalDiscounts: newsLetterDiscount + couponDiscount,
 				newsLetterDiscount,
 			};
 			await api.updateUser(userID, newData);

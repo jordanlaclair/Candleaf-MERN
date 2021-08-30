@@ -94,7 +94,6 @@ const Header: FC = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(isAuthenticated);
 		if (isAuthenticated) {
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
 			let newUser: NewUserSchema = {
@@ -103,7 +102,7 @@ const Header: FC = () => {
 				auth0ID: user?.sub!,
 			};
 			dispatch(action.createUser(newUser));
-		} else if (!isAuthenticated && firstName == "Guest") {
+		} else if (!isAuthenticated) {
 			let newUser: NewUserSchema = {
 				firstName: "Guest",
 				lastName: "",

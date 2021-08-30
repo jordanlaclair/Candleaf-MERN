@@ -82,7 +82,7 @@ const Checkout: FC = () => {
 		}
 	}, [couponCount]);
 	useEffect(() => {
-		dispatch(userAction.removeCouponDiscount(userID));
+		if (couponDiscount > 0) dispatch(userAction.removeCouponDiscount(userID));
 		return () => {};
 	}, []);
 
@@ -127,7 +127,6 @@ const Checkout: FC = () => {
 		border: `2.5px solid #49a010`,
 		outline: "none",
 		minWidth: "50%",
-		maxWidth: "50%",
 		fontWeight: "bold",
 		color: "gray",
 	};
@@ -447,9 +446,13 @@ export const FirstHalf = styled.div`
 	height: 100%;
 	align-items: center;
 	flex: 1;
-	padding: 2rem 3.5rem;
+
+	padding-top: 2rem;
+	padding-left: 3.5rem;
+	padding-right: 3.5rem;
 	@media ${devices.laptopM} {
-		padding: 2rem 0;
+		padding: 0;
+		padding-top: 2rem;
 		flex: 1;
 		width: 85%;
 	}
@@ -519,7 +522,10 @@ export const CurrentBreadCrumb = styled.h3`
 	color: ${(props) => props.theme.brand};
 `;
 export const LocationWrapper = styled.div`
-	width: 90%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 80%;
 `;
 
 export const NextBreadCrumb = styled.h3``;
@@ -559,7 +565,7 @@ export const InputField = styled.input<{ fieldType?: string }>`
 `;
 
 const ShippingWrapper = styled.div`
-	margin-top: 15px;
+	margin-top: 2rem;
 	width: 90%;
 
 	display: flex;

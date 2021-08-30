@@ -108,29 +108,27 @@ const reducer: Reducer<UserSchema, UserActions> = (
 		case ActionType.ADD_TO_CART_QUANTITY:
 			return action.payload;
 		case ActionType.ADD_COUPON_DISCOUNT:
-			user.totalDiscounts += action.payload;
 			user.couponDiscount = action.payload;
-			user.total -= user.couponDiscount;
 			return user;
 		case ActionType.REMOVE_COUPON_DISCOUNT:
 			return {
 				...user,
-				totalDiscounts: user.totalDiscounts - user.couponDiscount,
-				total: user.total + user.couponDiscount,
+				totalDiscounts: 0,
+				total: user.cartTotal,
 				couponDiscount: 0,
+				newsLetterDiscount: 0,
 			};
 		case ActionType.ADD_NEWSLETTER_DISCOUNT:
-			user.totalDiscounts += action.payload;
 			user.newsLetterDiscount = action.payload;
-			user.total -= user.newsLetterDiscount;
 			return user;
 		case ActionType.REMOVE_NEWSLETTER_DISCOUNT:
-			user.total += user.newsLetterDiscount;
-			user.totalDiscounts -= user.newsLetterDiscount;
 			user.newsLetterDiscount = 0;
 			return user;
 
 		case ActionType.USER_SUBMIT_DETAILS:
+			user.totalDiscounts = user.newsLetterDiscount + user.couponDiscount;
+			user.total =
+				user.cartTotal - (user.newsLetterDiscount + user.couponDiscount);
 			return user;
 		case ActionType.UPDATE_ADDRESS:
 			user.address = action.payload;

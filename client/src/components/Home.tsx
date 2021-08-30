@@ -106,6 +106,9 @@ const HomeWrapper = styled.div`
 	@media ${devices.laptop} {
 		margin-top: 70px;
 	}
+	@media ${devices.mobileXL} {
+		font-size: 14px;
+	}
 `;
 const BackgroundWrapper = styled.div`
 	width: 100%;

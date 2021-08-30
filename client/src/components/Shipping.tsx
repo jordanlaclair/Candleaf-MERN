@@ -463,7 +463,6 @@ const LottieWrapper = styled.div`
 	margin-top: 5px;
 	align-items: center;
 	width: 80px;
-	margin-right: 20px;
 `;
 const LottieWrapperPlane = styled(LottieWrapper)`
 	display: flex;
