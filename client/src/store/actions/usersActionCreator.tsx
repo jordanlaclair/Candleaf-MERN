@@ -771,9 +771,6 @@ export const removeNewsLetterDiscount =
 				address,
 				city,
 				cartWeight,
-				total,
-				couponDiscount,
-				totalDiscounts,
 				newsLetterDiscount: 0,
 			};
 

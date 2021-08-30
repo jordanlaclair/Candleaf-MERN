@@ -94,7 +94,7 @@ const Header: FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		if (isAuthenticated && firstName == "Guest") {
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
 			let newUser: NewUserSchema = {
 				firstName: user?.given_name!,
