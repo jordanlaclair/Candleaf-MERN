@@ -395,7 +395,7 @@ const Checkout: FC = () => {
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Coupon Code</h3>
-						<h3> {couponDiscount === 0 ? "None" : `-$${couponDiscount}`}</h3>
+						<h3>{couponDiscount > 0 ? `-$${couponDiscount}` : "None"}</h3>
 					</DetailsWrapper>
 					<DetailsWrapper>
 						<h3>Discount</h3>

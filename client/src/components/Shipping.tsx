@@ -54,6 +54,7 @@ import devices from "../styles/devices";
 
 const Shipping: FC = () => {
 	const [shippingMethod, setShippingMethod] = useState("");
+	const [shakeShipping, setShakeShipping] = useState(false);
 	const history = useHistory();
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
@@ -116,20 +117,12 @@ const Shipping: FC = () => {
 	};
 
 	const handleContinueToPayment = () => {
-		let userDetails: UserSubmitDetailsObject = {
-			userEmail: email,
-			userFirstName: firstName,
-			userLastName: lastName,
-			userPostalCode: postalCode,
-			userCountry: country,
-			userRegion: region,
-			userAddress: address,
-			userCity: city,
-		};
-
-		dispatch(userSubmitDetails(userID, userDetails));
-
 		if (shippingMethod !== "") history.push("/checkout/payment");
+		else {
+			setShakeShipping(true);
+			// Buttons stops to shake after 2 seconds
+			setTimeout(() => setShakeShipping(false), 2000);
+		}
 	};
 
 	const handleShippingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -248,6 +241,7 @@ const Shipping: FC = () => {
 				</InputFieldWrapper>
 				<HorizontalLineShipping />
 				<UserInfoWrapperShipping
+					shaking={shakeShipping}
 					onMouseEnter={() => {
 						setTruckLottieIsStopped(true);
 						setTimeout(() => {
@@ -449,8 +443,39 @@ export const ButtonWrapper = styled.div`
 	}
 `;
 
-const UserInfoWrapperShipping = styled(UserInfoWrapper)`
+interface UserShippingInfoProps {
+	shaking: boolean;
+}
+
+const UserInfoWrapperShipping = styled(UserInfoWrapper)<UserShippingInfoProps>`
 	width: 80%;
+	animation: ${(props) =>
+		props.shaking
+			? `shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both`
+			: "none"};
+
+	@keyframes shake {
+		10%,
+		90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+
+		20%,
+		80% {
+			transform: translate3d(2px, 0, 0);
+		}
+
+		30%,
+		50%,
+		70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+
+		40%,
+		60% {
+			transform: translate3d(4px, 0, 0);
+		}
+	}
 `;
 
 const UserInfoHeaderShipping = styled(UserInfoHeader)`

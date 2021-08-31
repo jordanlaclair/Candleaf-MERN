@@ -39,11 +39,12 @@ const Orders = () => {
 	};
 
 	const returnHome = () => {
+		const navLink = document.querySelectorAll(".nav__link");
+		navLink.forEach((n) => n.classList.remove("active"));
 		history.push("/");
 	};
 
 	if (orders.length == 0) {
-		console.log("here");
 		return (
 			<NoOrdersWrapper>
 				<h1>Oh no! You haven't ordered yet!</h1>
