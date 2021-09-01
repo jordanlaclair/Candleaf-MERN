@@ -7,13 +7,11 @@ import Radio from "@material-ui/core/Radio";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import Product from "./Product";
-import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import Lottie from "react-lottie";
 import DarkModePlane from "../assets/lotties/darkTheme/plane.json";
 import DarkModeTruck from "../assets/lotties/darkTheme/truck.json";
 import LightModePlane from "../assets/lotties/lightTheme/plane.json";
 import LightModeTruck from "../assets/lotties/lightTheme/truck.json";
-import { userSubmitDetails } from "../store/actions";
 import {
 	HeaderWrapper,
 	CrumbWrapper,
@@ -23,7 +21,6 @@ import {
 	Header,
 	LogoWrapper,
 	TotalWrapper,
-	CouponWrapper,
 	ShippingText,
 	ImageWrapper,
 	InputField,
@@ -34,11 +31,9 @@ import {
 	DetailsOuterWrapper,
 	HorizontalLine,
 	CurrentBreadCrumb,
-	LocationWrapper,
 	NextBreadCrumb,
 } from "./Checkout";
 import { UserInfoHeader, UserInfoWrapper } from "./Payment";
-import { UserSubmitDetailsObject } from "../store/actions";
 import { Button, makeStyles } from "@material-ui/core";
 import { useHistory, withRouter } from "react-router-dom";
 import {
@@ -68,11 +63,7 @@ const Shipping: FC = () => {
 		(state: State) => state.user.shippingMethod
 	);
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
-	const [couponCode, setCouponCode] = useState("");
 	const userID = useSelector((state: State) => state.user._id);
-	const firstName = useSelector((state: State) => state.user.firstName);
-	const country = useSelector((state: State) => state.user.country);
-	const lastName = useSelector((state: State) => state.user.lastName);
 	const total = useSelector((state: State) => state.user.total);
 	const email = useSelector((state: State) => state.user.email);
 	const cartWeight = useSelector((state: State) => state.user.cartWeight);
@@ -242,7 +233,7 @@ const Shipping: FC = () => {
 				<HorizontalLineShipping />
 				<UserInfoWrapperShipping
 					shaking={shakeShipping}
-					onMouseEnter={() => {
+					onClick={() => {
 						setTruckLottieIsStopped(true);
 						setTimeout(() => {
 							setTruckLottieIsStopped(false);
@@ -342,10 +333,18 @@ const Shipping: FC = () => {
 				</ProductsWrapper>
 				<HorizontalLine />
 
-				<PlaneWrapper>
+				<PlaneWrapper
+					onClick={() => {
+						setPlaneLottieIsStopped(true);
+						setTimeout(() => {
+							setPlaneLottieIsStopped(false);
+						}, 150);
+					}}
+				>
 					<LottieWrapperPlane>
 						<Lottie
 							options={planeLottieOptions}
+							isStopped={planeLottieIsStopped}
 							isClickToPauseDisabled={true}
 						/>
 					</LottieWrapperPlane>

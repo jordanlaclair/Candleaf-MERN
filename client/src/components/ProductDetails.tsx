@@ -885,6 +885,7 @@ const ReviewCompleteWrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 10px;
 
 	> h2 {
 		margin-top: 10px;

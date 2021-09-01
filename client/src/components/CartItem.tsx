@@ -6,7 +6,6 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions/index";
 import { State } from "../store/reducers";
-import { ReactNode } from "react";
 import devices from "../styles/devices";
 type PropTypes = {
 	productName: string;

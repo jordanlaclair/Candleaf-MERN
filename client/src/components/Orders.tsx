@@ -8,7 +8,6 @@ import { HorizontalLine } from "./Checkout";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import HomeIcon from "@material-ui/icons/Home";
 import Product from "./Product";
-import { lightTheme } from "../styles/Themes";
 import { useHistory } from "react-router-dom";
 import { Button, makeStyles } from "@material-ui/core";
 

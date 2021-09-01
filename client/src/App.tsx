@@ -1,6 +1,5 @@
 import "./App.css";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Home from "./components/Home";
 import Header from "./components/Header";
 import {
@@ -10,7 +9,6 @@ import {
 	Redirect,
 } from "react-router-dom";
 import { State } from "./store/reducers/index";
-import * as action from "./store/actions/index";
 import { GlobalStyles } from "./styles/globalStyles";
 import ProductDetails from "./components/ProductDetails";
 import styled, { ThemeProvider } from "styled-components";
@@ -27,11 +25,10 @@ import Payment from "./components/Payment";
 import OrderComplete from "./components/OrderComplete";
 import Orders from "./components/Orders";
 const App: FC = () => {
-	const dispatch = useDispatch();
 	const theme = useSelector((state: State) => state.global.theme);
 	const cart = useSelector((state: State) => state.user.cart);
 	const shippingCost = useSelector((state: State) => state.user.shippingCost);
-	const { isLoading, isAuthenticated } = useAuth0();
+	const { isLoading } = useAuth0();
 
 	if (isLoading)
 		return (

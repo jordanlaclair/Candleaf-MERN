@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import StarIcon from "@material-ui/icons/Star";
 import StarHalfIcon from "@material-ui/icons/StarHalf";

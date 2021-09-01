@@ -40,7 +40,6 @@ const OrderComplete: FC = () => {
 	const userID = useSelector((state: State) => state.user._id);
 	const firstName = useSelector((state: State) => state.user.firstName);
 	const [newOrderNumber, setNewOrderNumber] = useState(0);
-	const candles = useSelector((state: State) => state.candles);
 
 	const shippingMethod = useSelector(
 		(state: State) => state.user.shippingMethod
