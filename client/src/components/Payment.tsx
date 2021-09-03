@@ -137,7 +137,15 @@ const Payment: FC = () => {
 	const handleCompleteOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const orderNumber = getRandomArbitrary(2000, 4000);
-		dispatch(addToOrders(cart, userID, orderNumber, shippingMethod));
+		dispatch(
+			addToOrders(
+				cart,
+				userID,
+				orderNumber,
+				shippingMethod,
+				Math.round((total + Number.EPSILON) * 100) / 100
+			)
+		);
 
 		history.replace("/checkout/success");
 	};

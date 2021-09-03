@@ -976,7 +976,8 @@ export const addToOrders =
 		userCart: CartsArray,
 		userID: string,
 		orderNumber: number,
-		shippingMethod: string
+		shippingMethod: string,
+		cartTotal: number
 	) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
@@ -1003,10 +1004,10 @@ export const addToOrders =
 				await productApi.purchaseCandle(id, quantity);
 			}
 
-			let totalCartPrice = 0;
+			/* let totalCartPrice = 0;
 			userCart.forEach((product) => {
 				totalCartPrice += product.totalPrice;
-			});
+			}); */
 
 			let currentDate = new Date()
 				.toLocaleTimeString("en-us", {
@@ -1022,7 +1023,7 @@ export const addToOrders =
 				data: userCart,
 				orderNumber,
 				purchasedOn: date,
-				total: totalCartPrice,
+				total: cartTotal,
 				shippingMethod,
 			};
 
