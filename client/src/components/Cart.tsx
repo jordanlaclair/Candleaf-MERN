@@ -1,6 +1,6 @@
 import { Button, makeStyles } from "@material-ui/core";
-import React, { FC, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { State } from "../store/reducers";
@@ -10,6 +10,7 @@ import CartLottie from "../assets/lotties/cart.json";
 import CartItem from "./CartItem";
 import Lottie from "react-lottie";
 import devices from "../styles/devices";
+import { v4 as uuidv4 } from "uuid";
 
 const Cart: FC = () => {
 	const history = useHistory();
@@ -17,18 +18,9 @@ const Cart: FC = () => {
 		history.push("/");
 	};
 
-	const dispatch = useDispatch();
 	const cart = useSelector((state: State) => state.user.cart);
-	const theme = useSelector((state: State) => state.global.theme);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
-	const CartLottieRef = useRef(null);
-	const getSubTotal = () => {
-		let subTotal = 0;
-		cart.forEach((product) => {
-			subTotal += product.totalPrice;
-		});
-		return Math.round(subTotal * 100) / 100;
-	};
+
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			backgroundColor: "#54AD1A",
@@ -53,20 +45,17 @@ const Cart: FC = () => {
 		<CheckoutWrapper>
 			<Title>Your Cart Items</Title>
 			<LottieWrapper>
-				<Lottie
-					ref={CartLottieRef}
-					options={defaultOptions}
-					isClickToPauseDisabled={true}
-				/>
+				<Lottie options={defaultOptions} isClickToPauseDisabled={true} />
 			</LottieWrapper>
 
-			{cart.length == 0 || cart[0].productName == "None" ? (
+			{cart.length === 0 || cart[0].productName === "None" ? (
 				<CartEmpty>Cart Empty!</CartEmpty>
 			) : (
 				<CartItemWrapper>
 					{cart.map((item) => {
 						return (
 							<CartItem
+								id={uuidv4()}
 								productId={item.productId}
 								productName={item.productName}
 								productWeight={item.productWeight}

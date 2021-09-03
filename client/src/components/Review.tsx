@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { skipPartiallyEmittedExpressions } from "typescript";
 import PropTypes from "prop-types";
 
 import Stars from "./Stars";

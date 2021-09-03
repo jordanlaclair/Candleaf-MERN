@@ -4,13 +4,8 @@ import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { Button, makeStyles, withStyles } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
-import {
-	CountryDropdown,
-	RegionDropdown,
-	CountryRegionData,
-} from "react-country-region-selector";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
-import { OutlinedInput } from "@material-ui/core";
 import { useHistory, withRouter } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
@@ -20,15 +15,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { State } from "../store/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
-import { ShippingMethod } from "../store/actions/usersActionCreator";
 import * as userAction from "../store/actions/usersActionCreator";
-import { updateUser } from "../apis/users";
 import { UserSubmitDetailsObject } from "../store/actions";
-import { updateShippingCost } from "../store/actions";
 import { FC } from "react";
 
 const Checkout: FC = () => {
-	const { user, isAuthenticated } = useAuth0();
+	const { user } = useAuth0();
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [couponCode, setCouponCode] = useState("");
@@ -38,7 +30,6 @@ const Checkout: FC = () => {
 	const address = useSelector((state: State) => state.user.address);
 	const email = useSelector((state: State) => state.user.email);
 	const postalCode = useSelector((state: State) => state.user.postalCode);
-	const shippingCost = useSelector((state: State) => state.user.shippingCost);
 	const [couponCount, setCouponCount] = useState(0);
 	const lastName = useSelector((state: State) => state.user.lastName);
 	const firstName = useSelector((state: State) => state.user.firstName);
@@ -48,13 +39,10 @@ const Checkout: FC = () => {
 	const userID = useSelector((state: State) => state.user._id);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const candles = useSelector((state: State) => state.candles);
-	const totalDiscounts = useSelector(
-		(state: State) => state.user.totalDiscounts
-	);
+
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
 	);
-	const total = useSelector((state: State) => state.user.total);
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
@@ -75,7 +63,7 @@ const Checkout: FC = () => {
 	};
 
 	useEffect(() => {
-		if (couponCount == 1) {
+		if (couponCount === 1) {
 			let discount =
 				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
 			dispatch(userAction.addCouponDiscount(discount, userID));
@@ -199,7 +187,7 @@ const Checkout: FC = () => {
 	const handleGetImageSrc = (id: string) => {
 		let result: string = "";
 		candles.forEach((candle) => {
-			if (candle._id == id) {
+			if (candle._id === id) {
 				result = candle.image;
 			}
 		});
@@ -558,7 +546,7 @@ const InputHeader = styled.h2``;
 export const InputField = styled.input<{ fieldType?: string }>`
 	padding: 15px;
 	outline: none;
-	width: ${(props) => (props.fieldType == "name" ? "50%" : "80%")};
+	width: ${(props) => (props.fieldType === "name" ? "50%" : "80%")};
 	border: 2.5px solid ${(props) => props.theme.brand};
 	font-family: "Poppins", sans-serif;
 	font-weight: bold;

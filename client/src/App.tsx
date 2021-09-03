@@ -38,7 +38,7 @@ const App: FC = () => {
 		);
 
 	return (
-		<ThemeProvider theme={theme == "light" ? lightTheme : darkTheme}>
+		<ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
 			<GlobalStyles />
 			<div className="App">
 				<Router>
@@ -62,14 +62,14 @@ const App: FC = () => {
 							exact={true}
 							path="/checkout"
 							component={Checkout}
-							isAuth={cart.length > 0 && cart[0].productName != "None"}
+							isAuth={cart.length > 0 && cart[0].productName !== "None"}
 						/>
 
 						<ProtectedRoute
 							exact={true}
 							path="/checkout/shipping"
 							component={Shipping}
-							isAuth={cart.length > 0 && cart[0].productName != "None"}
+							isAuth={cart.length > 0 && cart[0].productName !== "None"}
 						/>
 
 						<ProtectedRoute
@@ -78,8 +78,8 @@ const App: FC = () => {
 							component={Payment}
 							isAuth={
 								cart.length > 0 &&
-								cart[0].productName != "None" &&
-								shippingCost != 0
+								cart[0].productName !== "None" &&
+								shippingCost !== 0
 							}
 						/>
 						<Route exact path="/checkout/success">

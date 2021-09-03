@@ -3,7 +3,6 @@ import { Dispatch } from "redux";
 import { UserActions } from "./index";
 import * as api from "../../apis/users";
 import * as productApi from "../../apis/products";
-import { METHODS } from "http";
 
 interface UsersSchema {
 	firstName: string;
@@ -162,7 +161,7 @@ export const addToCart =
 			let exists = false;
 
 			//if cart is empty
-			if (cart.length == 0) {
+			if (cart.length === 0) {
 				let firstItem = {
 					productName: candleData.productName,
 					productId: candleData.productId,
@@ -200,8 +199,8 @@ export const addToCart =
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 			} else if (
 				cart.length > 0 &&
-				cart[0].productName == "None" &&
-				cart.length == 1
+				cart[0].productName === "None" &&
+				cart.length === 1
 			) {
 				cart[0].productName = candleData.productName;
 				cart[0].productId = candleData.productId;
@@ -248,7 +247,7 @@ export const addToCart =
 					}
 				}
 
-				if (exists == false) {
+				if (exists === false) {
 					let newProduct = {
 						productName: candleData.productName,
 						productId: candleData.productId,
@@ -324,14 +323,14 @@ export const removeFromCart =
 				newsLetterDiscount,
 			} = data;
 			for (const product of cart) {
-				if (product.productId == productID) {
+				if (product.productId === productID) {
 					cartTotal -= product.totalPrice;
 					cartWeight -= product.productWeight;
 					total -= product.totalPrice;
 				}
 			}
 			let filtered: CartsArray = cart.filter((product: CartSchema) => {
-				return product.productId != productID;
+				return product.productId !== productID;
 			});
 
 			const newData = {
@@ -396,7 +395,7 @@ export const lowerQuantity =
 			} = data;
 
 			for (var i in cart) {
-				if (cart[i].productId == productID) {
+				if (cart[i].productId === productID) {
 					if (cart[i].productQuantity > 1) {
 						cart[i].totalPrice -= cart[i].price;
 						cartTotal -= cart[i].price;
@@ -472,7 +471,7 @@ export const addSpecificAmount =
 			let hasProduct = cart.some(
 				(product: CartSchema) => product.productId === productData.productId
 			);
-			if (!hasProduct && cart[0].productName == "None") {
+			if (!hasProduct && cart[0].productName === "None") {
 				let newData = {
 					productName: productData.productName,
 					productId: productData.productId,
@@ -500,7 +499,7 @@ export const addSpecificAmount =
 				total += productData.price * quantity;
 			} else {
 				for (var i in cart) {
-					if (cart[i].productId == productData.productId) {
+					if (cart[i].productId === productData.productId) {
 						cartTotal += productData.price * quantity;
 						cartWeight += productData.productWeight * quantity;
 						total += productData.price * quantity;
@@ -623,11 +622,7 @@ export const removeCouponDiscount =
 				country,
 				region,
 				address,
-				couponDiscount,
 				city,
-				total,
-				totalDiscounts,
-				newsLetterDiscount,
 			} = data;
 
 			const newData = {
@@ -749,9 +744,6 @@ export const removeNewsLetterDiscount =
 				address,
 				city,
 				cartWeight,
-				total,
-				couponDiscount,
-				totalDiscounts,
 			} = data;
 			const newData = {
 				orders,
@@ -812,10 +804,8 @@ export const userSubmitDetails =
 				cartTotal,
 				shippingCost,
 				shippingMethod,
-				total,
 				couponDiscount,
 				newsLetterDiscount,
-				totalDiscounts,
 			} = data;
 
 			const newData = {

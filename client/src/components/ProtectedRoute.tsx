@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { FC } from "react";
 interface PropTypes {
 	isAuth: boolean;
 	component: any;

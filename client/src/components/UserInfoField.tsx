@@ -25,7 +25,7 @@ const UserInfoField: FC<PropTypes> = ({ fieldName, fieldData, shipping }) => {
 	};
 
 	const handleDefaultValue = () => {
-		if (shipping == true) {
+		if (shipping === true) {
 			return `${fieldData} Shipping`;
 		} else {
 			return fieldData;

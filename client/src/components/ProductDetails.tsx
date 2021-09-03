@@ -54,7 +54,7 @@ const ProductDetails: FC = () => {
 
 	useEffect(() => {
 		let ratingValue = Object.values(starState).filter((star) => {
-			return star == true;
+			return star === true;
 		});
 
 		setReviewRating(ratingValue.length);
@@ -251,7 +251,7 @@ const ProductDetails: FC = () => {
 	};
 
 	const handleStarsClicked = (starsClicked: number) => {
-		if (starsClicked == 1) {
+		if (starsClicked === 1) {
 			setStarState(() => {
 				return {
 					firstStar: true,
@@ -261,7 +261,7 @@ const ProductDetails: FC = () => {
 					fifthStar: false,
 				};
 			});
-		} else if (starsClicked == 2) {
+		} else if (starsClicked === 2) {
 			setStarState(() => {
 				return {
 					firstStar: true,
@@ -271,7 +271,7 @@ const ProductDetails: FC = () => {
 					fifthStar: false,
 				};
 			});
-		} else if (starsClicked == 3) {
+		} else if (starsClicked === 3) {
 			setStarState(() => {
 				return {
 					firstStar: true,
@@ -281,7 +281,7 @@ const ProductDetails: FC = () => {
 					fifthStar: false,
 				};
 			});
-		} else if (starsClicked == 4) {
+		} else if (starsClicked === 4) {
 			setStarState(() => {
 				return {
 					firstStar: true,
@@ -291,7 +291,7 @@ const ProductDetails: FC = () => {
 					fifthStar: false,
 				};
 			});
-		} else if (starsClicked == 5) {
+		} else if (starsClicked === 5) {
 			setStarState(() => {
 				return {
 					firstStar: true,
@@ -644,13 +644,13 @@ const ProductSpecsDetail = styled.div<ProductSpecsDetailsProps>`
 		align-items: flex-start;
 	}
 	${(props) =>
-		props.flex == "column" &&
+		props.flex === "column" &&
 		css`
 			flex-direction: column;
 			align-items: flex-start;
 		`}
 	${(props) =>
-		props.flex == "row" &&
+		props.flex === "row" &&
 		css`
 			flex-direction: row;
 			align-items: flex-end;
@@ -821,11 +821,11 @@ const ReviewSectionWrapper = styled.div`
 		margin-bottom: 11px;
 		border: 1px solid
 			${(props) =>
-				props.theme == lightTheme
+				props.theme === lightTheme
 					? props.theme.brand
 					: props.theme.colors.primary};
 		background-color: ${(props) =>
-			props.theme == lightTheme
+			props.theme === lightTheme
 				? props.theme.brand
 				: props.theme.colors.primary};
 		border-radius: 8px;

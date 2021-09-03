@@ -1,5 +1,5 @@
 import { ActionType } from "../actions/actionTypes";
-import { updateShippingCost, UserActions } from "../actions";
+import { UserActions } from "../actions";
 import { Reducer } from "redux";
 
 interface OrderData {

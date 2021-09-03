@@ -13,6 +13,7 @@ type PropTypes = {
 	totalPrice: number;
 	productWeight: number;
 	productQuantity: number;
+	id: string;
 	price: number;
 };
 interface ProductSchema {

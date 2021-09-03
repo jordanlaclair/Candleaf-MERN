@@ -11,11 +11,9 @@ import {
 	Header,
 	LogoWrapper,
 	TotalWrapper,
-	CouponWrapper,
 	ShippingText,
 	ImageWrapper,
 	CrumbWrapper,
-	InputField,
 	ProductsWrapper,
 	BreadCrumbs,
 	PastBreadCrumb,
@@ -23,8 +21,6 @@ import {
 	DetailsOuterWrapper,
 	HorizontalLine,
 	CurrentBreadCrumb,
-	LocationWrapper,
-	NextBreadCrumb,
 } from "./Checkout";
 import Product from "./Product";
 import DarkThemeUserLottie from "../assets/lotties/darkTheme/userIcon.json";
@@ -43,7 +39,6 @@ import { useState } from "react";
 import { lightTheme } from "../styles/Themes";
 import PersonIcon from "@material-ui/icons/Person";
 import { Button, makeStyles } from "@material-ui/core";
-import { configureStore } from "@reduxjs/toolkit";
 import { addToOrders } from "../store/actions";
 import devices from "../styles/devices";
 const Payment: FC = () => {
@@ -80,7 +75,7 @@ const Payment: FC = () => {
 		loop: false,
 		autoplay: true,
 		animationData:
-			theme == "light" ? LightThemeUserLottie : DarkThemeUserLottie,
+			theme === "light" ? LightThemeUserLottie : DarkThemeUserLottie,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -89,7 +84,7 @@ const Payment: FC = () => {
 		loop: false,
 		autoplay: true,
 		animationData:
-			theme == "light" ? LightThemeCardLottie : DarkThemeCardLottie,
+			theme === "light" ? LightThemeCardLottie : DarkThemeCardLottie,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -110,7 +105,7 @@ const Payment: FC = () => {
 	const handleGetImageSrc = (id: string) => {
 		let result: string = "";
 		candles.forEach((candle) => {
-			if (candle._id == id) {
+			if (candle._id === id) {
 				result = candle.image;
 			}
 		});
@@ -120,11 +115,11 @@ const Payment: FC = () => {
 
 	const formatAddress = () => {
 		if (
-			address != "" &&
-			postalCode != 0 &&
-			city != "" &&
-			region != null &&
-			region != ""
+			address !== "" &&
+			postalCode !== 0 &&
+			city !== "" &&
+			region !== null &&
+			region !== ""
 		) {
 			return `${address} ${city}, ${region}, ${postalCode}`;
 		} else {
@@ -394,7 +389,7 @@ export const UserInfoWrapper = styled.div`
 	padding-top: 0;
 	position: relative;
 	border: 3px solid
-		${(props) => (props.theme == lightTheme ? props.theme.brand : "#383838")};
+		${(props) => (props.theme === lightTheme ? props.theme.brand : "#383838")};
 	border-radius: 8px;
 	overflow: visible;
 	margin-bottom: 20px;
@@ -409,9 +404,9 @@ export const UserInfoHeader = styled.div`
 	align-items: center;
 	align-self: center;
 	color: ${(props) =>
-		props.theme == lightTheme ? props.theme.text : props.theme.brand};
+		props.theme === lightTheme ? props.theme.text : props.theme.brand};
 	background: ${(props) =>
-		props.theme == lightTheme ? props.theme.brand : "#383838"};
+		props.theme === lightTheme ? props.theme.brand : "#383838"};
 	margin-bottom: 15px;
 `;
 

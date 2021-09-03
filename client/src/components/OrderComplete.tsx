@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useRef } from "react";
+import { FC, useEffect } from "react";
 import { useHistory, withRouter } from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
-import PaymentIcon from "@material-ui/icons/Payment";
 import {
 	HeaderWrapper,
 	CheckoutWrapper,
@@ -11,17 +10,10 @@ import {
 	LogoWrapper,
 	ImageWrapper,
 	CrumbWrapper,
-	ProductsWrapper,
 	BreadCrumbs,
 	PastBreadCrumb,
-	DetailsWrapper,
-	DetailsOuterWrapper,
-	HorizontalLine,
 	CurrentBreadCrumb,
-	LocationWrapper,
-	NextBreadCrumb,
 } from "./Checkout";
-import Product from "./Product";
 import { ButtonWrapper } from "./Shipping";
 import CheckMarkLottie from "../assets/lotties/checkmark.json";
 import { useSelector } from "react-redux";
@@ -40,12 +32,6 @@ const OrderComplete: FC = () => {
 	const userID = useSelector((state: State) => state.user._id);
 	const firstName = useSelector((state: State) => state.user.firstName);
 	const [newOrderNumber, setNewOrderNumber] = useState(0);
-
-	const shippingMethod = useSelector(
-		(state: State) => state.user.shippingMethod
-	);
-
-	const [checkMarkIsStopped, setCheckMarkIsStopped] = useState(false);
 
 	const fetchOrderNumber = async () => {
 		setTimeout(async () => {
@@ -77,15 +63,12 @@ const OrderComplete: FC = () => {
 		},
 	}));
 	const classes = useStyles();
-	const roundToNearestTenths = (value: number) => {
-		return `$${Math.round((value + Number.EPSILON) * 100) / 100}`;
-	};
 
 	const handleBackToHome = () => {
 		history.push("/");
 	};
 
-	if (newOrderNumber == 0) {
+	if (newOrderNumber === 0) {
 		return (
 			<SpinnerWrapper>
 				<Spinner color="green" name="ball-grid-beat" fadeIn="none" />
@@ -126,7 +109,6 @@ const OrderComplete: FC = () => {
 				<LottieWrapper>
 					<Lottie
 						options={checkMarkLottieOptions}
-						isStopped={checkMarkIsStopped}
 						isClickToPauseDisabled={true}
 					/>
 				</LottieWrapper>
@@ -156,12 +138,6 @@ const PaymentWrapper = styled(CheckoutWrapper)`
 		padding-left: 0px;
 		padding-right: 0px;
 	}
-`;
-
-const HorizontalLineUserInfo = styled(HorizontalLine)`
-	border-color: ${(props) => props.theme.brand};
-	width: 100%;
-	margin: 15px 0;
 `;
 
 const LottieWrapper = styled.div`

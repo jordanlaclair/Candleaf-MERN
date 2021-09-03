@@ -116,7 +116,7 @@ export default Product;
 const ProductWrapper = styled.div<{ showQuantity?: boolean }>`
 	box-shadow: 0px 2px 15px 2px gray;
 
-	max-width: ${(props) => (props.showQuantity == true ? "210px" : "unset")};
+	max-width: ${(props) => (props.showQuantity === true ? "210px" : "unset")};
 	border-radius: 5px;
 	padding: 20px;
 	background-color: ${(props) => props.theme.colors.secondary};
@@ -145,7 +145,7 @@ const ProductQuanityWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: ${(props) => (props.theme == lightTheme ? "white" : "black")};
+	color: ${(props) => (props.theme === lightTheme ? "white" : "black")};
 	border-radius: 50%;
 	background: ${(props) => props.theme.brand};
 `;

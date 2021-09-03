@@ -142,7 +142,7 @@ const ForeGroundWrapper = styled.div`
 	padding: 20px;
 
 	background-color: ${(props) =>
-		props.theme == lightTheme
+		props.theme === lightTheme
 			? "rgba(250, 250, 250, 0.3)"
 			: "rgba(79, 79, 79, 0.7)"};
 	backdrop-filter: blur(20px);

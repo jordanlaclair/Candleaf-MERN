@@ -18,7 +18,6 @@ import { useEffect } from "react";
 import { FC } from "react";
 
 import { signOut } from "../store/actions/usersActionCreator";
-import { LaptopWindowsOutlined } from "@material-ui/icons";
 
 const Header: FC = () => {
 	interface NewUserSchema {
@@ -93,7 +92,7 @@ const Header: FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (isAuthenticated && firstName == "Guest") {
+		if (isAuthenticated && firstName === "Guest") {
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
 			let newUser: NewUserSchema = {
 				firstName: user?.given_name!,

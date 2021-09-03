@@ -29,7 +29,7 @@ const Orders = () => {
 	const handleGetImageSrc = (id: string) => {
 		let result: string = "";
 		candles.forEach((candle) => {
-			if (candle._id == id) {
+			if (candle._id === id) {
 				result = candle.image;
 			}
 		});
@@ -43,7 +43,7 @@ const Orders = () => {
 		history.push("/");
 	};
 
-	if (orders.length == 0) {
+	if (orders.length === 0) {
 		return (
 			<NoOrdersWrapper>
 				<h1>Oh no! You haven't ordered yet!</h1>

@@ -44,7 +44,6 @@ import { ShippingMethod } from "../store/actions/usersActionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import { FC } from "react";
-import { lightTheme } from "../styles/Themes";
 import devices from "../styles/devices";
 
 const Shipping: FC = () => {
@@ -88,7 +87,7 @@ const Shipping: FC = () => {
 	const planeLottieOptions = {
 		loop: false,
 		autoplay: true,
-		animationData: theme == "light" ? LightModePlane : DarkModePlane,
+		animationData: theme === "light" ? LightModePlane : DarkModePlane,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -97,7 +96,7 @@ const Shipping: FC = () => {
 	const truckLottieOptions = {
 		loop: false,
 		autoplay: true,
-		animationData: theme == "light" ? LightModeTruck : DarkModeTruck,
+		animationData: theme === "light" ? LightModeTruck : DarkModeTruck,
 		rendererSettings: {
 			preserveAspectRatio: "xMidYMid slice",
 		},
@@ -142,11 +141,11 @@ const Shipping: FC = () => {
 
 	const formatAddress = () => {
 		if (
-			address != "" &&
-			postalCode != 0 &&
-			city != "" &&
-			region != null &&
-			region != ""
+			address !== "" &&
+			postalCode !== 0 &&
+			city !== "" &&
+			region !== null &&
+			region !== ""
 		) {
 			return `${address} ${city}, ${region}, ${postalCode}`;
 		} else {
@@ -161,7 +160,7 @@ const Shipping: FC = () => {
 	const handleGetImageSrc = (id: string) => {
 		let result: string = "";
 		candles.forEach((candle) => {
-			if (candle._id == id) {
+			if (candle._id === id) {
 				result = candle.image;
 			}
 		});
@@ -368,7 +367,7 @@ const Shipping: FC = () => {
 					<DetailsWrapper>
 						<h3>Shipping</h3>
 						<ShippingText>
-							{shippingCost === 0 || shippingMethod == ""
+							{shippingCost === 0 || shippingMethod === ""
 								? "Please select shipping"
 								: returnShipping(shippingCost)}
 						</ShippingText>
