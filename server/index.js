@@ -20,7 +20,7 @@ app.use("/users", UserRoutes);
 app.use("/reviews", ReviewRoutes);
 
 mongoose
-	.connect(process.env.CONNECTION_URL, {
+	.connect(process.env.MONGODB_URI, {
 		useUnifiedTopology: true,
 		useNewUrlParser: true,
 	})
