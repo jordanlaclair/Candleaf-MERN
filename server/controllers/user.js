@@ -53,7 +53,7 @@ export const createUser = async (req, res) => {
 	} = req.body;
 
 	try {
-		const doesUserExist = await Users.exists({ auth0ID: auth0ID });
+		const doesUserExist = await Users.exists({ auth0ID: auth0ID, _id: _id });
 		if (doesUserExist) {
 			await Users.findOne({ auth0ID: auth0ID, _id: _id }, (err, user) => {
 				res.status(201).json(user);

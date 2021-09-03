@@ -17,6 +17,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { FC } from "react";
 import { signOut } from "../store/actions/usersActionCreator";
+import { v4 as uuidv4 } from "uuid";
 
 const Header: FC = () => {
 	interface NewUserSchema {
@@ -103,7 +104,7 @@ const Header: FC = () => {
 			let newUser: NewUserSchema = {
 				firstName: "Guest",
 				lastName: "",
-				auth0ID: "",
+				auth0ID: uuidv4(),
 			};
 			dispatch(action.createUser(newUser));
 		}
