@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { createReview, fetchReviewsFromCandle } from "../apis/review";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
 import * as api from "../apis/products";
 import { Button, makeStyles } from "@material-ui/core";
@@ -28,6 +28,7 @@ import devices from "../styles/devices";
 const ProductDetails: FC = () => {
 	const history = useHistory();
 	const [productQuantity, setProductQuantity] = useState(1);
+
 	const [productPurchasedBefore, setProductPurchasedBefore] = useState(false);
 	const [reviewTitle, setReviewTitle] = useState("");
 	const [reviewDescription, setReviewDescription] = useState("");
@@ -399,20 +400,22 @@ const ProductDetails: FC = () => {
 							</PurchaseOption>
 						</ProductOptionsWrapper>
 						<ProductSpecs>
-							<ProductSpecsDetail>
-								<h3>Wax: </h3> &nbsp; <h4>{candleData.wax}</h4>
+							<ProductSpecsDetail flex="row">
+								<h3>Wax: </h3> <h4>{candleData.wax}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<h3>Fragrance: </h3> <h4>{candleData.fragrance}</h4>
+							<ProductSpecsDetail flex="column">
+								<h3>Fragrance: </h3>
+								<h4>{candleData.fragrance}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<h3>Burning Time: </h3> <h4>{candleData.burningTime}</h4>
+							<ProductSpecsDetail flex="column">
+								<h3>Burning Time: </h3>
+								<h4>{candleData.burningTime}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<h3>Dimensions: </h3> &nbsp; <h4>{candleData.dimensions}</h4>
+							<ProductSpecsDetail flex="row">
+								<h3>Dimensions: </h3> <h4>{candleData.dimensions}</h4>
 							</ProductSpecsDetail>
-							<ProductSpecsDetail>
-								<h3>Weight: </h3> &nbsp; <h4>{candleData.weight}</h4>
+							<ProductSpecsDetail flex="row">
+								<h3>Weight: </h3> <h4>{candleData.weight}</h4>
 							</ProductSpecsDetail>
 						</ProductSpecs>
 					</ProductDetailsRight>
@@ -573,7 +576,8 @@ const ProductDetails: FC = () => {
 			{candleReviews.length > 0 ? (
 				<Reviews
 					reviewsArray={candleReviews}
-					subtitle={`Reviews for ${candleData.title}`}
+					subtitle={`${candleReviews.length} global rating(s) for ${candleData.title}`}
+					showAverageRatings={true}
 					showDescription={true}
 				/>
 			) : null}
@@ -623,13 +627,18 @@ const ProductSpecs = styled.div`
 	background-color: ${(props) => props.theme.colors.secondary};
 	align-self: center;
 `;
-const ProductSpecsDetail = styled.div`
+interface ProductSpecsDetailsProps {
+	flex: string;
+}
+const ProductSpecsDetail = styled.div<ProductSpecsDetailsProps>`
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
 	text-align: start;
+
 	> h3 {
 		align-self: flex-start;
+		white-space: pre;
 	}
 	> h4 {
 		opacity: 0.7;
@@ -638,6 +647,18 @@ const ProductSpecsDetail = styled.div`
 		flex-direction: column;
 		align-items: flex-start;
 	}
+	${(props) =>
+		props.flex == "column" &&
+		css`
+			flex-direction: column;
+			align-items: flex-start;
+		`}
+	${(props) =>
+		props.flex == "row" &&
+		css`
+			flex-direction: row;
+			align-items: flex-end;
+		`}
 `;
 
 const ProductDetailsOuterWrapper = styled.div`
@@ -719,6 +740,10 @@ const ProductSale = styled.h2`
 		font-size: 2.5rem;
 		margin-left: 5px;
 	}
+	@media ${devices.laptopM} {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 const QuantityBottomWrapper = styled.div`
 	display: flex;
@@ -750,7 +775,9 @@ const ReviewsWrapper = styled.form`
 	margin-bottom: 2rem;
 	@media ${devices.mobileXL} {
 		font-size: 14px;
-		padding: 20px;
+		padding: 30px;
+	}
+	@media ${devices.tabletL} {
 		width: 70%;
 	}
 `;

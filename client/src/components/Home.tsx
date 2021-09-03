@@ -84,6 +84,8 @@ const Home: FC = () => {
 			{recentReviews.length > 0 ? (
 				<Reviews
 					reviewsArray={recentReviews}
+					showAverageRatings={false}
+					showDescription={false}
 					subtitle={"Some recent quotes from our happy customers!"}
 				/>
 			) : null}

@@ -122,7 +122,7 @@ const OrdersInnerWrapper = styled.div`
 	padding: 50px 0;
 	flex-direction: column;
 	justify-content: space-between;
-	align-items: flex-start;
+	align-items: center;
 	min-height: 70vh;
 	width: 100%;
 	background-color: ${(props) => props.theme.colors.secondary};
@@ -141,22 +141,24 @@ const OrdersHeading = styled.div`
 
 const OrdersGridWrapper = styled.div`
 	width: 70%;
-	padding: 30px 50px;
+	padding: 30px 0px;
 	display: grid;
-	justify-items: center;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	grid-gap: 2rem;
 	@media ${devices.mobileM} {
 		padding: 30px 30px;
 	}
+	@media ${devices.tablet} {
+		justify-items: center;
+	}
 `;
 
 const HorizontalLineOrders = styled(HorizontalLine)`
-	width: 95%;
+	width: 100%;
 	align-self: center;
 `;
 const OuterOrderGridWrapper = styled.div`
-	width: 100%;
+	width: 90%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -191,7 +193,6 @@ const IconWrapper = styled.div`
 `;
 const OrderDetailsWrapper = styled.div`
 	width: 90%;
-	align-self: center;
 	display: flex;
 	flex-direction: column;
 	padding: 15px 0;

@@ -1,6 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
+import devices from "../styles/devices";
 import Review from "./Review";
+import Stars from "./Stars";
 
 interface ReviewTypes {
 	rating: number;
@@ -13,7 +15,8 @@ interface ReviewTypes {
 interface ReviewsPropTypes {
 	subtitle?: string;
 	reviewsArray: ReviewsArray;
-	showDescription?: boolean;
+	showAverageRatings: boolean;
+	showDescription: boolean;
 }
 
 type ReviewsArray = Array<ReviewTypes>;
@@ -21,13 +24,29 @@ const Reviews: FC<ReviewsPropTypes> = ({
 	reviewsArray,
 	subtitle,
 	showDescription,
+	showAverageRatings,
 }) => {
+	const [averageRating, setAverageRating] = useState(5);
+	const calculateAverageRating = () => {
+		let totalRatings = 0;
+		for (const product of reviewsArray) {
+			totalRatings += product.rating;
+		}
+		setAverageRating(totalRatings / reviewsArray.length);
+	};
+	useEffect(() => {
+		calculateAverageRating();
+	}, []);
 	return (
 		<ReviewsWrapper>
 			<Header>
 				<h1>Reviews</h1>
 				<h3>{subtitle}</h3>
 			</Header>
+			{showAverageRatings ? (
+				<Stars rating={averageRating} showAverageRating={true} />
+			) : null}
+
 			<HorizontalLine />
 			<GridWrapper>
 				{reviewsArray.map((review) => {
@@ -57,6 +76,9 @@ const ReviewsWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	@media ${devices.mobileXL} {
+		font-size: 14px;
+	}
 `;
 const Header = styled.div`
 	padding: 10px;
