@@ -27,7 +27,7 @@ export const getReview = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const review = await Review.findById(id, () => {
-			console.log("found by id");
+			//console.log("found by id");
 		});
 		res.status(200).json(review);
 	} catch (error) {

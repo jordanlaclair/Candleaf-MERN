@@ -207,10 +207,6 @@ const ProductDetails: FC = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		console.log(productPurchasedBefore);
-	}, [productPurchasedBefore]);
-
 	const [purchase, setPurchase] = useState("One time purchase");
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

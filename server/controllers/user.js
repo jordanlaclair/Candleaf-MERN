@@ -18,7 +18,7 @@ export const getUser = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const user = await Users.findById(id, () => {
-			console.log("found user by id");
+			//console.log("found user by id");
 		});
 		res.status(200).json(user);
 	} catch (error) {
@@ -123,7 +123,7 @@ export const updateUser = async (req, res) => {
 		totalDiscounts,
 		newsLetterDiscount,
 	} = req.body;
-	console.log(city);
+
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No post with id: ${id}`);
 

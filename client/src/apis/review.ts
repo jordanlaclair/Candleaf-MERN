@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/reviews";
+const url = "https://candleaf-mern.herokuapp.com/reviews";
 
 export const fetchReviews = () => axios.get(url);
 

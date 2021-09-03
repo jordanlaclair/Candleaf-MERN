@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/users";
+const url = "https://candleaf-mern.herokuapp.com/users";
 
 export const fetchUsers = () => axios.get(url);
 export const fetchUser = (id: string) => axios.get(`${url}/${id}`);

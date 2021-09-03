@@ -50,7 +50,6 @@ const Product: FC<PropTypes> = ({
 	const history = useHistory();
 	const handleClick = (id: string) => {
 		history.push(`/products/candles/${id}`);
-		console.log("hi");
 	};
 
 	const addToCart = (

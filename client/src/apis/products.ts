@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/products";
+const url = "https://candleaf-mern.herokuapp.com/products";
 
 export const fetchCandles = () => axios.get(`${url}/candles`);
 

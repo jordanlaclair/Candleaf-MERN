@@ -70,7 +70,6 @@ const Header: FC = () => {
 		//active link
 		const navLink = document.querySelectorAll(".nav__link");
 		navLink.forEach((n) => n.classList.remove("active"));
-		console.log(this);
 		this.classList.add("active");
 
 		//remove menu

@@ -17,7 +17,7 @@ export const getCandle = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const post = await Candle.findById(id, () => {
-			console.log("found by id");
+			//console.log("found by id");
 		});
 		res.status(200).json(post);
 	} catch (error) {

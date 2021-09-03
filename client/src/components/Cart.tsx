@@ -48,9 +48,7 @@ const Cart: FC = () => {
 		history.push("/checkout");
 	};
 	const classes = useStyles();
-	useEffect(() => {
-		console.log(CartLottieRef.current);
-	}, []);
+
 	return (
 		<CheckoutWrapper>
 			<Title>Your Cart Items</Title>

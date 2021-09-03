@@ -41,14 +41,9 @@ const Home: FC = () => {
 		//only show the three most recent reviews
 		if (data.length > 2) {
 			data = data.slice(data.length - 3);
-			//console.log(data);
 			setRecentReviews(data);
 		}
 	};
-
-	useEffect(() => {
-		console.log(recentReviews);
-	}, [recentReviews]);
 
 	useEffect(() => {
 		fetchRecentReviews();
