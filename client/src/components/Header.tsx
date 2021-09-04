@@ -477,7 +477,7 @@ const Status = styled.h3`
 
 const UserProfilePicture = styled.img`
 	border-radius: 50%;
-	width: 35px;
+	max-width: 35px;
 	height: auto;
 `;
 
