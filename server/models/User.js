@@ -49,6 +49,7 @@ const userSchema = mongoose.Schema({
 	address: String,
 	postalCode: Number,
 	city: String,
+	guestID: String,
 	country: String,
 	region: String,
 	email: String,
@@ -83,7 +84,7 @@ const userSchema = mongoose.Schema({
 		default: new Date(),
 	},
 	auth0ID: {
-		default: "GuestID",
+		default: "",
 		type: String,
 	},
 	cart: [

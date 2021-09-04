@@ -1,6 +1,7 @@
 import { ActionType } from "../actions/actionTypes";
 import { UserActions } from "../actions";
 import { Reducer } from "redux";
+import { v4 as uuidv4 } from "uuid";
 
 interface OrderData {
 	productName: string;
@@ -32,6 +33,7 @@ interface CartSchema {
 interface UserSchema {
 	firstName: string;
 	lastName: string;
+	guestID: string;
 	auth0ID: string;
 	couponDiscount: number;
 	newsLetterDiscount: number;
@@ -59,10 +61,11 @@ type OrdersArray = Array<OrderSchema>;
 let initialState: UserSchema = {
 	firstName: "Guest",
 	lastName: "",
-	auth0ID: "GuestID",
+	auth0ID: "",
 	orders: [],
 	couponDiscount: 0,
 	email: "",
+	guestID: uuidv4(),
 	address: "",
 	city: "",
 	postalCode: 0,

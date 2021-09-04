@@ -146,6 +146,7 @@ interface UsersSchema {
 	total: number;
 	email: string;
 	address: string;
+	guestID: string;
 	createdAt: string;
 	city: string;
 	postalCode: number;

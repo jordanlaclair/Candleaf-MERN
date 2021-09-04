@@ -8,6 +8,7 @@ interface UsersSchema {
 	firstName: string;
 	lastName: string;
 	auth0ID: string;
+	guestID: string;
 	couponDiscount: number;
 	newsLetterDiscount: number;
 	totalDiscounts: number;
@@ -32,12 +33,6 @@ export enum ShippingMethod {
 	STANDARD = "STANDARD",
 	EXPEDITED = "EXPEDITED",
 	NONE = "NONE",
-}
-
-interface NewUserSchema {
-	firstName: string;
-	lastName: string;
-	auth0ID: string;
 }
 
 interface CartSchema {
@@ -106,8 +101,21 @@ export const getUser =
 		}
 	};
 
+interface Auth0Schema {
+	firstName: string;
+	lastName: string;
+	auth0ID: string;
+}
+
+interface GuestUserSchema {
+	firstName: string;
+	lastName: string;
+	guestID: string;
+}
+
 export const createUser =
-	(post: NewUserSchema) => async (dispatch: Dispatch<UserActions>) => {
+	(post: Auth0Schema | GuestUserSchema) =>
+	async (dispatch: Dispatch<UserActions>) => {
 		try {
 			const { data } = await api.createUser(post);
 			dispatch({ type: ActionType.CREATE_USER, payload: data });
@@ -142,6 +150,7 @@ export const addToCart =
 				createdAt,
 				auth0ID,
 				_id,
+				guestID,
 				cartTotal,
 				email,
 				postalCode,
@@ -176,6 +185,7 @@ export const addToCart =
 					cart,
 					firstName,
 					lastName,
+					guestID,
 					createdAt,
 					auth0ID,
 					_id,
@@ -214,6 +224,7 @@ export const addToCart =
 					cart,
 					firstName,
 					lastName,
+					guestID,
 					createdAt,
 					shippingMethod,
 					auth0ID,
@@ -266,6 +277,7 @@ export const addToCart =
 					orders,
 					cart,
 					firstName,
+					guestID,
 					lastName,
 					createdAt,
 					auth0ID,
@@ -304,6 +316,7 @@ export const removeFromCart =
 				cart,
 				firstName,
 				lastName,
+				guestID,
 				createdAt,
 				auth0ID,
 				_id,
@@ -341,6 +354,7 @@ export const removeFromCart =
 				createdAt,
 				auth0ID,
 				_id,
+				guestID,
 				cartTotal,
 				email,
 				postalCode,
@@ -376,6 +390,7 @@ export const lowerQuantity =
 				firstName,
 				lastName,
 				createdAt,
+				guestID,
 				auth0ID,
 				_id,
 				cartTotal,
@@ -415,6 +430,7 @@ export const lowerQuantity =
 				createdAt,
 				auth0ID,
 				_id,
+				guestID,
 				cartTotal,
 				email,
 				postalCode,
@@ -449,6 +465,7 @@ export const addSpecificAmount =
 				cart,
 				firstName,
 				lastName,
+				guestID,
 				createdAt,
 				auth0ID,
 				_id,
@@ -519,6 +536,7 @@ export const addSpecificAmount =
 				auth0ID,
 				_id,
 				cartTotal,
+				guestID,
 				email,
 				postalCode,
 				shippingCost,
@@ -559,6 +577,7 @@ export const addCouponDiscount =
 				postalCode,
 				cartWeight,
 				shippingCost,
+				guestID,
 				shippingMethod,
 				country,
 				region,
@@ -577,6 +596,7 @@ export const addCouponDiscount =
 				auth0ID,
 				_id,
 				cartTotal,
+				guestID,
 				email,
 				postalCode,
 				cartWeight,
@@ -616,6 +636,7 @@ export const removeCouponDiscount =
 				cartTotal,
 				email,
 				postalCode,
+				guestID,
 				cartWeight,
 				shippingCost,
 				shippingMethod,
@@ -631,6 +652,7 @@ export const removeCouponDiscount =
 				firstName,
 				lastName,
 				createdAt,
+				guestID,
 				auth0ID,
 				_id,
 				cartTotal,
@@ -669,6 +691,7 @@ export const addNewsLetterDiscount =
 				firstName,
 				lastName,
 				createdAt,
+				guestID,
 				auth0ID,
 				_id,
 				cartTotal,
@@ -696,6 +719,7 @@ export const addNewsLetterDiscount =
 				_id,
 				cartTotal,
 				email,
+				guestID,
 				postalCode,
 				shippingCost,
 				shippingMethod,
@@ -738,6 +762,7 @@ export const removeNewsLetterDiscount =
 				email,
 				postalCode,
 				shippingCost,
+				guestID,
 				shippingMethod,
 				country,
 				region,
@@ -753,6 +778,7 @@ export const removeNewsLetterDiscount =
 				createdAt,
 				auth0ID,
 				_id,
+				guestID,
 				cartTotal,
 				email,
 				postalCode,
@@ -801,6 +827,7 @@ export const userSubmitDetails =
 				cartWeight,
 				auth0ID,
 				_id,
+				guestID,
 				cartTotal,
 				shippingCost,
 				shippingMethod,
@@ -817,6 +844,7 @@ export const userSubmitDetails =
 				auth0ID,
 				_id,
 				cartTotal,
+				guestID,
 				shippingMethod,
 				email: userEmail,
 				postalCode: userPostalCode,
@@ -892,6 +920,7 @@ export const updateShippingCost =
 				auth0ID,
 				_id,
 				cartTotal,
+				guestID,
 				email,
 				postalCode,
 				shippingMethod,
@@ -945,6 +974,7 @@ export const updateShippingCost =
 				lastName,
 				cartWeight,
 				createdAt,
+				guestID,
 				auth0ID,
 				_id,
 				shippingMethod,
@@ -989,6 +1019,7 @@ export const addToOrders =
 				lastName,
 				createdAt,
 				auth0ID,
+				guestID,
 				_id,
 				email,
 				postalCode,
@@ -1037,6 +1068,7 @@ export const addToOrders =
 				auth0ID,
 				_id,
 				cartTotal: 0,
+				guestID,
 				email,
 				postalCode,
 				shippingMethod: "",

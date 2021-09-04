@@ -17,18 +17,24 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { FC } from "react";
 import { signOut } from "../store/actions/usersActionCreator";
-import { v4 as uuidv4 } from "uuid";
 
 const Header: FC = () => {
-	interface NewUserSchema {
+	interface Auth0Schema {
 		firstName: string;
 		lastName: string;
 		auth0ID: string;
 	}
 
+	interface GuestUserSchema {
+		firstName: string;
+		lastName: string;
+		guestID: string;
+	}
+
 	const { loginWithRedirect } = useAuth0();
 	const { logout } = useAuth0();
 	const firstName = useSelector((state: State) => state.user.firstName);
+	const guestID = useSelector((state: State) => state.user.guestID);
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -94,17 +100,17 @@ const Header: FC = () => {
 	useEffect(() => {
 		if (isAuthenticated && firstName === "Guest") {
 			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
-			let newUser: NewUserSchema = {
+			let newUser: Auth0Schema = {
 				firstName: user?.given_name!,
 				lastName: user?.family_name!,
 				auth0ID: user?.sub!,
 			};
 			dispatch(action.createUser(newUser));
 		} else if (!isAuthenticated) {
-			let newUser: NewUserSchema = {
+			let newUser: GuestUserSchema = {
 				firstName: "Guest",
 				lastName: "",
-				auth0ID: uuidv4(),
+				guestID,
 			};
 			dispatch(action.createUser(newUser));
 		}

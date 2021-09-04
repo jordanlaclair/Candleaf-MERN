@@ -34,6 +34,7 @@ export const createUser = async (req, res) => {
 		createdAt,
 		auth0ID,
 		_id,
+		guestID,
 		firstName,
 		lastName,
 		country,
@@ -53,9 +54,14 @@ export const createUser = async (req, res) => {
 	} = req.body;
 
 	try {
-		const doesUserExist = await Users.exists({ auth0ID: auth0ID, _id: _id });
-		if (doesUserExist) {
-			await Users.findOne({ auth0ID: auth0ID, _id: _id }, (err, user) => {
+		const guestExists = await Users.exists({ guestID: guestID });
+		const auth0Exists = await Users.exists({ auth0ID: auth0ID });
+		if (auth0Exists) {
+			await Users.findOne({ auth0ID: auth0ID }, (err, user) => {
+				res.status(201).json(user);
+			});
+		} else if (guestExists) {
+			await Users.findOne({ guestID: guestID }, (err, user) => {
 				res.status(201).json(user);
 			});
 		} else {
@@ -70,6 +76,7 @@ export const createUser = async (req, res) => {
 				createdAt,
 				auth0ID,
 				firstName,
+				guestID,
 				lastName,
 				_id,
 				cartTotal,
@@ -107,6 +114,7 @@ export const updateUser = async (req, res) => {
 		auth0ID,
 		_id,
 		cartTotal,
+		guestID,
 		email,
 		postalCode,
 		cartWeight,
@@ -137,6 +145,7 @@ export const updateUser = async (req, res) => {
 		_id,
 		cartTotal,
 		email,
+		guestID,
 		cartWeight,
 		postalCode,
 		shippingCost,
