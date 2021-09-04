@@ -294,7 +294,7 @@ const HeaderLeft = styled.div`
 `;
 const UserStatus = styled.div`
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	position: relative;
 	cursor: pointer;
@@ -472,6 +472,7 @@ const Bar = styled.div`
 
 const Status = styled.h3`
 	cursor: pointer;
+	padding-right: 15px;
 	margin-right: 20px;
 	white-space: nowrap;
 `;
