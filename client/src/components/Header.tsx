@@ -118,7 +118,7 @@ const Header: FC = () => {
 		if (user == undefined) {
 			loginWithRedirect();
 		} else {
-			logout();
+			logout({ returnTo: window.location.origin });
 		}
 	};
 
