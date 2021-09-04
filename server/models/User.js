@@ -49,7 +49,10 @@ const userSchema = mongoose.Schema({
 	address: String,
 	postalCode: Number,
 	city: String,
-	guestID: String,
+	guestID: {
+		default: "",
+		type: String,
+	},
 	country: String,
 	region: String,
 	email: String,
@@ -74,7 +77,6 @@ const userSchema = mongoose.Schema({
 		type: Number,
 	},
 	shippingMethod: String,
-
 	newsLetterDiscount: {
 		default: 0,
 		type: Number,
