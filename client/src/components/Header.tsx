@@ -108,7 +108,7 @@ const Header: FC = () => {
 				firstName: "Guest",
 				lastName: "",
 				auth0ID: "",
-				guestID: guestID.length > 1 ? guestID : uuidv4(),
+				guestID: guestID && guestID.length > 1 ? guestID : uuidv4(),
 			};
 			dispatch(action.createUser(newUser));
 		}
