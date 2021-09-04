@@ -54,19 +54,52 @@ export const createUser = async (req, res) => {
 	} = req.body;
 
 	try {
-		const guestExists = await Users.exists({ guestID: guestID });
 		const auth0Exists = await Users.exists({ auth0ID: auth0ID });
-		if (auth0Exists) {
+
+		const guestExists = await Users.exists({ guestID: guestID });
+
+		//when first login
+
+		if (auth0Exists && auth0ID !== "") {
 			await Users.findOne({ auth0ID: auth0ID }, (err, user) => {
 				res.status(201).json(user);
 			});
+		} else if (!auth0Exists && auth0Exists !== "") {
+			cart = {};
+
+			const newData = {
+				orders,
+				cart,
+				name,
+				createdAt,
+				auth0ID,
+				firstName,
+				guestID,
+				lastName,
+				_id,
+				cartTotal,
+				email,
+				cartWeight,
+				postalCode,
+				shippingCost,
+				shippingMethod,
+				address,
+				city,
+				total,
+				couponDiscount,
+				country,
+				region,
+				totalDiscounts,
+				newsLetterDiscount,
+			};
+			const newUser = new Users(newData);
+			await newUser.save();
+			res.status(201).json(newUser);
 		} else if (guestExists) {
 			await Users.findOne({ guestID: guestID }, (err, user) => {
 				res.status(201).json(user);
 			});
 		} else {
-			//handle subdocuments (set subdocument path to a non-nullish value)
-
 			cart = {};
 
 			const newData = {

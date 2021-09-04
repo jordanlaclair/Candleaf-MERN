@@ -87,7 +87,7 @@ export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
 		const { data } = await api.fetchUsers();
 		dispatch({ type: ActionType.GET_USERS_COUNT, payload: data });
 	} catch (error) {
-		console.log(error.message);
+		console.log(error);
 	}
 };
 
@@ -97,7 +97,7 @@ export const getUser =
 			const { data } = await api.fetchUser(id);
 			dispatch({ type: ActionType.GET_USER, payload: data });
 		} catch (error) {
-			console.log(error.message);
+			console.log(error);
 		}
 	};
 
@@ -105,22 +105,16 @@ interface Auth0Schema {
 	firstName: string;
 	lastName: string;
 	auth0ID: string;
-}
-
-interface GuestUserSchema {
-	firstName: string;
-	lastName: string;
 	guestID: string;
 }
 
 export const createUser =
-	(post: Auth0Schema | GuestUserSchema) =>
-	async (dispatch: Dispatch<UserActions>) => {
+	(post: Auth0Schema) => async (dispatch: Dispatch<UserActions>) => {
 		try {
 			const { data } = await api.createUser(post);
 			dispatch({ type: ActionType.CREATE_USER, payload: data });
 		} catch (error) {
-			console.log(error.message);
+			console.log(error);
 		}
 	};
 

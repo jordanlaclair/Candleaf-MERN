@@ -24,11 +24,6 @@ const Header: FC = () => {
 		firstName: string;
 		lastName: string;
 		auth0ID: string;
-	}
-
-	interface GuestUserSchema {
-		firstName: string;
-		lastName: string;
 		guestID: string;
 	}
 
@@ -105,13 +100,15 @@ const Header: FC = () => {
 				firstName: user?.given_name!,
 				lastName: user?.family_name!,
 				auth0ID: user?.sub!,
+				guestID: guestID,
 			};
 			dispatch(action.createUser(newUser));
 		} else if (!isAuthenticated) {
-			let newUser: GuestUserSchema = {
+			let newUser: Auth0Schema = {
 				firstName: "Guest",
 				lastName: "",
-				guestID: uuidv4(),
+				auth0ID: "",
+				guestID: guestID.length > 1 ? guestID : uuidv4(),
 			};
 			dispatch(action.createUser(newUser));
 		}
@@ -121,7 +118,6 @@ const Header: FC = () => {
 		if (user == undefined) {
 			loginWithRedirect();
 		} else {
-			dispatch(signOut());
 			logout();
 		}
 	};
