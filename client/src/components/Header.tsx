@@ -473,6 +473,7 @@ const Bar = styled.div`
 const Status = styled.h3`
 	cursor: pointer;
 	margin-right: 20px;
+	white-space: nowrap;
 `;
 
 const UserProfilePicture = styled.img`
