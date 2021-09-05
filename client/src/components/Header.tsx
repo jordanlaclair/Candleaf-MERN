@@ -104,7 +104,6 @@ const Header: FC = () => {
 			};
 			dispatch(action.createUser(newUser));
 		} else if (!isAuthenticated) {
-			console.log(guestID);
 			let newUser: Auth0Schema = {
 				firstName: "Guest",
 				lastName: "",
