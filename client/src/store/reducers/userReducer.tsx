@@ -98,7 +98,9 @@ const reducer: Reducer<UserSchema, UserActions> = (
 ): UserSchema => {
 	switch (action.type) {
 		case ActionType.CREATE_USER:
+			//if not guestid create new one
 			return action.payload;
+
 		case ActionType.UPDATE_USER:
 			return action.payload;
 		case ActionType.REMOVE_FROM_CART:

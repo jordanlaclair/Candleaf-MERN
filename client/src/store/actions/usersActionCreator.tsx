@@ -105,7 +105,7 @@ interface Auth0Schema {
 	firstName: string;
 	lastName: string;
 	auth0ID: string;
-	guestID: string;
+	guestID?: string;
 }
 
 export const createUser =

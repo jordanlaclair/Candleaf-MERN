@@ -24,7 +24,7 @@ const Header: FC = () => {
 		firstName: string;
 		lastName: string;
 		auth0ID: string;
-		guestID: string;
+		guestID?: string;
 	}
 
 	const { loginWithRedirect } = useAuth0();
@@ -100,16 +100,18 @@ const Header: FC = () => {
 				firstName: user?.given_name!,
 				lastName: user?.family_name!,
 				auth0ID: user?.sub!,
-				guestID: guestID,
+				guestID,
 			};
 			dispatch(action.createUser(newUser));
 		} else if (!isAuthenticated) {
+			console.log(guestID);
 			let newUser: Auth0Schema = {
 				firstName: "Guest",
 				lastName: "",
 				auth0ID: "",
-				guestID: guestID && guestID.length > 1 ? guestID : uuidv4(),
+				guestID: guestID && guestID.length > 5 ? guestID : uuidv4(),
 			};
+
 			dispatch(action.createUser(newUser));
 		}
 	}, [isAuthenticated]);

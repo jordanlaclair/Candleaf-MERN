@@ -64,7 +64,7 @@ export const createUser = async (req, res) => {
 			await Users.findOne({ auth0ID: auth0ID }, (err, user) => {
 				res.status(201).json(user);
 			});
-		} else if (!auth0Exists && auth0Exists !== "") {
+		} else if (!auth0Exists && auth0ID !== "") {
 			cart = {};
 
 			const newData = {
