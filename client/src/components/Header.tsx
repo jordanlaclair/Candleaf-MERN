@@ -269,6 +269,7 @@ const HeaderWrapper = styled.nav`
 
 const CartWrapper = styled.div`
 	display: flex;
+	position: relative;
 	justify-content: flex-start;
 	cursor: pointer;
 	align-items: center;
@@ -473,9 +474,11 @@ const Bar = styled.div`
 
 const Status = styled.h3`
 	cursor: pointer;
-	padding-right: 15px;
 	margin-right: 20px;
 	white-space: nowrap;
+	@media ${devices.mobileXL} {
+		padding-right: 15px;
+	}
 `;
 
 const UserProfilePicture = styled.img`
