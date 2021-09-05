@@ -61,9 +61,13 @@ export const createUser = async (req, res) => {
 		//when first login
 
 		if (auth0Exists && auth0ID !== "") {
-			await Users.findOne({ auth0ID: auth0ID }, (err, user) => {
-				res.status(201).json(user);
-			});
+			await Users.findOneAndUpdate(
+				{ auth0ID: auth0ID },
+				{ guestID: guestID },
+				(err, user) => {
+					res.status(201).json(user);
+				}
+			);
 		} else if (!auth0Exists && auth0ID !== "") {
 			cart = {};
 
