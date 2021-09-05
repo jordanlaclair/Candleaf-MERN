@@ -2,7 +2,7 @@
 
 ## Live Demo
 
-(working on it)
+🟢 [Live Demo](https://candleafcandles.netlify.app) 🟢
 
 ## General
 
