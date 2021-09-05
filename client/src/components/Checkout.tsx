@@ -234,6 +234,7 @@ const Checkout: FC = () => {
 					onSubmit={(e) => {
 						handleSubmit(e);
 					}}
+					autoComplete="off"
 				>
 					<InputHeader>Contact</InputHeader>
 					<InputField
@@ -333,7 +334,7 @@ const Checkout: FC = () => {
 							startIcon={<AirplanemodeActiveIcon />}
 							type="submit"
 						>
-							<h3>Continue to Shipping</h3>
+							<h3>Shipping</h3>
 						</Button>
 					</ShippingWrapper>
 				</FormWrapper>
@@ -429,12 +430,12 @@ export const CheckoutWrapper = styled.div`
 
 export const FirstHalf = styled.div`
 	display: flex;
+	overflow: hidden;
 	flex-direction: column;
 	justify-content: center;
 	height: 100%;
 	align-items: center;
 	flex: 1;
-
 	padding-top: 2rem;
 	padding-left: 3.5rem;
 	padding-right: 3.5rem;
@@ -520,6 +521,7 @@ export const NextBreadCrumb = styled.h3``;
 
 const FormWrapper = styled.form`
 	width: 100%;
+	max-width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -545,8 +547,9 @@ const InputHeader = styled.h2``;
 
 export const InputField = styled.input<{ fieldType?: string }>`
 	padding: 15px;
+	overflow: hidden;
 	outline: none;
-	width: ${(props) => (props.fieldType === "name" ? "50%" : "80%")};
+	width: 80%;
 	border: 2.5px solid ${(props) => props.theme.brand};
 	font-family: "Poppins", sans-serif;
 	font-weight: bold;
@@ -555,7 +558,6 @@ export const InputField = styled.input<{ fieldType?: string }>`
 const ShippingWrapper = styled.div`
 	margin-top: 2rem;
 	width: 90%;
-
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
