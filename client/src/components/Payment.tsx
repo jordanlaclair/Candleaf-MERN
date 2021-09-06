@@ -306,7 +306,7 @@ const Payment: FC = () => {
 							startIcon={<LocalShippingIcon />}
 							onClick={handleBackToShipping}
 						>
-							<h3>Back to Details</h3>
+							<h3>Shipping</h3>
 						</Button>
 
 						<Button
@@ -498,7 +498,7 @@ const Form = styled.form`
 
 const ButtonWrapper = styled.div`
 	display: flex;
-	width: 80%;
+	width: 110%;
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;

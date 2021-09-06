@@ -6,8 +6,8 @@ import { PurchaseOption } from "./ProductDetails";
 import Radio from "@material-ui/core/Radio";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import Product from "./Product";
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import Lottie from "react-lottie";
-import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
 import DarkModePlane from "../assets/lotties/darkTheme/plane.json";
 import DarkModeTruck from "../assets/lotties/darkTheme/truck.json";
 import LightModePlane from "../assets/lotties/lightTheme/plane.json";
@@ -297,10 +297,10 @@ const Shipping: FC = () => {
 					<Button
 						variant="contained"
 						className={classes.button}
-						startIcon={<AirplanemodeActiveIcon />}
+						startIcon={<FormatListBulletedIcon />}
 						onClick={handleBackToDetails}
 					>
-						<h3>Shipping</h3>
+						<h3>Details</h3>
 					</Button>
 
 					<Button
