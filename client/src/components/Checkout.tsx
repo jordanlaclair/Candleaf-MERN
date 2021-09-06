@@ -450,7 +450,7 @@ export const FirstHalf = styled.div`
 export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
-	height: 100vh;
+	min-height: 100vh;
 	padding: 3rem 5rem;
 	flex-direction: column;
 	justify-content: space-evenly;
@@ -571,7 +571,6 @@ const ShippingWrapper = styled.div`
 `;
 
 export const ProductsWrapper = styled.div`
-	flex: 2;
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -604,7 +603,7 @@ export const CouponWrapper = styled.div`
 `;
 export const DetailsOuterWrapper = styled.div`
 	width: 80%;
-	flex: 3;
+	flex: 2;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;

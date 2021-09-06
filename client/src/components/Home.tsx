@@ -61,7 +61,7 @@ const Home: FC = () => {
 					</LeafWrapper>
 					<h1>The nature candle.</h1>
 					<h4>
-						Green-friendly, hand crafted natural soy wax made to spice up the
+						Green-friendly, hand crafted, natural soy wax made to spice up the
 						best moments.
 					</h4>
 					<Button

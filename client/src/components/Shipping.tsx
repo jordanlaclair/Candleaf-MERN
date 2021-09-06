@@ -4,10 +4,10 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import { PurchaseOption } from "./ProductDetails";
 import Radio from "@material-ui/core/Radio";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import Product from "./Product";
 import Lottie from "react-lottie";
+import AirplanemodeActiveIcon from "@material-ui/icons/AirplanemodeActive";
 import DarkModePlane from "../assets/lotties/darkTheme/plane.json";
 import DarkModeTruck from "../assets/lotties/darkTheme/truck.json";
 import LightModePlane from "../assets/lotties/lightTheme/plane.json";
@@ -297,10 +297,10 @@ const Shipping: FC = () => {
 					<Button
 						variant="contained"
 						className={classes.button}
-						startIcon={<FormatListBulletedIcon />}
+						startIcon={<AirplanemodeActiveIcon />}
 						onClick={handleBackToDetails}
 					>
-						<h3>Back to Shipping</h3>
+						<h3>Shipping</h3>
 					</Button>
 
 					<Button
@@ -309,7 +309,7 @@ const Shipping: FC = () => {
 						startIcon={<MonetizationOnIcon />}
 						onClick={handleContinueToPayment}
 					>
-						<h3>Continue to Payment</h3>
+						<h3>Payment</h3>
 					</Button>
 				</ButtonWrapper>
 			</FirstHalf>
@@ -430,7 +430,7 @@ const OptionWrapper = styled.div`
 `;
 export const ButtonWrapper = styled.div`
 	display: flex;
-	width: 80%;
+	width: 90%;
 	margin-top: 2rem;
 	justify-content: space-between;
 	align-items: center;
