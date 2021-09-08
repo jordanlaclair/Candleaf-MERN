@@ -412,10 +412,12 @@ export default withRouter(Checkout);
 
 export const CheckoutWrapper = styled.div`
 	display: flex;
+	height: 100%;
 	justify-content: center;
 	align-items: flex-start;
 	@media ${devices.laptopM} {
 		flex-direction: column;
+		height: unset;
 		align-items: center;
 	}
 	@media ${devices.tablet} {
@@ -427,12 +429,12 @@ export const FirstHalf = styled.div`
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	height: 100%;
 	justify-content: flex-start;
 	align-items: center;
-	padding-top: 2rem;
-	padding-left: 3.5rem;
-	padding-right: 3.5rem;
 	@media ${devices.laptopM} {
+		height: unset;
+
 		padding: 0;
 		padding-top: 2rem;
 		flex: 1;
@@ -444,8 +446,7 @@ export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
 	overflow: hidden;
-	height: 100vh;
-
+	height: 100%;
 	padding-bottom: 0px;
 	flex-direction: column;
 	justify-content: center;
@@ -453,6 +454,8 @@ export const SecondHalf = styled.div`
 	align-self: center;
 	flex: 2;
 	@media ${devices.laptopM} {
+		height: unset;
+
 		padding: 3rem 0;
 		flex: 1;
 		width: 100%;
@@ -460,7 +463,8 @@ export const SecondHalf = styled.div`
 	}
 `;
 export const HeaderWrapper = styled.div`
-	width: 100%;
+	width: 80%;
+	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -516,7 +520,7 @@ export const NextBreadCrumb = styled.h3``;
 const FormWrapper = styled.form`
 	overflow: hidden;
 	margin-top: 3rem;
-	width: 100%;
+	width: 80%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
