@@ -148,8 +148,6 @@ const SectionTitle = styled.h3`
 `;
 const SectionProductTitle = styled.h3`
 	text-align: start;
-
-	margin-left: 20px;
 	margin-bottom: 20px;
 `;
 
@@ -191,7 +189,7 @@ const SectionTitleRemove = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 
 	> h4 {
 		margin-top: 5px;
@@ -200,6 +198,7 @@ const SectionTitleRemove = styled.div`
 		display: flex;
 		letter-spacing: 0.8px;
 		text-transform: capitalize;
+		cursor: pointer;
 		justify-content: center;
 		align-items: center;
 		color: black;

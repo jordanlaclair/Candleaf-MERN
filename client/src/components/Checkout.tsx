@@ -413,6 +413,7 @@ export default withRouter(Checkout);
 export const CheckoutWrapper = styled.div`
 	display: flex;
 	height: 100%;
+	padding-bottom: 3rem;
 	justify-content: center;
 	align-items: flex-start;
 	@media ${devices.laptopM} {
@@ -428,7 +429,6 @@ export const CheckoutWrapper = styled.div`
 export const FirstHalf = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 20px 0;
 	flex: 1;
 	height: 100%;
 	justify-content: flex-start;
