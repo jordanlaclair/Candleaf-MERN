@@ -428,6 +428,7 @@ export const CheckoutWrapper = styled.div`
 export const FirstHalf = styled.div`
 	display: flex;
 	flex-direction: column;
+	padding: 20px 0;
 	flex: 1;
 	height: 100%;
 	justify-content: flex-start;
@@ -445,7 +446,6 @@ export const FirstHalf = styled.div`
 export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
-	overflow: hidden;
 	height: 100%;
 	padding-bottom: 0px;
 	flex-direction: column;
@@ -625,8 +625,7 @@ export const DetailsWrapper = styled.div`
 
 export const TotalWrapper = styled(DetailsWrapper)`
 	width: 80%;
-	flex: 0.5;
-	align-items: flex-start;
+	flex: 1;
 	@media ${devices.laptopM} {
 		flex-direction: column;
 		text-align: start;

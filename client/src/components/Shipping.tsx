@@ -435,7 +435,7 @@ export const ButtonWrapper = styled.div`
 	justify-content: space-between;
 	align-items: center;
 
-	@media ${devices.tablet} {
+	@media ${devices.mobileXL} {
 		flex-direction: column;
 		min-height: 120px;
 	}
