@@ -2,8 +2,6 @@
 
 ## Live Demo
 
-🟢 [Live Demo](https://candleafcandles.netlify.app) 🟢
-
 ## General
 
 My first "big" project I've made using the MERN stack. Candleaf is a prototype store that delivers eco-sustainable, carefully handmade candles. This first started as a practice project so that I can learn MongoDB but quickly escalated. This is by no means the perfect MERN project as this was purely a for-fun project where I got to use so many new technologies for the first time and there still may exist bugs, however this is my proudest project yet as I've learned so much from it throughout the journey. I transferred from JavaScript to Typescript in the middle of the project as I realized it would help immensely to avoid type errors and my inspiration was from Figma for the designing aspect of the project.
