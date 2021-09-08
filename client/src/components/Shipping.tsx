@@ -399,7 +399,7 @@ const InputFieldShipping = styled(InputField)``;
 
 const InputFieldWrapper = styled.div`
 	display: flex;
-	width: 100%;
+	width: 80%;
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
@@ -407,7 +407,7 @@ const InputFieldWrapper = styled.div`
 `;
 
 const HorizontalLineShipping = styled(HorizontalLine)`
-	margin: 3rem 0;
+	margin: 1rem 0;
 `;
 
 const HorizontalLineShippingOption = styled(HorizontalLine)`

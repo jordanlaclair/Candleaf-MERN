@@ -392,7 +392,7 @@ const HorizontalLineUserInfo = styled(HorizontalLine)`
 `;
 
 export const UserInfoWrapper = styled.div`
-	width: 100%;
+	width: 80%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -501,7 +501,7 @@ const Form = styled.form`
 
 const ButtonWrapper = styled.div`
 	display: flex;
-	width: 110%;
+	width: 90%;
 	margin-top: 1rem;
 	justify-content: space-between;
 	align-items: center;
