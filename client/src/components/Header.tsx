@@ -251,7 +251,7 @@ const slideDown = keyframes`
 `;
 
 const HeaderWrapper = styled.nav`
-	position: fixed;
+	position: sticky;
 	top: 0px;
 	left: 0px;
 	width: 100%;

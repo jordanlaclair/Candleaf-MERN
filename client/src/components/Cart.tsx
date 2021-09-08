@@ -43,31 +43,32 @@ const Cart: FC = () => {
 
 	return (
 		<CheckoutWrapper>
-			<Title>Your Cart Items</Title>
-			<LottieWrapper>
-				<Lottie options={defaultOptions} isClickToPauseDisabled={true} />
-			</LottieWrapper>
+			<SectionOne>
+				<Title>Your Cart Items</Title>
+				<LottieWrapper>
+					<Lottie options={defaultOptions} isClickToPauseDisabled={true} />
+				</LottieWrapper>
 
-			{cart.length === 0 || cart[0].productName === "None" ? (
-				<CartEmpty>Cart Empty!</CartEmpty>
-			) : (
-				<CartItemWrapper>
-					{cart.map((item) => {
-						return (
-							<CartItem
-								id={uuidv4()}
-								productId={item.productId}
-								productName={item.productName}
-								productWeight={item.productWeight}
-								totalPrice={item.totalPrice}
-								productQuantity={item.productQuantity}
-								price={item.price}
-							/>
-						);
-					})}
-				</CartItemWrapper>
-			)}
-
+				{cart.length === 0 || cart[0].productName === "None" ? (
+					<CartEmpty>Cart Empty!</CartEmpty>
+				) : (
+					<CartItemWrapper>
+						{cart.map((item) => {
+							return (
+								<CartItem
+									id={uuidv4()}
+									productId={item.productId}
+									productName={item.productName}
+									productWeight={item.productWeight}
+									totalPrice={item.totalPrice}
+									productQuantity={item.productQuantity}
+									price={item.price}
+								/>
+							);
+						})}
+					</CartItemWrapper>
+				)}
+			</SectionOne>
 			<ProceedCheckoutWrapper>
 				<ProceedCheckoutLeft>
 					<Button
@@ -102,13 +103,11 @@ export default Cart;
 
 export const CheckoutWrapper = styled.div`
 	display: flex;
-	padding: 50px;
+	padding: 30px 0;
 	flex-direction: column;
-	height: 100%;
-	justify-content: center;
+	height: 85%;
+	justify-content: space-between;
 	align-items: center;
-	width: 80%;
-	margin-top: 80px;
 `;
 
 const Title = styled.h1``;
@@ -163,4 +162,12 @@ const ProceedCheckoutLeft = styled.div`
 const CartEmpty = styled.h1`
 	margin: 5rem;
 	padding: 0 3rem;
+`;
+const SectionOne = styled.div`
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+
+	justify-content: space-evenly;
+	align-items: center;
 `;

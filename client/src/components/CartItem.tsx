@@ -72,7 +72,6 @@ const CartItem: FC<PropTypes> = ({
 			<SectionWrapper>
 				<SectionProductTitle>Product</SectionProductTitle>
 				<SectionImageWrapper>
-					<ImageWrapper>{handleGetImage()}</ImageWrapper>
 					<SectionTitleRemove>
 						<h3>{productName}</h3>
 						<h4
@@ -83,6 +82,7 @@ const CartItem: FC<PropTypes> = ({
 							Remove
 						</h4>
 					</SectionTitleRemove>
+					<ImageWrapper>{handleGetImage()}</ImageWrapper>
 				</SectionImageWrapper>
 			</SectionWrapper>
 			<SectionWrapper>
@@ -123,7 +123,7 @@ const Wrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: flex-start;
 	border-top: solid 1px ${(props) => props.theme.colors.opposite};
-	width: 100%;
+	width: 80%;
 	@media ${devices.tablet} {
 		flex-direction: column;
 		align-items: center;
@@ -135,7 +135,7 @@ const SectionWrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
-	padding: 40px;
+	padding: 30px 0px;
 	width: 100%;
 	flex: 1;
 	@media ${devices.tablet} {
@@ -194,8 +194,17 @@ const SectionTitleRemove = styled.div`
 	align-items: center;
 
 	> h4 {
-		text-decoration: underline;
-		cursor: pointer;
-		color: ${(props) => props.theme.brand};
+		margin-top: 5px;
+		font-size: 15px;
+		font-weight: 900;
+		display: flex;
+		letter-spacing: 0.8px;
+		text-transform: capitalize;
+		justify-content: center;
+		align-items: center;
+		color: black;
+		background-color: ${(props) => props.theme.brand};
+		border-radius: 99px;
+		padding: 4px 10px;
 	}
 `;

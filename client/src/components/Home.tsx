@@ -97,12 +97,8 @@ const HomeWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100%;
-	height: 100%;
-	scroll-snap-type: y mandatory;
 	background-color: ${(props) => props.theme.colors.primary};
-	@media ${devices.laptop} {
-		margin-top: 70px;
-	}
+
 	@media ${devices.mobileXL} {
 		font-size: 14px;
 	}
@@ -111,6 +107,8 @@ const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
 	scroll-snap-align: start;
+	max-height: 92vh;
+	overflow: hidden;
 	@media ${devices.mobileXL} {
 		min-height: 250px;
 		padding: 40px 0;
@@ -118,10 +116,11 @@ const BackgroundWrapper = styled.div`
 `;
 const BackgroundImage = styled.img`
 	height: auto;
-	max-width: 100%;
+	width: 100%;
 `;
 const BackgroundImageWrapper = styled.div`
 	margin-top: -300px;
+
 	width: 100%;
 	@media ${devices.mobileXL} {
 		display: none;
@@ -134,6 +133,7 @@ const ForeGroundWrapper = styled.div`
 	position: absolute;
 	display: flex;
 	flex-direction: column;
+	text-align: center;
 	justify-content: center;
 	align-items: center;
 	top: 50%;

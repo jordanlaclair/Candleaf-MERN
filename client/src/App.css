@@ -1,13 +1,6 @@
-.App {
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-}
-
 html,
-body {
+body,
+#root,
+.App {
 	height: 100%;
-	scroll-behavior: smooth;
 }

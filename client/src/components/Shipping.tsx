@@ -376,11 +376,11 @@ const Shipping: FC = () => {
 				<HorizontalLine />
 				<TotalWrapper>
 					<h3>Total</h3>
-					<h2>
+					<h3>
 						{shippingMethod !== ""
 							? roundToNearestTenths(total)
 							: "Please select shipping"}
-					</h2>
+					</h3>
 				</TotalWrapper>
 			</SecondHalf>
 		</ShippingWrapper>

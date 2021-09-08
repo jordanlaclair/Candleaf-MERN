@@ -339,7 +339,6 @@ const Checkout: FC = () => {
 					</ShippingWrapper>
 				</FormWrapper>
 			</FirstHalf>
-
 			<SecondHalf>
 				<ProductsWrapper>
 					{cart.map((product) => {
@@ -402,7 +401,7 @@ const Checkout: FC = () => {
 				<HorizontalLine />
 				<TotalWrapper>
 					<h3>Total</h3>
-					<h2>Calculated at the next step</h2>
+					<h3>Calculated at the next step</h3>
 				</TotalWrapper>
 			</SecondHalf>
 		</CheckoutWrapper>
@@ -413,14 +412,10 @@ export default withRouter(Checkout);
 
 export const CheckoutWrapper = styled.div`
 	display: flex;
-	width: 100%;
-	height: 100%;
 	justify-content: center;
 	align-items: flex-start;
-
 	@media ${devices.laptopM} {
 		flex-direction: column;
-		width: 100%;
 		align-items: center;
 	}
 	@media ${devices.tablet} {
@@ -430,12 +425,10 @@ export const CheckoutWrapper = styled.div`
 
 export const FirstHalf = styled.div`
 	display: flex;
-	overflow: hidden;
 	flex-direction: column;
-	justify-content: center;
-	height: 100%;
-	align-items: center;
 	flex: 1;
+	justify-content: flex-start;
+	align-items: center;
 	padding-top: 2rem;
 	padding-left: 3.5rem;
 	padding-right: 3.5rem;
@@ -450,10 +443,12 @@ export const FirstHalf = styled.div`
 export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
-	min-height: 100vh;
-	padding: 3rem 5rem;
+	overflow: hidden;
+	height: 100vh;
+
+	padding-bottom: 0px;
 	flex-direction: column;
-	justify-content: space-evenly;
+	justify-content: center;
 	align-items: center;
 	align-self: center;
 	flex: 2;
@@ -470,7 +465,6 @@ export const HeaderWrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
-	margin-bottom: 50px;
 `;
 export const Header = styled.div`
 	display: flex;
@@ -520,8 +514,9 @@ export const LocationWrapper = styled.div`
 export const NextBreadCrumb = styled.h3``;
 
 const FormWrapper = styled.form`
+	overflow: hidden;
+	margin-top: 3rem;
 	width: 100%;
-	max-width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -571,7 +566,8 @@ const ShippingWrapper = styled.div`
 `;
 
 export const ProductsWrapper = styled.div`
-	width: 100%;
+	padding: 20px;
+	width: 90%;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	grid-gap: 2rem;
@@ -582,16 +578,14 @@ export const ProductsWrapper = styled.div`
 `;
 
 export const HorizontalLine = styled.hr`
-	width: 100%;
+	width: 90%;
 	margin: 2rem 0;
 `;
 export const CouponWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex: 1;
 	width: 100%;
-
 	> input {
 		margin-right: 10px;
 	}
@@ -603,7 +597,7 @@ export const CouponWrapper = styled.div`
 `;
 export const DetailsOuterWrapper = styled.div`
 	width: 80%;
-	flex: 2;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
@@ -627,7 +621,8 @@ export const DetailsWrapper = styled.div`
 
 export const TotalWrapper = styled(DetailsWrapper)`
 	width: 80%;
-	flex: 1;
+	flex: 0.5;
+	align-items: flex-start;
 	@media ${devices.laptopM} {
 		flex-direction: column;
 		text-align: start;

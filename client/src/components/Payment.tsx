@@ -180,7 +180,7 @@ const Payment: FC = () => {
 
 	return (
 		<PaymentWrapper>
-			<FirstHalf>
+			<PaymentFirstHalf>
 				<HeaderWrapper>
 					<Header>
 						<LogoWrapper>
@@ -319,8 +319,8 @@ const Payment: FC = () => {
 						</Button>
 					</ButtonWrapper>
 				</Form>
-			</FirstHalf>
-			<SecondHalf>
+			</PaymentFirstHalf>
+			<PaymentSecondHalf>
 				<ProductsWrapper>
 					{cart.map((product) => {
 						let result = handleGetImageSrc(product.productId);
@@ -366,15 +366,18 @@ const Payment: FC = () => {
 				<HorizontalLine />
 				<TotalWrapper>
 					<h3>Total</h3>
-
 					<h2>{roundToNearestTenths(total)}</h2>
 				</TotalWrapper>
-			</SecondHalf>
+			</PaymentSecondHalf>
 		</PaymentWrapper>
 	);
 };
 
 export default withRouter(Payment);
+
+const PaymentFirstHalf = styled(FirstHalf)``;
+
+const PaymentSecondHalf = styled(SecondHalf)``;
 
 const PaymentWrapper = styled(CheckoutWrapper)`
 	@media ${devices.tablet} {
@@ -400,7 +403,7 @@ export const UserInfoWrapper = styled.div`
 		${(props) => (props.theme === lightTheme ? props.theme.brand : "#383838")};
 	border-radius: 8px;
 	overflow: visible;
-	margin-bottom: 20px;
+	margin: 15px 0;
 `;
 export const UserInfoHeader = styled.div`
 	display: flex;
@@ -499,7 +502,7 @@ const Form = styled.form`
 const ButtonWrapper = styled.div`
 	display: flex;
 	width: 110%;
-	margin-top: 2rem;
+	margin-top: 1rem;
 	justify-content: space-between;
 	align-items: center;
 	@media ${devices.mobileXL} {
