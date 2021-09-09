@@ -407,7 +407,7 @@ const ShippingWrapper = styled(CheckoutWrapper)`
 const ShippingSecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
-	height: 110vh;
+	height: 100vh;
 	flex-direction: column;
 	padding: 2rem 0;
 	justify-content: center;
