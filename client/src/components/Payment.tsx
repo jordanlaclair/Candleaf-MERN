@@ -429,7 +429,7 @@ export const UserInfoWrapper = styled.div`
 		${(props) => (props.theme === lightTheme ? props.theme.brand : "#383838")};
 	border-radius: 8px;
 	overflow: visible;
-	margin: 15px 0;
+	margin: 10px 0;
 `;
 export const UserInfoHeader = styled.div`
 	display: flex;
@@ -523,7 +523,7 @@ const Form = styled.form`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 2rem 0;
+	padding-bottom: 2rem;
 `;
 
 const ButtonWrapper = styled.div`
