@@ -106,8 +106,7 @@ const HomeWrapper = styled.div`
 const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
-	scroll-snap-align: start;
-	max-height: 92vh;
+	height: 92vh;
 	overflow: hidden;
 	@media ${devices.mobileXL} {
 		min-height: 250px;

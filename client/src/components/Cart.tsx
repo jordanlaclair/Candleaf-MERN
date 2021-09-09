@@ -125,7 +125,6 @@ const ProceedCheckoutWrapper = styled.div`
 	@media ${devices.mobileXL} {
 		flex-direction: column;
 		justify-content: space-between;
-		min-height: 20vh;
 	}
 	width: 90%;
 	padding: 2rem 0;
