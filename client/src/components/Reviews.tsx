@@ -71,6 +71,8 @@ const ReviewsWrapper = styled.div`
 	width: 100%;
 	background: ${(props) => props.theme.colors.primary};
 	padding: 5rem 0;
+	text-align: center;
+
 	display: flex;
 	scroll-snap-align: start;
 	flex-direction: column;
