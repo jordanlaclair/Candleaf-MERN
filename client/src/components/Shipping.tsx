@@ -403,6 +403,7 @@ const ShippingSecondHalf = styled.div`
 	height: 100%;
 	flex-direction: column;
 	justify-content: center;
+	padding: 2rem 0;
 	align-items: center;
 	align-self: center;
 	flex: 2;
@@ -456,6 +457,7 @@ export const ButtonWrapper = styled.div`
 	display: flex;
 	width: 90%;
 	margin-top: 2rem;
+	padding: 2rem 0;
 	justify-content: space-between;
 	align-items: center;
 

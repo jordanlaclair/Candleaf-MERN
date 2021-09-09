@@ -377,7 +377,29 @@ export default withRouter(Payment);
 
 const PaymentFirstHalf = styled(FirstHalf)``;
 
-const PaymentSecondHalf = styled(SecondHalf)``;
+const PaymentSecondHalf = styled.div`
+	padding: 0;
+	background: ${(props) => props.theme.colors.secondary};
+	display: flex;
+	height: 100%;
+	padding: 2rem 0;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	align-self: center;
+	flex: 2;
+	@media ${devices.laptopM} {
+		height: unset;
+
+		padding: 3rem 0;
+		flex: 1;
+		width: 100%;
+		margin-top: 50px;
+	}
+	@media ${devices.mobileXL} {
+		font-size: 13px;
+	}
+`;
 
 const PaymentWrapper = styled(CheckoutWrapper)`
 	@media ${devices.tablet} {
@@ -497,6 +519,7 @@ const Form = styled.form`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	padding: 2rem 0;
 `;
 
 const ButtonWrapper = styled.div`

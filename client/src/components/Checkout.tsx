@@ -446,8 +446,8 @@ export const SecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
 	height: 100%;
-	padding-bottom: 0px;
 	flex-direction: column;
+	padding: 2rem 0;
 	justify-content: center;
 	align-items: center;
 	align-self: center;
