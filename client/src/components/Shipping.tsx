@@ -390,20 +390,27 @@ const Shipping: FC = () => {
 export default withRouter(Shipping);
 
 const ShippingWrapper = styled(CheckoutWrapper)`
-	padding: 0;
-	@media ${devices.mobileXL} {
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	align-items: flex-start;
+	@media ${devices.laptopM} {
+		flex-direction: column;
+		height: unset;
+		align-items: center;
+	}
+	@media ${devices.tablet} {
 		font-size: 13px;
 	}
 `;
 
 const ShippingSecondHalf = styled.div`
-	padding: 0;
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
 	height: 100%;
 	flex-direction: column;
-	justify-content: center;
 	padding: 2rem 0;
+	justify-content: center;
 	align-items: center;
 	align-self: center;
 	flex: 2;
@@ -432,6 +439,7 @@ const InputFieldWrapper = styled.div`
 `;
 
 const HorizontalLineShipping = styled(HorizontalLine)`
+	width: 80%;
 	margin: 1rem 0;
 `;
 
@@ -455,7 +463,7 @@ const OptionWrapper = styled.div`
 `;
 export const ButtonWrapper = styled.div`
 	display: flex;
-	width: 90%;
+	width: 80%;
 	margin-top: 2rem;
 	padding: 2rem 0;
 	justify-content: space-between;
@@ -472,7 +480,7 @@ interface UserShippingInfoProps {
 }
 
 const UserInfoWrapperShipping = styled(UserInfoWrapper)<UserShippingInfoProps>`
-	width: 80%;
+	width: 70%;
 	animation: ${(props) =>
 		props.shaking
 			? `shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both`
