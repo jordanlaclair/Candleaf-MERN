@@ -179,7 +179,7 @@ const Payment: FC = () => {
 	return (
 		<PaymentWrapper>
 			<PaymentFirstHalf>
-				<HeaderWrapper>
+				<PaymentHeaderWrapper>
 					<Header>
 						<LogoWrapper>
 							<ImageWrapper>
@@ -204,7 +204,7 @@ const Payment: FC = () => {
 						</CrumbWrapper>
 						<CurrentBreadCrumb>Payment</CurrentBreadCrumb>
 					</BreadCrumbs>
-				</HeaderWrapper>
+				</PaymentHeaderWrapper>
 				<UserInfoOuterWrapper>
 					<UserInfoWrapper
 						onMouseEnter={() => {
@@ -387,6 +387,10 @@ const PaymentWrapper = styled.div`
 	}
 `;
 const PaymentFirstHalf = styled(FirstHalf)``;
+
+const PaymentHeaderWrapper = styled(HeaderWrapper)`
+	margin-bottom: 2rem;
+`;
 
 const PaymentSecondHalf = styled.div`
 	background: ${(props) => props.theme.colors.secondary};

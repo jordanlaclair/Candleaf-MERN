@@ -198,9 +198,9 @@ export const addToCart =
 					totalDiscounts,
 					newsLetterDiscount,
 				};
+				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 
 				await api.updateUser(userID, newData);
-				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
 			} else if (
 				cart.length > 0 &&
 				cart[0].productName === "None" &&
@@ -237,8 +237,9 @@ export const addToCart =
 					totalDiscounts,
 					newsLetterDiscount,
 				};
-				await api.updateUser(userID, newData);
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
+
+				await api.updateUser(userID, newData);
 			} else {
 				for (let i = 0; i < cart.length; i++) {
 					exists = Object.values(cart[i]).includes(candleData.productId);
@@ -291,8 +292,8 @@ export const addToCart =
 					totalDiscounts,
 					newsLetterDiscount,
 				};
-				await api.updateUser(userID, newData);
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
+				await api.updateUser(userID, newData);
 			}
 		} catch (error) {
 			console.log(error);

@@ -109,6 +109,7 @@ export default Orders;
 
 const OrdersWrapper = styled(CheckoutWrapper)`
 	width: 100%;
+
 	padding: 0;
 	justify-content: space-between;
 	@media ${devices.mobileM} {
@@ -123,7 +124,7 @@ const OrdersInnerWrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	min-height: 70vh;
+
 	width: 100%;
 	background-color: ${(props) => props.theme.colors.secondary};
 	border-top-left-radius: 50px;

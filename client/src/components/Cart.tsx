@@ -128,7 +128,7 @@ const ProceedCheckoutWrapper = styled.div`
 		min-height: 20vh;
 	}
 	width: 90%;
-
+	padding: 2rem 0;
 	justify-content: space-between;
 	align-items: center;
 `;

@@ -159,7 +159,8 @@ const SectionTotalPrice = styled.h3`
 `;
 const SectionImageWrapper = styled.div`
 	display: flex;
-	justify-content: center;
+	width: 100%;
+	justify-content: space-between;
 	align-items: center;
 	@media ${devices.tablet} {
 		width: 100%;
@@ -180,7 +181,7 @@ const ImageWrapper = styled.div`
 	width: 150px;
 
 	> img {
-		width: 100%;
+		max-width: 100%;
 		height: auto;
 	}
 `;

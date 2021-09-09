@@ -105,26 +105,29 @@ const OrderComplete: FC = () => {
 						<CurrentBreadCrumb>Payment</CurrentBreadCrumb>
 					</BreadCrumbs>
 				</HeaderWrapperShipping>
-
-				<LottieWrapper>
-					<Lottie
-						options={checkMarkLottieOptions}
-						isClickToPauseDisabled={true}
-					/>
-				</LottieWrapper>
-				<h1>Payment Confirmed!</h1>
-				<h4>Order # {newOrderNumber}</h4>
-				<h5>{`Thank you, ${firstName}, for purchasing from Candleaf. The earth is grateful of your descision to buy our eco-friendly candles. Now that your order has been confirmed, please wait unti you receive an email notifying you that your order has been shipped.`}</h5>
-				<PaymentButtonWrapper>
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<HomeIcon />}
-						onClick={handleBackToHome}
-					>
-						<h3>Back to Shopping</h3>
-					</Button>
-				</PaymentButtonWrapper>
+				<OrderBodyWrapper>
+					<LottieWrapper>
+						<Lottie
+							options={checkMarkLottieOptions}
+							isClickToPauseDisabled={true}
+						/>
+					</LottieWrapper>
+					<OrderTextWrapper>
+						<h1>Payment Confirmed!</h1>
+						<h4>Order # {newOrderNumber}</h4>
+						<h5>{`Thank you, ${firstName}, for purchasing from Candleaf. The earth is grateful of your descision to buy our eco-friendly candles. Now that your order has been confirmed, please wait unti you receive an email notifying you that your order has been shipped.`}</h5>
+					</OrderTextWrapper>
+					<PaymentButtonWrapper>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<HomeIcon />}
+							onClick={handleBackToHome}
+						>
+							<h3>Back to Shopping</h3>
+						</Button>
+					</PaymentButtonWrapper>
+				</OrderBodyWrapper>
 			</OrderCompleteFirstHalf>
 		</PaymentWrapper>
 	);
@@ -149,8 +152,7 @@ const LottieWrapper = styled.div`
 `;
 
 const OrderCompleteFirstHalf = styled(FirstHalf)`
-	flex: 2;
-	justify-content: space-evenly;
+	justify-content: flex-start;
 	padding: 30px 50px;
 
 	> h5 {
@@ -169,5 +171,24 @@ const PaymentButtonWrapper = styled(ButtonWrapper)`
 const HeaderWrapperShipping = styled(HeaderWrapper)`
 	align-self: flex-start;
 	margin: 0px;
+	height: 15vh;
 	margin-bottom: 3rem;
+`;
+const OrderTextWrapper = styled.div`
+	width: 70%;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: space-between;
+	align-items: center;
+	> h5 {
+		margin-top: 15px;
+	}
+`;
+const OrderBodyWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	height: 70vh;
+	justify-content: center;
+	align-items: center;
 `;

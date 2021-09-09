@@ -746,6 +746,7 @@ const QuantityBottomWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	padding: 5px;
+	text-align: center;
 
 	> h3 {
 		width: 35px;
