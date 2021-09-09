@@ -413,7 +413,6 @@ export default withRouter(Checkout);
 export const CheckoutWrapper = styled.div`
 	display: flex;
 	height: 100%;
-	padding-bottom: 3rem;
 	justify-content: center;
 	align-items: flex-start;
 	@media ${devices.laptopM} {
@@ -521,6 +520,7 @@ const FormWrapper = styled.form`
 	overflow: hidden;
 	margin-top: 3rem;
 	width: 80%;
+	padding-bottom: 2rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -560,6 +560,7 @@ const ShippingWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
 	@media ${devices.mobileXL} {
 		flex-direction: column;
 		height: 100px;

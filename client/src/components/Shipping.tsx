@@ -313,7 +313,7 @@ const Shipping: FC = () => {
 					</Button>
 				</ButtonWrapper>
 			</FirstHalf>
-			<SecondHalf>
+			<ShippingSecondHalf>
 				<ProductsWrapper>
 					{cart.map((product) => {
 						let result = handleGetImageSrc(product.productId);
@@ -382,7 +382,7 @@ const Shipping: FC = () => {
 							: "Please select shipping"}
 					</h3>
 				</TotalWrapper>
-			</SecondHalf>
+			</ShippingSecondHalf>
 		</ShippingWrapper>
 	);
 };
@@ -390,6 +390,30 @@ const Shipping: FC = () => {
 export default withRouter(Shipping);
 
 const ShippingWrapper = styled(CheckoutWrapper)`
+	padding: 0;
+	@media ${devices.mobileXL} {
+		font-size: 13px;
+	}
+`;
+
+const ShippingSecondHalf = styled.div`
+	padding: 0;
+	background: ${(props) => props.theme.colors.secondary};
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	align-self: center;
+	flex: 2;
+	@media ${devices.laptopM} {
+		height: unset;
+
+		padding: 3rem 0;
+		flex: 1;
+		width: 100%;
+		margin-top: 50px;
+	}
 	@media ${devices.mobileXL} {
 		font-size: 13px;
 	}
