@@ -5,9 +5,7 @@ import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import PaymentIcon from "@material-ui/icons/Payment";
 import {
 	HeaderWrapper,
-	CheckoutWrapper,
 	FirstHalf,
-	SecondHalf,
 	Header,
 	LogoWrapper,
 	TotalWrapper,
@@ -374,16 +372,28 @@ const Payment: FC = () => {
 };
 
 export default withRouter(Payment);
-
+const PaymentWrapper = styled.div`
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	align-items: flex-start;
+	@media ${devices.laptopM} {
+		flex-direction: column;
+		height: unset;
+		align-items: center;
+	}
+	@media ${devices.tablet} {
+		font-size: 13px;
+	}
+`;
 const PaymentFirstHalf = styled(FirstHalf)``;
 
 const PaymentSecondHalf = styled.div`
-	padding: 0;
 	background: ${(props) => props.theme.colors.secondary};
 	display: flex;
 	height: 100%;
-	padding: 2rem 0;
 	flex-direction: column;
+	padding: 2rem 0;
 	justify-content: center;
 	align-items: center;
 	align-self: center;
@@ -397,12 +407,6 @@ const PaymentSecondHalf = styled.div`
 		margin-top: 50px;
 	}
 	@media ${devices.mobileXL} {
-		font-size: 13px;
-	}
-`;
-
-const PaymentWrapper = styled(CheckoutWrapper)`
-	@media ${devices.tablet} {
 		font-size: 13px;
 	}
 `;
