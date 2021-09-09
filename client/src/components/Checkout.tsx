@@ -430,6 +430,7 @@ export const FirstHalf = styled.div`
 	flex-direction: column;
 	flex: 1;
 	height: 100%;
+	overflow: hidden;
 	justify-content: flex-start;
 	align-items: center;
 	@media ${devices.laptopM} {
