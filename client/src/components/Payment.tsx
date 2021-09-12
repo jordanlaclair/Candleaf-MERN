@@ -39,6 +39,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import { Button, makeStyles } from "@material-ui/core";
 import { addToOrders } from "../store/actions";
 import devices from "../styles/devices";
+import { useAuth0 } from "@auth0/auth0-react";
 const Payment: FC = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -62,6 +63,7 @@ const Payment: FC = () => {
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
+	const { user, isAuthenticated } = useAuth0();
 	const theme = useSelector((state: State) => state.global.theme);
 	const cartTotal = useSelector((state: State) => state.user.cartTotal);
 	const [userIconIsStopped, setUserIconIsStopped] = useState(false);
@@ -135,15 +137,29 @@ const Payment: FC = () => {
 	const handleCompleteOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const orderNumber = getRandomArbitrary(2000, 4000);
-		dispatch(
-			addToOrders(
-				cart,
-				userID,
-				orderNumber,
-				shippingMethod,
-				Math.round((total + Number.EPSILON) * 100) / 100
-			)
-		);
+		if (isAuthenticated) {
+			dispatch(
+				addToOrders(
+					cart,
+					user?.sub!,
+					orderNumber,
+					shippingMethod,
+					Math.round((total + Number.EPSILON) * 100) / 100,
+					"auth"
+				)
+			);
+		} else {
+			dispatch(
+				addToOrders(
+					cart,
+					userID,
+					orderNumber,
+					shippingMethod,
+					Math.round((total + Number.EPSILON) * 100) / 100,
+					"guest"
+				)
+			);
+		}
 
 		history.replace("/checkout/success");
 	};

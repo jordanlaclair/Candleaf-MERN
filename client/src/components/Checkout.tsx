@@ -91,9 +91,23 @@ const Checkout: FC = () => {
 	useEffect(() => {
 		let discount = Math.round((cartTotal * 0.1 + Number.EPSILON) * 100) / 100;
 		if (checkNewsLetter) {
-			dispatch(userAction.addNewsLetterDiscount(discount, userID));
+			if (isAuthenticated) {
+				dispatch(
+					userAction.addNewsLetterDiscount(discount, user?.sub!, "auth")
+				);
+			} else {
+				dispatch(userAction.addNewsLetterDiscount(discount, userID, "guest"));
+			}
 		} else if (!checkNewsLetter && newsLetterDiscount > 0) {
-			dispatch(userAction.removeNewsLetterDiscount(discount, userID));
+			if (isAuthenticated) {
+				dispatch(
+					userAction.removeNewsLetterDiscount(discount, user?.sub!, "auth")
+				);
+			} else {
+				dispatch(
+					userAction.removeNewsLetterDiscount(discount, userID, "guest")
+				);
+			}
 		}
 	}, [checkNewsLetter]);
 
@@ -190,7 +204,12 @@ const Checkout: FC = () => {
 			userCity: reduxUser.city,
 		};
 
-		dispatch(userAction.userSubmitDetails(userID, userDetails));
+		if (isAuthenticated) {
+			dispatch(userAction.userSubmitDetails(user?.sub!, userDetails, "auth"));
+		} else {
+			dispatch(userAction.userSubmitDetails(userID, userDetails, "guest"));
+		}
+
 		history.push("/checkout/shipping");
 	};
 

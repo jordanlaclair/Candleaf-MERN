@@ -58,11 +58,19 @@ const CartItem: FC<PropTypes> = ({
 	};
 
 	const handleRemoveFromCart = (productId: string, userId: string) => {
-		dispatch(action.removeFromCart(productId, userId));
+		if (isAuthenticated) {
+			dispatch(action.removeFromCart(productId, user?.sub!, "auth"));
+		} else {
+			dispatch(action.removeFromCart(productId, userId, "guest"));
+		}
 	};
 
 	const handleLowerQuantity = (productId: string, userId: string) => {
-		dispatch(action.lowerQuantity(productId, userId));
+		if (isAuthenticated) {
+			dispatch(action.lowerQuantity(productId, user?.sub!, "auth"));
+		} else {
+			dispatch(action.lowerQuantity(productId, userId, "guest"));
+		}
 	};
 
 	const handleGetImage = () => {

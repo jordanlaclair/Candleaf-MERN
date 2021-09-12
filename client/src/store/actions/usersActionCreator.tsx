@@ -215,7 +215,6 @@ export const addToCart =
 					newsLetterDiscount,
 				};
 				if (typeOfUser == "auth") {
-					console.log(newData);
 					await api.updateAuthUser(userID, newData);
 				} else {
 					await api.updateUser(userID, newData);
@@ -258,7 +257,6 @@ export const addToCart =
 					newsLetterDiscount,
 				};
 				if (typeOfUser == "auth") {
-					console.log(newData);
 					await api.updateAuthUser(userID, newData);
 				} else {
 					await api.updateUser(userID, newData);
@@ -317,8 +315,6 @@ export const addToCart =
 					newsLetterDiscount,
 				};
 				if (typeOfUser == "auth") {
-					console.log(newData);
-
 					await api.updateAuthUser(userID, newData);
 				} else {
 					await api.updateUser(userID, newData);
@@ -331,10 +327,15 @@ export const addToCart =
 	};
 
 export const removeFromCart =
-	(productID: string, userID: string) =>
+	(productID: string, userID: string, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 
 			const data = response?.data;
 
@@ -398,7 +399,12 @@ export const removeFromCart =
 				newsLetterDiscount,
 			};
 
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
+
 			dispatch({ type: ActionType.REMOVE_FROM_CART, payload: newData });
 		} catch (error) {
 			console.log(error);
@@ -406,10 +412,15 @@ export const removeFromCart =
 	};
 
 export const lowerQuantity =
-	(productID: string, userID: string) =>
+	(productID: string, userID: string, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 
 			const data = response?.data;
 			let {
@@ -474,8 +485,12 @@ export const lowerQuantity =
 				totalDiscounts,
 				newsLetterDiscount,
 			};
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 
-			await api.updateUser(userID, newData);
 			dispatch({ type: ActionType.LOWER_QUANTITY, payload: newData });
 		} catch (error) {
 			console.log(error);
@@ -667,7 +682,6 @@ export const addCouponDiscount =
 			} else {
 				await api.updateUser(userID, newData);
 			}
-			await api.updateUser(userID, newData);
 
 			dispatch({ type: ActionType.ADD_COUPON_DISCOUNT, payload: value });
 		} catch (error) {
@@ -747,10 +761,15 @@ export const removeCouponDiscount =
 	};
 
 export const addNewsLetterDiscount =
-	(value: number, userID: string) =>
+	(value: number, userID: string, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 
 			const data = response?.data;
 
@@ -801,8 +820,11 @@ export const addNewsLetterDiscount =
 				totalDiscounts,
 				newsLetterDiscount: value,
 			};
-
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 
 			dispatch({
 				type: ActionType.ADD_NEWSLETTER_DISCOUNT,
@@ -814,11 +836,15 @@ export const addNewsLetterDiscount =
 	};
 
 export const removeNewsLetterDiscount =
-	(value: number, userID: string) =>
+	(value: number, userID: string, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
-
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 			const data = response?.data;
 
 			let {
@@ -863,7 +889,11 @@ export const removeNewsLetterDiscount =
 				newsLetterDiscount: 0,
 			};
 
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 
 			dispatch({
 				type: ActionType.REMOVE_NEWSLETTER_DISCOUNT,
@@ -875,10 +905,15 @@ export const removeNewsLetterDiscount =
 	};
 
 export const userSubmitDetails =
-	(userID: string, userDetails: UserSubmitDetails) =>
+	(userID: string, userDetails: UserSubmitDetails, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 
 			const data = response?.data;
 			console.log(userDetails);
@@ -932,7 +967,11 @@ export const userSubmitDetails =
 				totalDiscounts: newsLetterDiscount + couponDiscount,
 				newsLetterDiscount,
 			};
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 			dispatch({ type: ActionType.USER_SUBMIT_DETAILS });
 		} catch (error) {
 			console.log(error);
@@ -979,10 +1018,15 @@ export const updateLastName =
 	};
 
 export const updateShippingCost =
-	(shippingMethodInput: string, userID: string) =>
+	(shippingMethodInput: string, userID: string, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 
 			const data = response?.data;
 			let {
@@ -1066,7 +1110,12 @@ export const updateShippingCost =
 				totalDiscounts,
 				newsLetterDiscount,
 			};
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
+
 			dispatch({
 				type: ActionType.UPDATE_SHIPPING,
 				payload: shippingPayload,
@@ -1082,11 +1131,17 @@ export const addToOrders =
 		userID: string,
 		orderNumber: number,
 		shippingMethod: string,
-		cartTotal: number
+		cartTotal: number,
+		typeOfUser: string
 	) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const response = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
 
 			const data = response?.data;
 			let {
@@ -1159,7 +1214,11 @@ export const addToOrders =
 				newsLetterDiscount: 0,
 				totalDiscounts: 0,
 			};
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 
 			dispatch({ type: ActionType.PURCHASE_COMPLETE, payload: newData });
 		} catch (error) {

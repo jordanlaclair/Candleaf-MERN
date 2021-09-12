@@ -45,6 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import { FC } from "react";
 import devices from "../styles/devices";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Shipping: FC = () => {
 	const [shippingMethod, setShippingMethod] = useState("");
@@ -53,6 +54,7 @@ const Shipping: FC = () => {
 	const couponDiscount = useSelector(
 		(state: State) => state.user.couponDiscount
 	);
+	const { user, isAuthenticated } = useAuth0();
 	const newsLetterDiscount = useSelector(
 		(state: State) => state.user.newsLetterDiscount
 	);
@@ -175,7 +177,11 @@ const Shipping: FC = () => {
 
 	useEffect(() => {
 		if (shippingMethod !== "") {
-			dispatch(updateShippingCost(shippingMethod, userID));
+			if (isAuthenticated) {
+				dispatch(updateShippingCost(shippingMethod, user?.sub!, "auth"));
+			} else {
+				dispatch(updateShippingCost(shippingMethod, userID, "guest"));
+			}
 		}
 	}, [shippingMethod]);
 
