@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import Users from "../models/User.js";
 import axios from "axios";
+
 const router = express.Router();
 const url = "http://localhost:5000/users";
 
@@ -16,11 +17,32 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
 	const { id } = req.params;
+
 	try {
-		const user = await Users.findById(id, () => {
-			//console.log("found user by id");
-		});
-		res.status(200).json(user);
+		if (!mongoose.Types.ObjectId.isValid(id))
+			res.status(404).json({ message: "Could not find user" });
+		else {
+			const user = await Users.findById(id);
+			if (user == null)
+				res.status(404).json({ message: "Could not find user" });
+			else {
+				res.status(200).json(user);
+			}
+		}
+	} catch (error) {
+		res.status(404).json({ message: error.message });
+	}
+};
+
+export const getAuthUser = async (req, res) => {
+	const { id } = req.params;
+	try {
+		const user = await Users.findOne({ auth0ID: id });
+		if (user == null) {
+			res.status(404).json({ message: "Could not find user" });
+		} else {
+			res.status(200).json(user);
+		}
 	} catch (error) {
 		res.status(404).json({ message: error.message });
 	}
@@ -54,88 +76,36 @@ export const createUser = async (req, res) => {
 	} = req.body;
 
 	try {
-		const auth0Exists = await Users.exists({ auth0ID: auth0ID });
+		cart = {};
 
-		const guestExists = await Users.exists({ guestID: guestID });
-
-		//when first login
-
-		if (auth0Exists && auth0ID !== "") {
-			await Users.findOneAndUpdate(
-				{ auth0ID: auth0ID },
-				{ guestID: guestID },
-				(err, user) => {
-					res.status(201).json(user);
-				}
-			);
-		} else if (!auth0Exists && auth0ID !== "") {
-			cart = {};
-
-			const newData = {
-				orders,
-				cart,
-				name,
-				createdAt,
-				auth0ID,
-				firstName,
-				guestID,
-				lastName,
-				_id,
-				cartTotal,
-				email,
-				cartWeight,
-				postalCode,
-				shippingCost,
-				shippingMethod,
-				address,
-				city,
-				total,
-				couponDiscount,
-				country,
-				region,
-				totalDiscounts,
-				newsLetterDiscount,
-			};
-			const newUser = new Users(newData);
-			await newUser.save();
-			res.status(201).json(newUser);
-		} else if (guestExists) {
-			await Users.findOne({ guestID: guestID }, (err, user) => {
-				res.status(201).json(user);
-			});
-		} else {
-			cart = {};
-
-			const newData = {
-				orders,
-				cart,
-				name,
-				createdAt,
-				auth0ID,
-				firstName,
-				guestID,
-				lastName,
-				_id,
-				cartTotal,
-				email,
-				cartWeight,
-				postalCode,
-				shippingCost,
-				shippingMethod,
-				address,
-				city,
-				total,
-				couponDiscount,
-				country,
-				region,
-				totalDiscounts,
-				newsLetterDiscount,
-			};
-
-			const newUser = new Users(newData);
-			await newUser.save();
-			res.status(201).json(newUser);
-		}
+		const newData = {
+			orders,
+			cart,
+			name,
+			createdAt,
+			auth0ID,
+			firstName,
+			guestID,
+			lastName,
+			_id,
+			cartTotal,
+			email,
+			cartWeight,
+			postalCode,
+			shippingCost,
+			shippingMethod,
+			address,
+			city,
+			total,
+			couponDiscount,
+			country,
+			region,
+			totalDiscounts,
+			newsLetterDiscount,
+		};
+		const newUser = new Users(newData);
+		await newUser.save();
+		res.status(201).json(newUser);
 	} catch (error) {
 		res.status(409).json({ message: error.message });
 	}
@@ -198,17 +168,83 @@ export const updateUser = async (req, res) => {
 	};
 	await Users.findByIdAndUpdate(id, updatedUser, { new: true });
 
-	res.json(updatedUser);
+	res.status(200).json(updatedUser);
 };
+export const updateAuthUser = async (req, res) => {
+	try {
+		const { id } = req.params;
 
+		const {
+			orders,
+			cart,
+			createdAt,
+			auth0ID,
+			_id,
+			cartTotal,
+			guestID,
+			email,
+			postalCode,
+			cartWeight,
+			shippingCost,
+			shippingMethod,
+			address,
+			city,
+			firstName,
+			lastName,
+			country,
+			region,
+			total,
+			couponDiscount,
+			totalDiscounts,
+			newsLetterDiscount,
+		} = req.body;
+
+		const updatedUser = {
+			orders,
+			cart,
+			firstName,
+			lastName,
+			createdAt,
+			auth0ID,
+			_id,
+			cartTotal,
+			email,
+			guestID,
+			cartWeight,
+			postalCode,
+			shippingCost,
+			shippingMethod,
+			address,
+			city,
+			country,
+			region,
+			total,
+			couponDiscount,
+			totalDiscounts,
+			newsLetterDiscount,
+		};
+
+		let newUser = await Users.findOneAndUpdate({ auth0ID: id }, updatedUser, {
+			new: true,
+		});
+		res.status(200).json(newUser);
+	} catch (error) {
+		console.log(error);
+	}
+};
 export const deleteUser = async (req, res) => {
 	const { id } = req.params;
-
-	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No post with id: ${id}`);
 
 	await Users.findByIdAndRemove(id);
 	res.status(200).json({ message: "User deleted successfully." });
 };
 
+export const deleteAllUsers = async (req, res) => {
+	try {
+		await Users.deleteMany({}, () => {});
+		res.status(200).json({ message: "Users deleted successfully." });
+	} catch (error) {
+		res.status(404).json({ message: error.message });
+	}
+};
 export default router;

@@ -44,18 +44,42 @@ const orderSchema = mongoose.Schema({
 
 const userSchema = mongoose.Schema({
 	orders: [orderSchema],
-	firstName: String,
-	lastName: String,
-	address: String,
-	postalCode: Number,
-	city: String,
+	firstName: {
+		default: "",
+		type: String,
+	},
+	lastName: {
+		default: "",
+		type: String,
+	},
+	address: {
+		default: "",
+		type: String,
+	},
+	postalCode: {
+		default: 0,
+		type: Number,
+	},
+	city: {
+		default: "",
+		type: String,
+	},
 	guestID: {
 		default: "",
 		type: String,
 	},
-	country: String,
-	region: String,
-	email: String,
+	country: {
+		default: "",
+		type: String,
+	},
+	region: {
+		default: "",
+		type: String,
+	},
+	email: {
+		default: "",
+		type: String,
+	},
 	couponDiscount: {
 		default: 0,
 		type: Number,
@@ -76,7 +100,10 @@ const userSchema = mongoose.Schema({
 		default: 0,
 		type: Number,
 	},
-	shippingMethod: String,
+	shippingMethod: {
+		default: 0,
+		type: Number,
+	},
 	newsLetterDiscount: {
 		default: 0,
 		type: Number,
