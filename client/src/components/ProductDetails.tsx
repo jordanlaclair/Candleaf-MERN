@@ -62,6 +62,7 @@ const ProductDetails: FC = () => {
 
 	const userID = useSelector((state: State) => state.user._id);
 	const orders = useSelector((state: State) => state.user.orders);
+	
 	const starNormalOptions = {
 		loop: false,
 		autoplay: true,
@@ -233,7 +234,11 @@ const ProductDetails: FC = () => {
 			productWeight: intWeight,
 			productName,
 		};
-		dispatch(addSpecificAmount(userId, candleData, quantity));
+		if (isAuthenticated) {
+			dispatch(addSpecificAmount(user?.sub!, candleData, quantity, "auth"));
+		} else {
+			dispatch(addSpecificAmount(userID, candleData, quantity, "guest"));
+		}
 		setProductQuantity(1);
 	};
 

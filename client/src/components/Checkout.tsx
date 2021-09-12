@@ -20,7 +20,7 @@ import { UserSubmitDetailsObject } from "../store/actions";
 import { FC } from "react";
 
 const Checkout: FC = () => {
-	const { user } = useAuth0();
+	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [couponCode, setCouponCode] = useState("");
@@ -66,11 +66,21 @@ const Checkout: FC = () => {
 		if (couponCount === 1) {
 			let discount =
 				Math.round((cartTotal * 0.05 + Number.EPSILON) * 100) / 100;
-			dispatch(userAction.addCouponDiscount(discount, userID));
+			if (isAuthenticated) {
+				dispatch(userAction.addCouponDiscount(discount, user?.sub!, "auth"));
+			} else {
+				dispatch(userAction.addCouponDiscount(discount, userID, "guest"));
+			}
 		}
 	}, [couponCount]);
 	useEffect(() => {
-		if (couponDiscount > 0) dispatch(userAction.removeCouponDiscount(userID));
+		if (couponDiscount > 0) {
+			if (isAuthenticated) {
+				dispatch(userAction.removeCouponDiscount(user?.sub!, "auth"));
+			} else {
+				dispatch(userAction.removeCouponDiscount(userID, "guest"));
+			}
+		}
 		return () => {};
 	}, []);
 

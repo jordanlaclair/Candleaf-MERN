@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers/index";
 import { FC } from "react";
 import { lightTheme } from "../styles/Themes";
+import { useAuth0 } from "@auth0/auth0-react";
 
 type PropTypes = {
 	title: string;
@@ -36,7 +37,7 @@ const Product: FC<PropTypes> = ({
 	showQuantity,
 	showAddToCart,
 }) => {
-	const user = useSelector((state: State) => state.user);
+	const guestUser = useSelector((state: State) => state.user);
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),
@@ -51,6 +52,7 @@ const Product: FC<PropTypes> = ({
 	const handleClick = (id: string) => {
 		history.push(`/products/candles/${id}`);
 	};
+	const { user, isAuthenticated } = useAuth0();
 
 	const addToCart = (
 		userID: string,
@@ -66,7 +68,11 @@ const Product: FC<PropTypes> = ({
 				productWeight,
 				price,
 			};
-			dispatch(action.addToCart(userID, order));
+			if (isAuthenticated) {
+				dispatch(action.addToCart(user?.sub!, order, "auth"));
+			} else {
+				dispatch(action.addToCart(guestUser._id, order, "guest"));
+			}
 		}
 	};
 
@@ -100,7 +106,13 @@ const Product: FC<PropTypes> = ({
 						onClick={(e) => {
 							e.stopPropagation();
 							if (productWeight !== undefined)
-								addToCart(user._id, title, price, productId, productWeight);
+								addToCart(
+									guestUser._id,
+									title,
+									price,
+									productId,
+									productWeight
+								);
 						}}
 					>
 						<h4>Add to Cart</h4>

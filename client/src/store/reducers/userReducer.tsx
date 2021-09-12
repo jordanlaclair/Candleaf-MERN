@@ -77,7 +77,7 @@ let initialState: UserSchema = {
 	shippingCost: 0,
 	shippingMethod: "",
 	total: 0,
-	_id: "",
+	_id: "none",
 	cart: [
 		{
 			productName: "none",
@@ -98,19 +98,47 @@ const reducer: Reducer<UserSchema, UserActions> = (
 ): UserSchema => {
 	switch (action.type) {
 		case ActionType.CREATE_USER:
-			//if not guestid create new one
-			return action.payload;
+			if (user._id == "none") return action.payload;
 
+			return {
+				...action.payload,
+				_id: user._id,
+			};
+		case ActionType.GET_AUTH_USER:
+			return {
+				...action.payload,
+				_id: user._id,
+			};
+		case ActionType.GET_USER:
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 		case ActionType.UPDATE_USER:
-			return action.payload;
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 		case ActionType.REMOVE_FROM_CART:
-			return action.payload;
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 		case ActionType.ADD_TO_CART:
-			return action.payload;
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 		case ActionType.LOWER_QUANTITY:
-			return action.payload;
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 		case ActionType.ADD_TO_CART_QUANTITY:
-			return action.payload;
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 		case ActionType.ADD_COUPON_DISCOUNT:
 			user.couponDiscount = action.payload;
 			return user;
@@ -167,10 +195,10 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			return user;
 
 		case ActionType.PURCHASE_COMPLETE:
-			return action.payload;
-
-		case ActionType.SIGN_OUT:
-			return initialState;
+			return {
+				...action.payload,
+				_id: user._id,
+			};
 
 		default:
 			return user;

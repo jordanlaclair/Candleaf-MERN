@@ -85,6 +85,7 @@ type OrdersArray = Array<OrderSchema>;
 export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
 	try {
 		const { data } = await api.fetchUsers();
+
 		dispatch({ type: ActionType.GET_USERS_COUNT, payload: data });
 	} catch (error) {
 		console.log(error);
@@ -94,25 +95,32 @@ export const getUsers = () => async (dispatch: Dispatch<UserActions>) => {
 export const getUser =
 	(id: string) => async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(id);
-			dispatch({ type: ActionType.GET_USER, payload: data });
+			const response = await api.fetchUser(id);
+
+			dispatch({ type: ActionType.GET_USER, payload: response?.data });
+		} catch (error) {
+			console.log(error);
+			return 0;
+		}
+	};
+
+export const createUser =
+	(userData: object) => async (dispatch: Dispatch<UserActions>) => {
+		try {
+			const { data } = await api.createUser(userData);
+			dispatch({ type: ActionType.CREATE_USER, payload: data });
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-interface Auth0Schema {
-	firstName: string;
-	lastName: string;
-	auth0ID: string;
-	guestID?: string;
-}
-
-export const createUser =
-	(post: Auth0Schema) => async (dispatch: Dispatch<UserActions>) => {
+export const getAuthUser =
+	(id: string) => async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.createUser(post);
-			dispatch({ type: ActionType.CREATE_USER, payload: data });
+			const response = await api.fetchAuthUser(id);
+			const data = response?.data;
+
+			dispatch({ type: ActionType.GET_AUTH_USER, payload: data });
 		} catch (error) {
 			console.log(error);
 		}
@@ -131,10 +139,17 @@ export const updateUser =
 	};
 
 export const addToCart =
-	(userID: string, candleData: ProductSchema) =>
+	(userID: string, candleData: ProductSchema, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -160,6 +175,7 @@ export const addToCart =
 				totalDiscounts,
 				newsLetterDiscount,
 			} = data;
+
 			let newData;
 			let exists = false;
 
@@ -198,9 +214,13 @@ export const addToCart =
 					totalDiscounts,
 					newsLetterDiscount,
 				};
+				if (typeOfUser == "auth") {
+					console.log(newData);
+					await api.updateAuthUser(userID, newData);
+				} else {
+					await api.updateUser(userID, newData);
+				}
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
-
-				await api.updateUser(userID, newData);
 			} else if (
 				cart.length > 0 &&
 				cart[0].productName === "None" &&
@@ -237,9 +257,13 @@ export const addToCart =
 					totalDiscounts,
 					newsLetterDiscount,
 				};
+				if (typeOfUser == "auth") {
+					console.log(newData);
+					await api.updateAuthUser(userID, newData);
+				} else {
+					await api.updateUser(userID, newData);
+				}
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
-
-				await api.updateUser(userID, newData);
 			} else {
 				for (let i = 0; i < cart.length; i++) {
 					exists = Object.values(cart[i]).includes(candleData.productId);
@@ -292,8 +316,14 @@ export const addToCart =
 					totalDiscounts,
 					newsLetterDiscount,
 				};
+				if (typeOfUser == "auth") {
+					console.log(newData);
+
+					await api.updateAuthUser(userID, newData);
+				} else {
+					await api.updateUser(userID, newData);
+				}
 				dispatch({ type: ActionType.ADD_TO_CART, payload: newData });
-				await api.updateUser(userID, newData);
 			}
 		} catch (error) {
 			console.log(error);
@@ -304,7 +334,9 @@ export const removeFromCart =
 	(productID: string, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -377,8 +409,9 @@ export const lowerQuantity =
 	(productID: string, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
 
+			const data = response?.data;
 			let {
 				orders,
 				cart,
@@ -450,10 +483,22 @@ export const lowerQuantity =
 	};
 
 export const addSpecificAmount =
-	(userID: string, productData: ProductSchema, quantity: number) =>
+	(
+		userID: string,
+		productData: ProductSchema,
+		quantity: number,
+		typeOfUser: string
+	) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -546,18 +591,29 @@ export const addSpecificAmount =
 				totalDiscounts,
 				newsLetterDiscount,
 			};
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 
-			await api.updateUser(userID, newData);
 			dispatch({ type: ActionType.ADD_TO_CART_QUANTITY, payload: newData });
 		} catch (error) {
 			console.log(error);
 		}
 	};
 export const addCouponDiscount =
-	(value: number, userID: string) =>
+	(value: number, userID: string, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -606,7 +662,11 @@ export const addCouponDiscount =
 				totalDiscounts,
 				newsLetterDiscount,
 			};
-
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 			await api.updateUser(userID, newData);
 
 			dispatch({ type: ActionType.ADD_COUPON_DISCOUNT, payload: value });
@@ -616,9 +676,17 @@ export const addCouponDiscount =
 	};
 
 export const removeCouponDiscount =
-	(userID: string) => async (dispatch: Dispatch<UserActions>) => {
+	(userID: string, typeOfUser: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -666,7 +734,11 @@ export const removeCouponDiscount =
 				newsLetterDiscount: 0,
 			};
 
-			await api.updateUser(userID, newData);
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
 
 			dispatch({ type: ActionType.REMOVE_COUPON_DISCOUNT });
 		} catch (error) {
@@ -678,7 +750,9 @@ export const addNewsLetterDiscount =
 	(value: number, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -743,7 +817,9 @@ export const removeNewsLetterDiscount =
 	(value: number, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
+
+			const data = response?.data;
 
 			let {
 				orders,
@@ -802,7 +878,9 @@ export const userSubmitDetails =
 	(userID: string, userDetails: UserSubmitDetails) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
+
+			const data = response?.data;
 			console.log(userDetails);
 			let {
 				userEmail,
@@ -904,7 +982,9 @@ export const updateShippingCost =
 	(shippingMethodInput: string, userID: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
+
+			const data = response?.data;
 			let {
 				orders,
 				cart,
@@ -1006,7 +1086,9 @@ export const addToOrders =
 	) =>
 	async (dispatch: Dispatch<UserActions>) => {
 		try {
-			const { data } = await api.fetchUser(userID);
+			const response = await api.fetchUser(userID);
+
+			const data = response?.data;
 			let {
 				orders,
 				cart,

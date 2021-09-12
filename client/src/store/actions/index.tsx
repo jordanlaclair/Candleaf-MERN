@@ -174,6 +174,10 @@ interface CreateUserAction {
 	type: ActionType.CREATE_USER;
 	payload: UsersSchema;
 }
+interface FetchAuthUserAction {
+	type: ActionType.GET_AUTH_USER;
+	payload: UsersSchema;
+}
 
 interface UpdateUserAction {
 	type: ActionType.UPDATE_USER;
@@ -304,6 +308,7 @@ export type UserActions =
 	| UpdateUserAction
 	| GetUsersAction
 	| AddToCartAction
+	| FetchAuthUserAction
 	| RemoveFromCartAction
 	| LowerQuantityAction
 	| ResetTotalDiscounts

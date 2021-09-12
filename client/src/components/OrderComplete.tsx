@@ -35,7 +35,8 @@ const OrderComplete: FC = () => {
 
 	const fetchOrderNumber = async () => {
 		setTimeout(async () => {
-			const { data } = await fetchUser(userID);
+			const response = await fetchUser(userID);
+			const data = response?.data;
 			let { orders } = data;
 
 			const { orderNumber } = orders.slice(-1)[0];

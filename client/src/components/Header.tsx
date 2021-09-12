@@ -15,9 +15,13 @@ import { useHistory } from "react-router-dom";
 import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
+import { getAuthUser } from "../store/actions/usersActionCreator";
+import { AxiosResponse, AxiosError } from "axios";
 import { FC } from "react";
 import { signOut } from "../store/actions/usersActionCreator";
 import { v4 as uuidv4 } from "uuid";
+import * as usersApi from "../apis/users";
+import { createVerify } from "crypto";
 
 const Header: FC = () => {
 	interface Auth0Schema {
@@ -30,7 +34,8 @@ const Header: FC = () => {
 	const { loginWithRedirect } = useAuth0();
 	const { logout } = useAuth0();
 	const firstName = useSelector((state: State) => state.user.firstName);
-	const guestID = useSelector((state: State) => state.user.guestID);
+	const id = useSelector((state: State) => state.user._id);
+
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -93,25 +98,43 @@ const Header: FC = () => {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (isAuthenticated && firstName === "Guest") {
-			// non-null assertion operator tells typescript that even though it can be null, it can trust you that its not
-			let newUser: Auth0Schema = {
-				firstName: user?.given_name!,
-				lastName: user?.family_name!,
-				auth0ID: user?.sub!,
-				guestID,
-			};
-			dispatch(action.createUser(newUser));
-		} else if (!isAuthenticated) {
-			let newUser: Auth0Schema = {
-				firstName: "Guest",
-				lastName: "",
-				auth0ID: "",
-				guestID: guestID && guestID.length > 5 ? guestID : uuidv4(),
-			};
+	const handleGuestLogin = async (id: string) => {
+		const response = await usersApi.fetchUser(id);
+		console.log(response);
+		const responseCode = response?.status;
+		console.log(responseCode);
+		if (responseCode == 404) {
+			dispatch(action.createUser({ firstName: "Guest" }));
+		} else {
+			console.log(id);
+			dispatch(action.getUser(id));
+		}
+	};
 
-			dispatch(action.createUser(newUser));
+	const handleAuthLogin = async (id: string) => {
+		const response = await usersApi.fetchAuthUser(id);
+		const responseCode = response?.status;
+		if (responseCode == 404) {
+			dispatch(
+				action.createUser({
+					firstName: user?.name,
+					lastName: user?.family_name,
+					email: user?.email,
+					auth0ID: id,
+				})
+			);
+		} else {
+			dispatch(getAuthUser(id));
+		}
+	};
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			console.log("authenticated");
+			handleAuthLogin(user?.sub!);
+		} else if (!isAuthenticated) {
+			console.log("not authetnicated");
+			handleGuestLogin(id);
 		}
 	}, [isAuthenticated]);
 

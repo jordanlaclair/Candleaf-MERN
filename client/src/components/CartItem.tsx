@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions/index";
 import { State } from "../store/reducers";
 import devices from "../styles/devices";
+import { useAuth0 } from "@auth0/auth0-react";
 type PropTypes = {
 	productName: string;
 	productId: string;
@@ -32,8 +33,9 @@ const CartItem: FC<PropTypes> = ({
 	price,
 }) => {
 	const dispatch = useDispatch();
-	const user = useSelector((state: State) => state.user);
+	const guestUser = useSelector((state: State) => state.user);
 	const candles = useSelector((state: State) => state.candles);
+	const { user, isAuthenticated } = useAuth0();
 
 	const handleAddToCart = (
 		productName: string,
@@ -48,7 +50,11 @@ const CartItem: FC<PropTypes> = ({
 			productId,
 		};
 
-		dispatch(action.addToCart(user._id, order));
+		if (isAuthenticated) {
+			dispatch(action.addToCart(user?.sub!, order, "auth"));
+		} else {
+			dispatch(action.addToCart(guestUser._id, order, "guest"));
+		}
 	};
 
 	const handleRemoveFromCart = (productId: string, userId: string) => {
@@ -76,7 +82,7 @@ const CartItem: FC<PropTypes> = ({
 						<h3>{productName}</h3>
 						<h4
 							onClick={() => {
-								handleRemoveFromCart(productId, user._id);
+								handleRemoveFromCart(productId, guestUser._id);
 							}}
 						>
 							Remove
@@ -94,7 +100,7 @@ const CartItem: FC<PropTypes> = ({
 				<QuantityWrapper>
 					<IndeterminateCheckBoxIcon
 						onClick={() => {
-							handleLowerQuantity(productId, user._id);
+							handleLowerQuantity(productId, guestUser._id);
 						}}
 					/>
 					<h3>{productQuantity}</h3>
