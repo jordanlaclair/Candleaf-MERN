@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
@@ -21,6 +21,7 @@ import { FC } from "react";
 
 const Checkout: FC = () => {
 	const { user, isAuthenticated } = useAuth0();
+	const postalCodeRef = useRef(0);
 	const dispatch = useDispatch();
 	const [checkNewsLetter, setCheckNewsLetter] = useState(false);
 	const [couponCode, setCouponCode] = useState("");
@@ -74,6 +75,9 @@ const Checkout: FC = () => {
 		}
 	}, [couponCount]);
 	useEffect(() => {
+		let postalCode = document?.getElementById("postalCode") as HTMLInputElement;
+		if (postalCode.value === "0") postalCode.value = "";
+
 		if (couponDiscount > 0) {
 			if (isAuthenticated) {
 				dispatch(userAction.removeCouponDiscount(user?.sub!, "auth"));
@@ -337,6 +341,7 @@ const Checkout: FC = () => {
 					<InputField
 						placeholder="Postal Code"
 						type="number"
+						id="postalCode"
 						required
 						value={postalCode}
 						onChange={(e) => {
@@ -574,7 +579,10 @@ const NewsLetterWrapper = styled.div`
 
 const InputHeader = styled.h2``;
 
-export const InputField = styled.input<{ fieldType?: string }>`
+export const InputField = styled.input<{
+	fieldType?: string;
+	id?: string;
+}>`
 	padding: 15px;
 	overflow: hidden;
 	outline: none;
