@@ -34,6 +34,7 @@ import styled from "styled-components";
 import UserInfoField from "./UserInfoField";
 import Lottie from "react-lottie";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { lightTheme } from "../styles/Themes";
 import PersonIcon from "@material-ui/icons/Person";
 import { Button, makeStyles } from "@material-ui/core";
@@ -342,6 +343,7 @@ const Payment: FC = () => {
 							<Product
 								title={product.productName}
 								price={product.price}
+								key={uuidv4()}
 								image={result}
 								productId={product.productId}
 								productQuantity={product.productQuantity}

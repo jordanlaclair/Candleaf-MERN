@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import devices from "../styles/devices";
 import Review from "./Review";
+import { v4 as uuidv4 } from "uuid";
 import Stars from "./Stars";
 
 interface ReviewTypes {
@@ -53,6 +54,7 @@ const Reviews: FC<ReviewsPropTypes> = ({
 					return (
 						<Review
 							rating={review.rating}
+							key={uuidv4()}
 							name={review.name}
 							picture={review.userPicture}
 							title={review.title}

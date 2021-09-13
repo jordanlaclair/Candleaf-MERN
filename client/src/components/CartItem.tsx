@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions/index";
 import { State } from "../store/reducers";
 import devices from "../styles/devices";
+import { v4 as uuidv4 } from "uuid";
 import { useAuth0 } from "@auth0/auth0-react";
 type PropTypes = {
 	productName: string;
@@ -76,7 +77,7 @@ const CartItem: FC<PropTypes> = ({
 	const handleGetImage = () => {
 		return candles.map((candle) => {
 			if (candle._id == productId) {
-				return <img src={candle.image} alt="Candleaf candle" />;
+				return <img src={candle.image} alt="Candleaf candle" key={uuidv4()} />;
 			}
 		});
 	};

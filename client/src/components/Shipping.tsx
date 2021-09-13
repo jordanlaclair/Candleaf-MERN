@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import { PurchaseOption } from "./ProductDetails";
 import Radio from "@material-ui/core/Radio";
@@ -324,6 +325,7 @@ const Shipping: FC = () => {
 						return (
 							<Product
 								title={product.productName}
+								key={uuidv4()}
 								price={product.price}
 								image={result}
 								productId={product.productId}

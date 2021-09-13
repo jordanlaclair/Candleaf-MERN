@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Product from "./Product";
-
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
@@ -54,6 +54,7 @@ const Products: FC = () => {
 								<Product
 									title={candle.title}
 									price={candle.price}
+									key={uuidv4()}
 									image={candle.image}
 									productId={candle._id}
 									productQuantity={candle.purchaseCount}

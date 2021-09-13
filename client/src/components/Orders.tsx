@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { State } from "../store/reducers";
@@ -77,6 +78,7 @@ const Orders = () => {
 											price={product.price}
 											productId={product.productId}
 											showQuantity={true}
+											key={uuidv4()}
 											title={product.productName}
 											productQuantity={product.productQuantity}
 											showAddToCart={false}

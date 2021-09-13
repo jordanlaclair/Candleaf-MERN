@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/images/leaf.svg";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { v4 as uuidv4 } from "uuid";
 import { Button, makeStyles, withStyles } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
@@ -381,6 +382,7 @@ const Checkout: FC = () => {
 							<Product
 								title={product.productName}
 								price={product.price}
+								key={uuidv4()}
 								image={result}
 								productId={product.productId}
 								productQuantity={product.productQuantity}
