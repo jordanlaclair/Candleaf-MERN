@@ -62,7 +62,7 @@ const ProductDetails: FC = () => {
 
 	const userID = useSelector((state: State) => state.user._id);
 	const orders = useSelector((state: State) => state.user.orders);
-	
+
 	const starNormalOptions = {
 		loop: false,
 		autoplay: true,

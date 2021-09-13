@@ -7,11 +7,11 @@ export const fetchUsers = () => axios.get(url);
 export const fetchUser = (id: string) =>
 	axios
 		.get(`${url}/${id}`)
-		.then((response) => {
+		.then((response: AxiosResponse) => {
 			console.log(response.status);
 			return response;
 		})
-		.catch((error) => {
+		.catch((error: AxiosError) => {
 			console.log(error.response?.status);
 			return error.response;
 		});

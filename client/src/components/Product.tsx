@@ -38,6 +38,8 @@ const Product: FC<PropTypes> = ({
 	showAddToCart,
 }) => {
 	const guestUser = useSelector((state: State) => state.user);
+	const userID = useSelector((state: State) => state.user._id);
+
 	const useStyles = makeStyles((theme) => ({
 		button: {
 			marginTop: theme.spacing(1),

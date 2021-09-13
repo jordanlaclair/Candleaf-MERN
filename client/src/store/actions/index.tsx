@@ -17,6 +17,7 @@ export {
 	removeFromCart,
 	addSpecificAmount,
 	userSubmitDetails,
+	updateEmail,
 	updateAddress,
 	updateShippingCost,
 	updateCity,

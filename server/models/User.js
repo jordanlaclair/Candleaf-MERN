@@ -64,10 +64,6 @@ const userSchema = mongoose.Schema({
 		default: "",
 		type: String,
 	},
-	guestID: {
-		default: "",
-		type: String,
-	},
 	country: {
 		default: "",
 		type: String,
@@ -84,10 +80,6 @@ const userSchema = mongoose.Schema({
 		default: 0,
 		type: Number,
 	},
-	newsLetterDiscount: {
-		default: 0,
-		type: Number,
-	},
 	totalDiscounts: {
 		default: 0,
 		type: Number,
@@ -101,8 +93,8 @@ const userSchema = mongoose.Schema({
 		type: Number,
 	},
 	shippingMethod: {
-		default: 0,
-		type: Number,
+		default: "",
+		type: String,
 	},
 	newsLetterDiscount: {
 		default: 0,

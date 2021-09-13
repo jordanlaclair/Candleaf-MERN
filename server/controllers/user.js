@@ -7,6 +7,8 @@ const router = express.Router();
 const url = "http://localhost:5000/users";
 
 export const getUsers = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	try {
 		const users = await Users.find();
 		res.status(200).json(users);
@@ -16,6 +18,8 @@ export const getUsers = async (req, res) => {
 };
 
 export const getUser = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	const { id } = req.params;
 
 	try {
@@ -35,6 +39,8 @@ export const getUser = async (req, res) => {
 };
 
 export const getAuthUser = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	const { id } = req.params;
 	try {
 		const user = await Users.findOne({ auth0ID: id });
@@ -49,6 +55,8 @@ export const getAuthUser = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	let {
 		orders,
 		cart,
@@ -112,6 +120,8 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	const { id } = req.params;
 
 	const {
@@ -172,6 +182,8 @@ export const updateUser = async (req, res) => {
 };
 export const updateAuthUser = async (req, res) => {
 	try {
+		res.header("Access-Control-Allow-Origin", "*");
+
 		const { id } = req.params;
 
 		const {
@@ -233,6 +245,8 @@ export const updateAuthUser = async (req, res) => {
 	}
 };
 export const deleteUser = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	const { id } = req.params;
 
 	await Users.findByIdAndRemove(id);
@@ -240,6 +254,8 @@ export const deleteUser = async (req, res) => {
 };
 
 export const deleteAllUsers = async (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*");
+
 	try {
 		await Users.deleteMany({}, () => {});
 		res.status(200).json({ message: "Users deleted successfully." });

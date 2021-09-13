@@ -36,10 +36,8 @@ import {
 import { UserInfoHeader, UserInfoWrapper } from "./Payment";
 import { Button, makeStyles } from "@material-ui/core";
 import { useHistory, withRouter } from "react-router-dom";
-import {
-	updateEmail,
-	updateShippingCost,
-} from "../store/actions/usersActionCreator";
+import * as action from "../store/actions/index";
+
 import { ShippingMethod } from "../store/actions/usersActionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
@@ -178,9 +176,9 @@ const Shipping: FC = () => {
 	useEffect(() => {
 		if (shippingMethod !== "") {
 			if (isAuthenticated) {
-				dispatch(updateShippingCost(shippingMethod, user?.sub!, "auth"));
+				dispatch(action.updateShippingCost(shippingMethod, user?.sub!, "auth"));
 			} else {
-				dispatch(updateShippingCost(shippingMethod, userID, "guest"));
+				dispatch(action.updateShippingCost(shippingMethod, userID, "guest"));
 			}
 		}
 	}, [shippingMethod]);
@@ -224,7 +222,7 @@ const Shipping: FC = () => {
 						value={email}
 						defaultValue={email}
 						onChange={(e) => {
-							dispatch(updateEmail(e.target.value));
+							dispatch(action.updateEmail(e.target.value));
 						}}
 					/>
 				</InputFieldWrapper>

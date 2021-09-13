@@ -62,6 +62,7 @@
 	"main": "index.js",
 	"keywords": [],
 	"author": "",
+	"proxy": "https://candleaf-mern.herokuapp.com/",
 	"license": "ISC",
 	"devDependencies": {
 		"@types/react": "^17.0.15",

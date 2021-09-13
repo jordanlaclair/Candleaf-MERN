@@ -9,7 +9,8 @@ import {
 	deleteAllUsers,
 	updateAuthUser,
 } from "../controllers/user.js";
-
+import mongoose from "mongoose";
+import Users from "../models/User.js";
 const router = express.Router();
 
 router.get("/", getUsers);

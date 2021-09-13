@@ -1029,29 +1029,30 @@ export const updateShippingCost =
 			}
 
 			const data = response?.data;
+
 			let {
 				orders,
 				cart,
 				firstName,
 				lastName,
 				createdAt,
-				cartWeight,
 				auth0ID,
 				_id,
 				cartTotal,
-				guestID,
 				email,
 				postalCode,
+				cartWeight,
+				shippingCost,
+				guestID,
 				shippingMethod,
 				country,
-				shippingCost,
 				region,
 				address,
+				couponDiscount,
 				city,
 				total,
-				couponDiscount,
-				newsLetterDiscount,
 				totalDiscounts,
+				newsLetterDiscount,
 			} = data;
 
 			let price = 0;
@@ -1091,24 +1092,24 @@ export const updateShippingCost =
 				cart,
 				firstName,
 				lastName,
-				cartWeight,
 				createdAt,
-				guestID,
+				cartWeight,
 				auth0ID,
 				_id,
-				shippingMethod,
 				cartTotal,
+				guestID,
 				email,
 				postalCode,
-				shippingCost,
+				shippingMethod,
 				country,
+				shippingCost,
 				region,
 				address,
 				city,
 				total,
 				couponDiscount,
-				totalDiscounts,
 				newsLetterDiscount,
+				totalDiscounts,
 			};
 			if (typeOfUser == "auth") {
 				await api.updateAuthUser(userID, newData);
