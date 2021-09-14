@@ -25,17 +25,25 @@ import { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import devices from "../styles/devices";
-import { fetchUser } from "../apis/users";
+import { fetchAuthUser, fetchUser } from "../apis/users";
 import { SpinnerWrapper } from "../App";
+import { useAuth0 } from "@auth0/auth0-react";
 const OrderComplete: FC = () => {
 	const history = useHistory();
 	const userID = useSelector((state: State) => state.user._id);
 	const firstName = useSelector((state: State) => state.user.firstName);
 	const [newOrderNumber, setNewOrderNumber] = useState(0);
+	const { user, isAuthenticated } = useAuth0();
 
 	const fetchOrderNumber = async () => {
 		setTimeout(async () => {
-			const response = await fetchUser(userID);
+			let response;
+			if (isAuthenticated) {
+				response = await fetchAuthUser(userID);
+			} else {
+				response = await fetchUser(userID);
+			}
+
 			const data = response?.data;
 			let { orders } = data;
 
