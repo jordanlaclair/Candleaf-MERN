@@ -39,7 +39,7 @@ const OrderComplete: FC = () => {
 		setTimeout(async () => {
 			let response;
 			if (isAuthenticated) {
-				response = await fetchAuthUser(userID);
+				response = await fetchAuthUser(user?.sub!);
 			} else {
 				response = await fetchUser(userID);
 			}
@@ -49,7 +49,7 @@ const OrderComplete: FC = () => {
 
 			const { orderNumber } = orders.slice(-1)[0];
 			setNewOrderNumber(orderNumber);
-		}, 3000);
+		}, 2000);
 	};
 	useEffect(() => {
 		fetchOrderNumber();
