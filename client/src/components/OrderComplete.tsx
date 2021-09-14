@@ -49,7 +49,7 @@ const OrderComplete: FC = () => {
 
 			const { orderNumber } = orders.slice(-1)[0];
 			setNewOrderNumber(orderNumber);
-		}, 2000);
+		}, 3000);
 	};
 	useEffect(() => {
 		fetchOrderNumber();
