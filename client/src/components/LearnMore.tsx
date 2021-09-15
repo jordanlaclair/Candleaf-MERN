@@ -103,7 +103,7 @@ const LearnMoreWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	background: ${(props) => props.theme.colors.secondary};
-	padding: 120px 0px;
+	padding: 135px 0px;
 	scroll-margin-top: 3rem;
 	scroll-snap-align: center;
 	@media ${devices.laptop} {
