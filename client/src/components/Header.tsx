@@ -85,6 +85,7 @@ const Header: FC = () => {
 				.sort((a, b) => {
 					return b.purchaseCount - a.purchaseCount;
 				});
+
 			dispatch(updateCandles(newArr));
 		} else if (filter == Filters.LONGEST_BURNING_TIME) {
 			let newArr = candles
@@ -250,6 +251,7 @@ const Header: FC = () => {
 						<DiscoveryDropDown expanded={filtersExpanded}>
 							<h4
 								onClick={() => {
+									setFiltersExpanded(false);
 									handleFilter(Filters.LOWEST_PRICE);
 								}}
 							>
@@ -257,6 +259,7 @@ const Header: FC = () => {
 							</h4>
 							<h4
 								onClick={() => {
+									setFiltersExpanded(false);
 									handleFilter(Filters.HIGHEST_PRICE);
 								}}
 							>
@@ -265,6 +268,7 @@ const Header: FC = () => {
 
 							<h4
 								onClick={() => {
+									setFiltersExpanded(false);
 									handleFilter(Filters.MOST_POPULAR);
 								}}
 							>
@@ -273,6 +277,7 @@ const Header: FC = () => {
 
 							<h4
 								onClick={() => {
+									setFiltersExpanded(false);
 									handleFilter(Filters.LONGEST_BURNING_TIME);
 								}}
 							>
