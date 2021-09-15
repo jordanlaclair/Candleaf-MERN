@@ -30,73 +30,96 @@ const LearnMore: FC = () => {
 	return (
 		<LearnMoreWrapper id="about">
 			<LearnMoreLeft>
-				<Header className="animateLearnMore">
+				<Header
+					className="animateLearnMore"
+					data-rellax-xs-speed="5"
+					data-rellax-mobile-speed="3"
+					data-rellax-tablet-speed="3"
+				>
 					<h1>Clean and fragrant soy wax</h1>
 					<h4>Made for your home and for your wellness</h4>
 				</Header>
 				<Body>
-					<div className="animateLearnMore">
+					<div
+						className="animateLearnMore"
+						data-rellax-xs-speed="6"
+						data-rellax-mobile-speed="3"
+						data-rellax-tablet-speed="3"
+					>
 						<LearnMoreDetail
 							title="Eco-sustainable"
 							description="All recyclable materials, 0% CO2 emissions"
 						/>
 					</div>
 
-					<div className="animateLearnMore">
+					<div
+						className="animateLearnMore"
+						data-rellax-xs-speed="6"
+						data-rellax-mobile-speed="3"
+						data-rellax-tablet-speed="3"
+					>
 						<LearnMoreDetail
 							title="Long burning"
 							description="Handcrafted to last long"
 						/>
 					</div>
 
-					<div className="animateLearnMore">
+					<div
+						className="animateLearnMore"
+						data-rellax-xs-speed="6"
+						data-rellax-mobile-speed="3"
+						data-rellax-tablet-speed="3"
+					>
 						<LearnMoreDetail
 							title="Handmade"
 							description="All candles are carefully crafted with love"
 						/>
 					</div>
 
-					<div className="animateLearnMore">
+					<div
+						className="animateLearnMore"
+						data-rellax-xs-speed="6"
+						data-rellax-mobile-speed="3"
+						data-rellax-tablet-speed="3"
+					>
 						<LearnMoreDetail
 							title="Hyphoallergenic"
 							description="100% natural, human-friendly ingredients"
 						/>
 					</div>
 
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<EmojiPeopleIcon />}
+					<div
+						className="animateLearnMore"
+						data-rellax-xs-speed="6"
+						data-rellax-mobile-speed="3"
+						data-rellax-tablet-speed="3"
 					>
-						<h4>Learn More</h4>
-					</Button>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<EmojiPeopleIcon />}
+						>
+							<h4>Learn More</h4>
+						</Button>
+					</div>
 				</Body>
 			</LearnMoreLeft>
 			<LearnMoreRight>
-				<ImageWrapper className="animateLearnMore" data-rellax-speed="1">
+				<ImageWrapper
+					className="animateLearnMore"
+					data-rellax-xs-speed="5"
+					data-rellax-mobile-speed="3"
+					data-rellax-tablet-speed="3"
+				>
 					<img src={CandleGroup} alt="candles" />
 				</ImageWrapper>
-				<ButtonWrapper className="animateLearnMore">
-					<Button
-						variant="contained"
-						className={classes.button}
-						startIcon={<EmojiPeopleIcon />}
-					>
-						<h4>Learn More</h4>
-					</Button>
-				</ButtonWrapper>
 			</LearnMoreRight>
 		</LearnMoreWrapper>
 	);
 };
 
 export default LearnMore;
-const ButtonWrapper = styled.div`
-	display: none;
-	@media ${devices.laptop} {
-		display: block;
-	}
-`;
+
 const LearnMoreWrapper = styled.div`
 	display: flex;
 	width: 100%;
