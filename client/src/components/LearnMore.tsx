@@ -76,7 +76,7 @@ const LearnMore: FC = () => {
 				<ImageWrapper className="animateLearnMore" data-rellax-speed="1">
 					<img src={CandleGroup} alt="candles" />
 				</ImageWrapper>
-				<ButtonWrapper>
+				<ButtonWrapper className="animateLearnMore">
 					<Button
 						variant="contained"
 						className={classes.button}
