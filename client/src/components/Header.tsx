@@ -9,6 +9,7 @@ import Switch from "@material-ui/core/Switch";
 import { green } from "@material-ui/core/colors";
 import { State } from "../store/reducers";
 import { withStyles } from "@material-ui/core/styles";
+import { Filters } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../store/actions";
 import { useHistory } from "react-router-dom";
@@ -36,6 +37,7 @@ const Header: FC = () => {
 	const firstName = useSelector((state: State) => state.user.firstName);
 	const id = useSelector((state: State) => state.user._id);
 	const [filtersExpanded, setFiltersExpanded] = useState(false);
+
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -56,6 +58,14 @@ const Header: FC = () => {
 		setThemeSwitch((prevState) => {
 			return !prevState;
 		});
+	};
+
+	const handleFilter = (filter: Filters) => {
+		if (isAuthenticated) {
+			dispatch(action.updateFilter(user?.sub!, filter, "auth"));
+		} else {
+			dispatch(action.updateFilter(id, filter, "guest"));
+		}
 	};
 
 	const showMenu = (toggleId: string, navId: string) => {
@@ -199,9 +209,22 @@ const Header: FC = () => {
 							/>
 						</DiscoveryTop>
 						<DiscoveryDropDown expanded={filtersExpanded}>
-							<h4>Most Popular</h4>
+							<h4
+								onClick={() => {
+									handleFilter(Filters.LOWEST_PRICE);
+								}}
+							>
+								Lowest Price
+							</h4>
+							<h4
+								onClick={() => {
+									handleFilter(Filters.HIGHEST_PRICE);
+								}}
+							>
+								Highest Price
+							</h4>
 							<h4>Most Reviews</h4>
-							<h4>Lowest Price</h4>
+							<h4>Most Popular</h4>
 							<h4>Wax</h4>
 							<h4>Longest Burning Time</h4>
 						</DiscoveryDropDown>
@@ -525,6 +548,7 @@ const UserProfilePicture = styled.img`
 const NavMenu = styled.div`
 	flex: 3;
 	width: 100%;
+
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
@@ -581,7 +605,7 @@ const DiscoveryDropDown = styled.div<DropDownProps>`
 	background: ${(props) => props.theme.colors.secondary};
 	position: absolute;
 	height: ${(props) => (props.expanded ? "auto" : "0")};
-	top: ${(props) => (props.expanded ? "100%" : "0")};
+	top: ${(props) => (props.expanded ? "100%" : "-100%")};
 	opacity: ${(props) => (props.expanded ? "1" : "0")};
 	left: 50%;
 	white-space: nowrap;
@@ -595,6 +619,7 @@ const DiscoveryDropDown = styled.div<DropDownProps>`
 	padding: ${(props) => (props.expanded ? "5px 10px" : "0")};
 	align-items: flex-start;
 	> h4 {
+		overflow: hidden;
 		cursor: pointer;
 		padding: ${(props) => (props.expanded ? "15px 0" : "0")};
 

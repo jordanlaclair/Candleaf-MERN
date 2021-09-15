@@ -9,6 +9,7 @@ const emptyOrderData = {
 	price: 0,
 	_id: "",
 };
+
 const orderData = mongoose.Schema({
 	productName: String,
 	productWeight: Number,
@@ -50,6 +51,10 @@ const userSchema = mongoose.Schema({
 	},
 	lastName: {
 		default: "",
+		type: String,
+	},
+	filter: {
+		default: "NONE",
 		type: String,
 	},
 	address: {

@@ -129,7 +129,6 @@ export default Product;
 
 const ProductWrapper = styled.div<{ showQuantity?: boolean }>`
 	box-shadow: 0px 2px 15px 2px gray;
-
 	max-width: ${(props) => (props.showQuantity === true ? "210px" : "unset")};
 	border-radius: 5px;
 	padding: 20px;

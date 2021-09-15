@@ -6,7 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
 import { FC } from "react";
-const Products: FC = () => {
+import { Filters } from "../store/actions/";
+
+interface ProductsPropTypes {
+	filter: Filters;
+}
+
+const Products: FC<ProductsPropTypes> = ({ filter }) => {
 	interface CandleSchema {
 		title: string;
 		message: string;
@@ -39,6 +45,23 @@ const Products: FC = () => {
 
 	const stringWeightToInt = (weight: string) => {
 		return parseInt(weight.replace("g", ""), 10);
+	};
+
+	useEffect(() => {
+		handleFilter(filter);
+	}, [filter]);
+
+	const handleFilter = (filter: Filters) => {
+		console.log(filter);
+		if (filter == Filters.LOWEST_PRICE) {
+			candles.sort((a, b) => {
+				return b.price - a.price;
+			});
+		} else if (filter == Filters.HIGHEST_PRICE) {
+			candles.sort((a, b) => {
+				return a.price - b.price;
+			});
+		}
 	};
 
 	return (

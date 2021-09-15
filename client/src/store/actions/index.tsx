@@ -17,6 +17,7 @@ export {
 	removeFromCart,
 	addSpecificAmount,
 	userSubmitDetails,
+	updateFilter,
 	updateEmail,
 	updateAddress,
 	updateShippingCost,
@@ -34,6 +35,14 @@ export interface ToggleTheme {
 	type: ActionType.TOGGLE_THEME;
 }
 
+export enum Filters {
+	LOWEST_PRICE = "LOWEST_PRICE",
+	HIGHEST_PRICE = "HIGHEST_PRICE",
+	MOST_REVIEWS = "MOST_REVIEWS",
+	MOST_POPULAR = "MOST_POPULAR",
+	LONGEST_BURNING_TIME = "LONGEST_BURNING_TIME",
+	NONE = "NONE",
+}
 interface CandleSchema {
 	title: string;
 	message: string;
@@ -147,6 +156,7 @@ interface UsersSchema {
 	total: number;
 	email: string;
 	address: string;
+	filter: Filters;
 	guestID: string;
 	createdAt: string;
 	city: string;
@@ -304,6 +314,10 @@ interface UserSignOut {
 	type: ActionType.SIGN_OUT;
 }
 
+interface UpdateFilter {
+	type: ActionType.UPDATE_FILTER;
+	payload: Filters;
+}
 export type UserActions =
 	| GetUserAction
 	| UpdateUserAction
@@ -311,6 +325,7 @@ export type UserActions =
 	| AddToCartAction
 	| FetchAuthUserAction
 	| RemoveFromCartAction
+	| UpdateFilter
 	| LowerQuantityAction
 	| ResetTotalDiscounts
 	| UpdateTotal

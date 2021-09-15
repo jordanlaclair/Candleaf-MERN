@@ -13,6 +13,8 @@ import { fetchReviews } from "../apis/review";
 import Footer from "./Footer";
 import { lightTheme } from "../styles/Themes";
 import { FC } from "react";
+import { State } from "../store/reducers";
+import { useSelector } from "react-redux";
 
 const Home: FC = () => {
 	interface ReviewTypes {
@@ -24,7 +26,7 @@ const Home: FC = () => {
 		userPicture: string;
 	}
 	type ReviewsArray = Array<ReviewTypes>;
-
+	const filter = useSelector((state: State) => state.user.filter);
 	const [recentReviews, setRecentReviews] = useState<ReviewsArray>([]);
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -74,7 +76,7 @@ const Home: FC = () => {
 					</Button>
 				</ForeGroundWrapper>
 			</BackgroundWrapper>
-			<Products />
+			<Products filter={filter} />
 			<LearnMore />
 			{recentReviews.length > 0 ? (
 				<Reviews

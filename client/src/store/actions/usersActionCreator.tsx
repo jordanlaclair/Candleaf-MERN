@@ -3,10 +3,11 @@ import { Dispatch } from "redux";
 import { UserActions } from "./index";
 import * as api from "../../apis/users";
 import * as productApi from "../../apis/products";
-
+import { Filters } from "./index";
 interface UsersSchema {
 	firstName: string;
 	lastName: string;
+	filter: Filters;
 	auth0ID: string;
 	guestID: string;
 	couponDiscount: number;
@@ -138,6 +139,83 @@ export const updateUser =
 		}
 	};
 
+export const updateFilter =
+	(userID: string, newFilter: Filters, typeOfUser: string) =>
+	async (dispatch: Dispatch<UserActions>) => {
+		try {
+			let response;
+			if (typeOfUser == "auth") {
+				response = await api.fetchAuthUser(userID);
+			} else {
+				response = await api.fetchUser(userID);
+			}
+
+			const data = response?.data;
+
+			let {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				createdAt,
+				guestID,
+				auth0ID,
+				_id,
+				cartTotal,
+				newsLetterDiscount,
+				email,
+				postalCode,
+				shippingCost,
+				shippingMethod,
+				country,
+				region,
+				address,
+				cartWeight,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+			} = data;
+			const newData = {
+				orders,
+				cart,
+				firstName,
+				lastName,
+				cartWeight,
+				createdAt,
+				auth0ID,
+				_id,
+				cartTotal,
+				email,
+				filter: newFilter,
+				guestID,
+				postalCode,
+				shippingCost,
+				shippingMethod,
+				country,
+				region,
+				address,
+				city,
+				total,
+				couponDiscount,
+				totalDiscounts,
+				newsLetterDiscount,
+			};
+			if (typeOfUser == "auth") {
+				await api.updateAuthUser(userID, newData);
+			} else {
+				await api.updateUser(userID, newData);
+			}
+
+			dispatch({
+				type: ActionType.UPDATE_FILTER,
+				payload: newFilter,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 export const addToCart =
 	(userID: string, candleData: ProductSchema, typeOfUser: string) =>
 	async (dispatch: Dispatch<UserActions>) => {
@@ -163,6 +241,7 @@ export const addToCart =
 				cartTotal,
 				email,
 				postalCode,
+				filter,
 				shippingCost,
 				shippingMethod,
 				country,
@@ -197,6 +276,7 @@ export const addToCart =
 					lastName,
 					guestID,
 					createdAt,
+					filter,
 					auth0ID,
 					_id,
 					cartTotal: candleData.price,
@@ -248,6 +328,7 @@ export const addToCart =
 					postalCode,
 					shippingCost,
 					country,
+					filter,
 					region,
 					address,
 					city,
@@ -300,6 +381,7 @@ export const addToCart =
 					auth0ID,
 					shippingMethod,
 					_id,
+					filter,
 					cartTotal,
 					email,
 					postalCode,
@@ -351,6 +433,7 @@ export const removeFromCart =
 				shippingMethod,
 				cartTotal,
 				cartWeight,
+				filter,
 				email,
 				postalCode,
 				shippingCost,
@@ -382,6 +465,7 @@ export const removeFromCart =
 				createdAt,
 				auth0ID,
 				_id,
+				filter,
 				guestID,
 				cartTotal,
 				email,
@@ -433,6 +517,7 @@ export const lowerQuantity =
 				auth0ID,
 				_id,
 				cartTotal,
+				filter,
 				email,
 				postalCode,
 				shippingCost,
@@ -472,6 +557,7 @@ export const lowerQuantity =
 				guestID,
 				cartTotal,
 				email,
+				filter,
 				postalCode,
 				shippingCost,
 				country,
@@ -519,6 +605,7 @@ export const addSpecificAmount =
 				orders,
 				cart,
 				firstName,
+				filter,
 				lastName,
 				guestID,
 				createdAt,
@@ -592,6 +679,7 @@ export const addSpecificAmount =
 				_id,
 				cartTotal,
 				guestID,
+				filter,
 				email,
 				postalCode,
 				shippingCost,
@@ -639,6 +727,7 @@ export const addCouponDiscount =
 				auth0ID,
 				_id,
 				cartTotal,
+				filter,
 				email,
 				postalCode,
 				cartWeight,
@@ -665,6 +754,7 @@ export const addCouponDiscount =
 				guestID,
 				email,
 				postalCode,
+				filter,
 				cartWeight,
 				shippingCost,
 				shippingMethod,
@@ -714,6 +804,7 @@ export const removeCouponDiscount =
 				email,
 				postalCode,
 				guestID,
+				filter,
 				cartWeight,
 				shippingCost,
 				shippingMethod,
@@ -735,6 +826,7 @@ export const removeCouponDiscount =
 				cartTotal,
 				email,
 				postalCode,
+				filter,
 				cartWeight,
 				shippingCost,
 				shippingMethod,
@@ -783,6 +875,7 @@ export const addNewsLetterDiscount =
 				auth0ID,
 				_id,
 				cartTotal,
+				filter,
 				email,
 				postalCode,
 				shippingCost,
@@ -807,6 +900,7 @@ export const addNewsLetterDiscount =
 				_id,
 				cartTotal,
 				email,
+				filter,
 				guestID,
 				postalCode,
 				shippingCost,
@@ -856,6 +950,7 @@ export const removeNewsLetterDiscount =
 				auth0ID,
 				_id,
 				cartTotal,
+				filter,
 				email,
 				postalCode,
 				shippingCost,
@@ -874,6 +969,7 @@ export const removeNewsLetterDiscount =
 				lastName,
 				createdAt,
 				auth0ID,
+				filter,
 				_id,
 				guestID,
 				cartTotal,
@@ -936,6 +1032,7 @@ export const userSubmitDetails =
 				auth0ID,
 				_id,
 				guestID,
+				filter,
 				cartTotal,
 				shippingCost,
 				shippingMethod,
@@ -950,6 +1047,7 @@ export const userSubmitDetails =
 				lastName: userLastName,
 				createdAt,
 				auth0ID,
+				filter,
 				_id,
 				cartTotal,
 				guestID,
@@ -1036,6 +1134,7 @@ export const updateShippingCost =
 				firstName,
 				lastName,
 				createdAt,
+				filter,
 				auth0ID,
 				_id,
 				cartTotal,
@@ -1099,6 +1198,7 @@ export const updateShippingCost =
 				cartTotal,
 				guestID,
 				email,
+				filter,
 				postalCode,
 				shippingMethod,
 				country,
@@ -1151,6 +1251,7 @@ export const addToOrders =
 				firstName,
 				lastName,
 				createdAt,
+				filter,
 				auth0ID,
 				guestID,
 				_id,
@@ -1200,6 +1301,7 @@ export const addToOrders =
 				cartWeight: 0,
 				auth0ID,
 				_id,
+				filter,
 				cartTotal: 0,
 				guestID,
 				email,

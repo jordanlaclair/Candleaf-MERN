@@ -1,7 +1,7 @@
 import { ActionType } from "../actions/actionTypes";
 import { UserActions } from "../actions";
 import { Reducer } from "redux";
-
+import { Filters } from "../actions";
 interface OrderData {
 	productName: string;
 	productWeight: number;
@@ -11,6 +11,7 @@ interface OrderData {
 	price: number;
 	_id: string;
 }
+
 interface OrderSchema {
 	data: Array<OrderData>;
 	purchasedOn: String;
@@ -38,6 +39,7 @@ interface UserSchema {
 	newsLetterDiscount: number;
 	totalDiscounts: number;
 	shippingCost: number;
+	filter: Filters;
 	shippingMethod: string;
 	createdAt?: string;
 	total: number;
@@ -68,6 +70,7 @@ let initialState: UserSchema = {
 	address: "",
 	city: "",
 	postalCode: 0,
+	filter: Filters.NONE,
 	country: "",
 	createdAt: "",
 	cartWeight: 0,
@@ -187,6 +190,9 @@ const reducer: Reducer<UserSchema, UserActions> = (
 			return user;
 		case ActionType.UPDATE_FIRST_NAME:
 			user.firstName = action.payload;
+			return user;
+		case ActionType.UPDATE_FILTER:
+			user.filter = action.payload;
 			return user;
 		case ActionType.UPDATE_SHIPPING:
 			user.shippingCost = action.payload.newShippingCost;
