@@ -678,7 +678,7 @@ const DiscoveryDropDown = styled.div<DropDownProps>`
 	> h4 {
 		overflow: hidden;
 		cursor: pointer;
-		padding: ${(props) => (props.expanded ? "15px 0" : "0")};
+		padding: ${(props) => (props.expanded ? "15px 10px 15px 0" : "0")};
 
 		:hover {
 			color: ${(props) => props.theme.brand};
