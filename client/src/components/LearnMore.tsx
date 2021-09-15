@@ -1,10 +1,12 @@
 import { Button, makeStyles } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import styled from "styled-components";
 import CandleGroup from "../assets/images/CandleGroup1.jpg";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import LearnMoreDetail from "./LearnMoreDetail";
 import devices from "../styles/devices";
+import Rellax from "rellax";
+
 const LearnMore: FC = () => {
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -14,32 +16,45 @@ const LearnMore: FC = () => {
 			fontFamily: "inherit",
 		},
 	}));
+	useEffect(() => {
+		new Rellax(".animateLearnMore", {
+			speed: 2,
+			center: true,
+			round: true,
+			vertical: true,
+			horizontal: false,
+		});
+	}, []);
 
 	const classes = useStyles();
 	return (
 		<LearnMoreWrapper id="about">
 			<LearnMoreLeft>
-				<Header>
+				<Header className="animateLearnMore" data-rellax-speed="6">
 					<h1>Clean and fragrant soy wax</h1>
 					<h4>Made for your home and for your wellness</h4>
 				</Header>
-				<Body>
+				<Body className="animateLearnMore">
 					<LearnMoreDetail
 						title="Eco-sustainable"
 						description="All recyclable materials, 0% CO2 emissions"
 					/>
+
 					<LearnMoreDetail
 						title="Long burning"
 						description="Handcrafted to last long"
 					/>
+
 					<LearnMoreDetail
 						title="Handmade"
 						description="All candles are carefully crafted with love"
 					/>
+
 					<LearnMoreDetail
 						title="Hyphoallergenic"
 						description="100% natural, human-friendly ingredients"
 					/>
+
 					<Button
 						variant="contained"
 						className={classes.button}
@@ -50,7 +65,7 @@ const LearnMore: FC = () => {
 				</Body>
 			</LearnMoreLeft>
 			<LearnMoreRight>
-				<ImageWrapper>
+				<ImageWrapper className="animateLearnMoreLine">
 					<img src={CandleGroup} alt="candles" />
 				</ImageWrapper>
 				<ButtonWrapper>
@@ -80,7 +95,7 @@ const LearnMoreWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	background: ${(props) => props.theme.colors.secondary};
-	padding: 50px 0px;
+	padding: 100px 0px;
 	scroll-margin-top: 3rem;
 	scroll-snap-align: center;
 	@media ${devices.laptop} {

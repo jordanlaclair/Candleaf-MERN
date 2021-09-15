@@ -5,6 +5,7 @@ import DoneAllIcon from "@material-ui/icons/DoneAll";
 interface PropTypes {
 	title: string;
 	description: string;
+	className?: string | undefined;
 }
 const LearnMoreDetail: FC<PropTypes> = ({ title, description }) => {
 	return (

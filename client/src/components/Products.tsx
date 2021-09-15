@@ -7,6 +7,7 @@ import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
 import { FC } from "react";
 import { CandlesArray } from "../store/actions/index";
+import Rellax from "rellax";
 
 interface ProductsPropTypes {
 	newCandles: CandlesArray;
@@ -42,7 +43,22 @@ const Products: FC<ProductsPropTypes> = ({ newCandles }) => {
 		(state: State) => state.candles
 	);
 	useEffect(() => {
-		console.log("here");
+		new Rellax(".animate1", {
+			speed: 2,
+			center: false,
+			round: true,
+			vertical: true,
+			horizontal: false,
+		});
+
+		new Rellax(".animate2", {
+			speed: 1,
+			center: false,
+			round: true,
+			vertical: true,
+			horizontal: false,
+		});
+
 		if (candles.length === 0) dispatch(action.getCandles());
 	}, []);
 
@@ -51,8 +67,8 @@ const Products: FC<ProductsPropTypes> = ({ newCandles }) => {
 	};
 
 	return (
-		<ProductsWrapper id="products">
-			<Header>
+		<ProductsWrapper id="products" className="animate1">
+			<Header className="animate2">
 				<h1>Products</h1>
 				<h2>Order for you or for a loved one!</h2>
 			</Header>
@@ -105,5 +121,7 @@ const TableWrapper = styled.div`
 `;
 
 const Header = styled.div`
-	margin-bottom: 3rem;
+	margin-top: 2rem;
+
+	padding: 4rem 0;
 `;

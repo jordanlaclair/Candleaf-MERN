@@ -15,6 +15,7 @@ import { lightTheme } from "../styles/Themes";
 import { FC } from "react";
 import { State } from "../store/reducers";
 import { useSelector } from "react-redux";
+import Rellax from "rellax";
 
 const Home: FC = () => {
 	interface ReviewTypes {
@@ -50,13 +51,22 @@ const Home: FC = () => {
 	};
 
 	useEffect(() => {
-		fetchRecentReviews();
+		const relax = new Rellax(".animate", {
+			speed: -4,
+			center: false,
+			round: true,
+			vertical: true,
+			horizontal: false,
+		});
+		return () => {
+			relax.destroy();
+		};
 	}, []);
 
 	return (
 		<HomeWrapper>
 			<BackgroundWrapper>
-				<BackgroundImageWrapper>
+				<BackgroundImageWrapper className="animate">
 					<BackgroundImage src={BackgroundImageWallpaper} />
 				</BackgroundImageWrapper>
 				<ForeGroundWrapper>
