@@ -25,6 +25,7 @@ My first "big" project I've made using MERN stack that has user authentication /
 - Redux Persist (persisted state to local storage)
 - React-country-region-selector (for user country/region form selection)
 - React-Lottie
+- Rellax JS
 - Material UI
 
 ## Conclusion
