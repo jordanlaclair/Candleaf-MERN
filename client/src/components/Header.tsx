@@ -35,7 +35,7 @@ const Header: FC = () => {
 	const { logout } = useAuth0();
 	const firstName = useSelector((state: State) => state.user.firstName);
 	const id = useSelector((state: State) => state.user._id);
-
+	const [filtersExpanded, setFiltersExpanded] = useState(false);
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -100,13 +100,10 @@ const Header: FC = () => {
 
 	const handleGuestLogin = async (id: string) => {
 		const response = await usersApi.fetchUser(id);
-		console.log(response);
 		const responseCode = response?.status;
-		console.log(responseCode);
 		if (responseCode == 404) {
 			dispatch(action.createUser({ firstName: "Guest" }));
 		} else {
-			console.log(id);
 			dispatch(action.getUser(id));
 		}
 	};
@@ -130,10 +127,8 @@ const Header: FC = () => {
 
 	useEffect(() => {
 		if (isAuthenticated) {
-			console.log("authenticated");
 			handleAuthLogin(user?.sub!);
 		} else if (!isAuthenticated) {
-			console.log("not authetnicated");
 			handleGuestLogin(id);
 		}
 	}, [isAuthenticated]);
@@ -172,6 +167,7 @@ const Header: FC = () => {
 	const handleHomeOrders = () => {
 		history.push("/orders");
 	};
+
 	return (
 		<HeaderWrapper>
 			<HeaderLeft>
@@ -186,13 +182,29 @@ const Header: FC = () => {
 			</HeaderLeft>
 			<NavMenu id="nav-menu">
 				<HeaderMiddle id="nav__links">
-					<Discovery onClick={handleHomeProducts} className="nav__link">
-						<div>
-							<a href="#products">
-								<h3>Products</h3>
-							</a>
-						</div>
-						<ExpandMoreIcon />
+					<Discovery onClick={handleHomeProducts}>
+						<DiscoveryTop>
+							<div className="nav__link">
+								<a href="#products">
+									<h3>Products</h3>
+								</a>
+							</div>
+							<ExpandMoreIcon
+								onClick={(e) => {
+									e.stopPropagation();
+									setFiltersExpanded((prevState) => {
+										return !prevState;
+									});
+								}}
+							/>
+						</DiscoveryTop>
+						<DiscoveryDropDown expanded={filtersExpanded}>
+							<h4>Most Popular</h4>
+							<h4>Most Reviews</h4>
+							<h4>Lowest Price</h4>
+							<h4>Wax</h4>
+							<h4>Longest Burning Time</h4>
+						</DiscoveryDropDown>
 					</Discovery>
 
 					<About onClick={handleHomeAbout} className="nav__link">
@@ -370,10 +382,10 @@ const LogoTitle = styled.div`
 `;
 const Discovery = styled.div`
 	display: flex;
+	z-index: 998;
+	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	cursor: pointer;
-
 	position: relative;
 	transition: all 0.3s ease;
 	div > a {
@@ -400,7 +412,7 @@ const Discovery = styled.div`
 		align-items: center;
 		height: 2px;
 		text-align: center;
-		top: 2.3rem;
+		bottom: -5px;
 		background-color: ${(props) => props.theme.brand};
 	}
 `;
@@ -559,4 +571,41 @@ const SwitchWrapper = styled.div`
 	@media ${devices.tablet} {
 		width: 100%;
 	}
+`;
+
+interface DropDownProps {
+	expanded: boolean;
+}
+const DiscoveryDropDown = styled.div<DropDownProps>`
+	display: flex;
+	background: ${(props) => props.theme.colors.secondary};
+	position: absolute;
+	height: ${(props) => (props.expanded ? "auto" : "0")};
+	top: ${(props) => (props.expanded ? "100%" : "0")};
+	opacity: ${(props) => (props.expanded ? "1" : "0")};
+	left: 50%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-align: start;
+	transition: 1s ease;
+	transform: translate(-41%, 7%);
+	width: auto;
+	flex-direction: column;
+	justify-content: center;
+	padding: ${(props) => (props.expanded ? "5px 10px" : "0")};
+	align-items: flex-start;
+	> h4 {
+		cursor: pointer;
+		padding: ${(props) => (props.expanded ? "15px 0" : "0")};
+
+		:hover {
+			color: ${(props) => props.theme.brand};
+		}
+	}
+`;
+const DiscoveryTop = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
 `;

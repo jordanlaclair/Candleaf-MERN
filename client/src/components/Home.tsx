@@ -106,7 +106,7 @@ const HomeWrapper = styled.div`
 const BackgroundWrapper = styled.div`
 	width: 100%;
 	position: relative;
-	height: 92vh;
+	max-height: 92vh;
 	overflow: hidden;
 	@media ${devices.mobileXL} {
 		min-height: 250px;
