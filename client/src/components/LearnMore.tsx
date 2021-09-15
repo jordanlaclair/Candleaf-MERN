@@ -18,7 +18,7 @@ const LearnMore: FC = () => {
 	}));
 	useEffect(() => {
 		new Rellax(".animateLearnMore", {
-			speed: 2,
+			speed: 1.5,
 			center: true,
 			round: true,
 			vertical: true,
@@ -30,30 +30,38 @@ const LearnMore: FC = () => {
 	return (
 		<LearnMoreWrapper id="about">
 			<LearnMoreLeft>
-				<Header className="animateLearnMore" data-rellax-speed="6">
+				<Header className="animateLearnMore">
 					<h1>Clean and fragrant soy wax</h1>
 					<h4>Made for your home and for your wellness</h4>
 				</Header>
-				<Body className="animateLearnMore">
-					<LearnMoreDetail
-						title="Eco-sustainable"
-						description="All recyclable materials, 0% CO2 emissions"
-					/>
+				<Body>
+					<div className="animateLearnMore">
+						<LearnMoreDetail
+							title="Eco-sustainable"
+							description="All recyclable materials, 0% CO2 emissions"
+						/>
+					</div>
 
-					<LearnMoreDetail
-						title="Long burning"
-						description="Handcrafted to last long"
-					/>
+					<div className="animateLearnMore">
+						<LearnMoreDetail
+							title="Long burning"
+							description="Handcrafted to last long"
+						/>
+					</div>
 
-					<LearnMoreDetail
-						title="Handmade"
-						description="All candles are carefully crafted with love"
-					/>
+					<div className="animateLearnMore">
+						<LearnMoreDetail
+							title="Handmade"
+							description="All candles are carefully crafted with love"
+						/>
+					</div>
 
-					<LearnMoreDetail
-						title="Hyphoallergenic"
-						description="100% natural, human-friendly ingredients"
-					/>
+					<div className="animateLearnMore">
+						<LearnMoreDetail
+							title="Hyphoallergenic"
+							description="100% natural, human-friendly ingredients"
+						/>
+					</div>
 
 					<Button
 						variant="contained"
@@ -65,7 +73,7 @@ const LearnMore: FC = () => {
 				</Body>
 			</LearnMoreLeft>
 			<LearnMoreRight>
-				<ImageWrapper className="animateLearnMoreLine">
+				<ImageWrapper className="animateLearnMore" data-rellax-speed="1">
 					<img src={CandleGroup} alt="candles" />
 				</ImageWrapper>
 				<ButtonWrapper>
@@ -95,7 +103,7 @@ const LearnMoreWrapper = styled.div`
 	justify-content: space-evenly;
 	align-items: center;
 	background: ${(props) => props.theme.colors.secondary};
-	padding: 100px 0px;
+	padding: 150px 0px;
 	scroll-margin-top: 3rem;
 	scroll-snap-align: center;
 	@media ${devices.laptop} {
