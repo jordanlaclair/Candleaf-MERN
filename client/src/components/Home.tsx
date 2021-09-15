@@ -26,7 +26,9 @@ const Home: FC = () => {
 		userPicture: string;
 	}
 	type ReviewsArray = Array<ReviewTypes>;
+	const candles = useSelector((state: State) => state.candles);
 	const filter = useSelector((state: State) => state.user.filter);
+
 	const [recentReviews, setRecentReviews] = useState<ReviewsArray>([]);
 	const useStyles = makeStyles((theme) => ({
 		button: {
@@ -76,7 +78,7 @@ const Home: FC = () => {
 					</Button>
 				</ForeGroundWrapper>
 			</BackgroundWrapper>
-			<Products filter={filter} />
+			<Products newCandles={candles} />
 			<LearnMore />
 			{recentReviews.length > 0 ? (
 				<Reviews

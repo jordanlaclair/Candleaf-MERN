@@ -17,12 +17,11 @@ import devices from "../styles/devices";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { getAuthUser } from "../store/actions/usersActionCreator";
-import { AxiosResponse, AxiosError } from "axios";
 import { FC } from "react";
 import { signOut } from "../store/actions/usersActionCreator";
 import { v4 as uuidv4 } from "uuid";
 import * as usersApi from "../apis/users";
-import { createVerify } from "crypto";
+import { updateCandles } from "../store/actions";
 
 const Header: FC = () => {
 	interface Auth0Schema {
@@ -36,8 +35,9 @@ const Header: FC = () => {
 	const { logout } = useAuth0();
 	const firstName = useSelector((state: State) => state.user.firstName);
 	const id = useSelector((state: State) => state.user._id);
+	const filter = useSelector((state: State) => state.user.filter);
+	const candles = useSelector((state: State) => state.candles);
 	const [filtersExpanded, setFiltersExpanded] = useState(false);
-
 	const { user, isAuthenticated } = useAuth0();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -58,6 +58,45 @@ const Header: FC = () => {
 		setThemeSwitch((prevState) => {
 			return !prevState;
 		});
+	};
+
+	useEffect(() => {
+		handleChangeCandles(filter);
+	}, [filter]);
+
+	const handleChangeCandles = (filter: Filters) => {
+		if (filter == Filters.LOWEST_PRICE) {
+			let newArr = candles
+				.filter((elem) => true)
+				.sort((a, b) => {
+					return a.price - b.price;
+				});
+			dispatch(updateCandles(newArr));
+		} else if (filter == Filters.HIGHEST_PRICE) {
+			let newArr = candles
+				.filter((elem) => true)
+				.sort((a, b) => {
+					return b.price - a.price;
+				});
+			dispatch(updateCandles(newArr));
+		} else if (filter == Filters.MOST_POPULAR) {
+			let newArr = candles
+				.filter((elem) => true)
+				.sort((a, b) => {
+					return b.purchaseCount - a.purchaseCount;
+				});
+			dispatch(updateCandles(newArr));
+		} else if (filter == Filters.LONGEST_BURNING_TIME) {
+			let newArr = candles
+				.filter((elem) => true)
+				.sort((a, b) => {
+					const num1 = parseInt(a.burningTime.replace(/[^0-9]/g, ""));
+					const num2 = parseInt(b.burningTime.replace(/[^0-9]/g, ""));
+					return num2 - num1;
+				});
+
+			dispatch(updateCandles(newArr));
+		}
 	};
 
 	const handleFilter = (filter: Filters) => {
@@ -223,10 +262,22 @@ const Header: FC = () => {
 							>
 								Highest Price
 							</h4>
-							<h4>Most Reviews</h4>
-							<h4>Most Popular</h4>
-							<h4>Wax</h4>
-							<h4>Longest Burning Time</h4>
+
+							<h4
+								onClick={() => {
+									handleFilter(Filters.MOST_POPULAR);
+								}}
+							>
+								Most Popular
+							</h4>
+
+							<h4
+								onClick={() => {
+									handleFilter(Filters.LONGEST_BURNING_TIME);
+								}}
+							>
+								Longest Burning Time
+							</h4>
 						</DiscoveryDropDown>
 					</Discovery>
 
@@ -602,6 +653,7 @@ interface DropDownProps {
 }
 const DiscoveryDropDown = styled.div<DropDownProps>`
 	display: flex;
+	font-size: 14px;
 	background: ${(props) => props.theme.colors.secondary};
 	position: absolute;
 	height: ${(props) => (props.expanded ? "auto" : "0")};

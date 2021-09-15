@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Product from "./Product";
 import { v4 as uuidv4 } from "uuid";
@@ -6,13 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../store/reducers";
 import * as action from "../store/actions/index";
 import { FC } from "react";
-import { Filters } from "../store/actions/";
+import { CandlesArray } from "../store/actions/index";
 
 interface ProductsPropTypes {
-	filter: Filters;
+	newCandles: CandlesArray;
 }
 
-const Products: FC<ProductsPropTypes> = ({ filter }) => {
+const Products: FC<ProductsPropTypes> = ({ newCandles }) => {
+	const filter = useSelector((state: State) => state.user.filter);
+
+	const dispatch = useDispatch();
 	interface CandleSchema {
 		title: string;
 		message: string;
@@ -38,30 +41,13 @@ const Products: FC<ProductsPropTypes> = ({ filter }) => {
 	const candles: Array<CandleSchema> = useSelector(
 		(state: State) => state.candles
 	);
-	const dispatch = useDispatch();
 	useEffect(() => {
+		console.log("here");
 		if (candles.length === 0) dispatch(action.getCandles());
 	}, []);
 
 	const stringWeightToInt = (weight: string) => {
 		return parseInt(weight.replace("g", ""), 10);
-	};
-
-	useEffect(() => {
-		handleFilter(filter);
-	}, [filter]);
-
-	const handleFilter = (filter: Filters) => {
-		console.log(filter);
-		if (filter == Filters.LOWEST_PRICE) {
-			candles.sort((a, b) => {
-				return b.price - a.price;
-			});
-		} else if (filter == Filters.HIGHEST_PRICE) {
-			candles.sort((a, b) => {
-				return a.price - b.price;
-			});
-		}
 	};
 
 	return (
@@ -71,7 +57,7 @@ const Products: FC<ProductsPropTypes> = ({ filter }) => {
 				<h2>Order for you or for a loved one!</h2>
 			</Header>
 			<TableWrapper>
-				{candles.length > 2
+				{newCandles.length > 2
 					? candles.map((candle) => {
 							return (
 								<Product

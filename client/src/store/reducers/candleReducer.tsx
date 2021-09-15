@@ -50,6 +50,8 @@ const reducer: Reducer<CandlesArray, CandleActions> = (
 			return candles;
 		case ActionType.DELETE_CANDLE:
 			return candles.filter((candle) => candle._id !== action.payload);
+		case ActionType.UPDATE_CANDLES:
+			return action.payload;
 		default:
 			return candles;
 	}

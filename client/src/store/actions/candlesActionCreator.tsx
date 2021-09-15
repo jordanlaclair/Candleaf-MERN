@@ -1,6 +1,8 @@
 import { ActionType } from "./actionTypes";
 import { Dispatch } from "redux";
 import { CandleActions } from "./index";
+import { CandlesArray } from "./index";
+
 import * as api from "../../apis/products";
 
 export const getCandles = () => async (dispatch: Dispatch<CandleActions>) => {
@@ -9,7 +11,7 @@ export const getCandles = () => async (dispatch: Dispatch<CandleActions>) => {
 
 		dispatch({ type: ActionType.FETCH_ALL_CANDLES, payload: data });
 	} catch (error) {
-		console.log(error.message);
+		console.log(error);
 	}
 };
 
@@ -20,7 +22,7 @@ export const getCandle =
 
 			dispatch({ type: ActionType.FETCH_CANDLE, payload: data });
 		} catch (error) {
-			console.log(error.message);
+			console.log(error);
 		}
 	};
 
@@ -30,7 +32,7 @@ export const createCandle =
 			const { data } = await api.createCandle(post);
 			dispatch({ type: ActionType.CREATE_CANDLE, payload: data });
 		} catch (error) {
-			console.log(error.message);
+			console.log(error);
 		}
 	};
 
@@ -43,6 +45,11 @@ export const updateCandle =
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+export const updateCandles =
+	(candles: CandlesArray) => (dispatch: Dispatch<CandleActions>) => {
+		dispatch({ type: ActionType.UPDATE_CANDLES, payload: candles });
 	};
 
 export const deleteCandle =

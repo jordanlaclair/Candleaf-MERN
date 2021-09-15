@@ -5,6 +5,7 @@ export {
 	deleteCandle,
 	getCandles,
 	getCandle,
+	updateCandles,
 } from "./candlesActionCreator";
 
 export {
@@ -71,7 +72,7 @@ interface ShippingPayload {
 	newShippingMethod: string;
 }
 
-type CandlesArray = Array<CandleSchema>;
+export type CandlesArray = Array<CandleSchema>;
 
 interface CreateCandleAction {
 	type: ActionType.CREATE_CANDLE;
@@ -103,6 +104,11 @@ interface GetCandles {
 	payload: CandlesArray;
 }
 
+interface UpdateCandles {
+	type: ActionType.UPDATE_CANDLES;
+	payload: CandlesArray;
+}
+
 export interface ToggleTheme {
 	type: ActionType.TOGGLE_THEME;
 }
@@ -110,6 +116,7 @@ export interface ToggleTheme {
 export type CandleActions =
 	| GetCandles
 	| GetCandle
+	| UpdateCandles
 	| PurchaseCandleAction
 	| UpdateCandleAction
 	| DeleteCandleAction
