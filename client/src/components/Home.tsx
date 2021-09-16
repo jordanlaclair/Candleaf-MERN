@@ -51,6 +51,8 @@ const Home: FC = () => {
 	};
 
 	useEffect(() => {
+		fetchRecentReviews();
+
 		const relax = new Rellax(".animate", {
 			speed: -4,
 			center: false,
