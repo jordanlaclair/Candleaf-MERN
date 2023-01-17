@@ -2,7 +2,7 @@
 
 ## Live Demo
 
-🟢 [Live Demo](https://candleafcandles.netlify.app) 🟢
+~~🟢[Live Demo](https://candleafcandles.netlify.app) 🟢~~ Heroku removed their free tier and deleted my account/data lol
 
 ## General
 
