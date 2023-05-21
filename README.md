@@ -1,6 +1,6 @@
 # Candleaf
 
-!(https://raw.githubusercontent.com/jordanlaclair/Candleaf-MERN/main/client/src/assets/images/Screen%20Shot%202023-05-21%20at%201.17.42%20PM.png)
+[Home page]!(https://raw.githubusercontent.com/jordanlaclair/Candleaf-MERN/main/client/src/assets/images/Screen%20Shot%202023-05-21%20at%201.17.42%20PM.png)
 
 ## Live Demo
 
